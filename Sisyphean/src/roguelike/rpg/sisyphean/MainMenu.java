@@ -6,6 +6,6 @@ public class MainMenu extends Screen
 {
     public void initialize()
     {
-        //empty
+        //This is empty for now.
     }
 }
