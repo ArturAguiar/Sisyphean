@@ -4,11 +4,30 @@
     android:layout_height="match_parent" >
 
     <TextView
+        android:id="@+id/sisyphean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="50dp"
+        android:layout_marginTop="110dp"
+        android:text="Sisyphean" />
+
+    <Button
+        android:id="@+id/startGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="@string/hello_world"
-        tools:context=".MainMenu" />
+        android:text="Start Game" />
+
+    <Button
+        android:id="@+id/help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startGame"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52dp"
+        android:text="Instructions" />
 
 </RelativeLayout>
