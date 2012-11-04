@@ -43,6 +43,40 @@ public class WarriorAndCharacterTest extends TestCase
         assertEquals(1, newChar.getLevel());
         newChar.setLevel(2);
         assertEquals(2, newChar.getLevel());
+    }
+
+    /**
+     * Tests the max health (getter and setter) methods.
+     */
+    public void testMaxHealth()
+    {
+        assertEquals(120.0f, newChar.getMaxHealth());
+
+        newChar.setMaxHealth(220);
+
+        assertEquals(220.0f, newChar.getMaxHealth());
+        newChar.setHealth(110);
+        newChar.setMaxHealth(100);
+
+        assertEquals(50.0f, newChar.getHealth());
+
+
+    }
+
+    /**
+     * Tests the current health (getter and setter) methods.
+     */
+    public void testCurrentHealth()
+    {
+        newChar.setMaxHealth(120);
+        assertEquals(120.0f, newChar.getHealth());
+
+        newChar.setHealth(150);
+        assertEquals(120.0f, newChar.getHealth());
+
+
+
+
 
     }
 }
