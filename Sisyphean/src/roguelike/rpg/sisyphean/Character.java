@@ -29,7 +29,7 @@ abstract public class Character
     // Mana
     private float mana;
 
-    //Stamina
+    // Stamina
     private float stamina;
 
     // Statuses
@@ -40,6 +40,10 @@ abstract public class Character
     private float defense;
     private float dexterity;
     private float intelligence;
+
+    // Type
+    protected enum PlayerType { WARRIOR, WIZARD, ARCHER };
+    protected enum EnemyType { ZOMBIE, HARPY, RAT };
 
     //Skills.
     // TODO: is an ArrayList the best data structure for this?

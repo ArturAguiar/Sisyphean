@@ -10,6 +10,8 @@ import sofia.app.ShapeScreen;
  */
 abstract public class Player extends Character
 {
+    private PlayerType type;
+
     private float experience;
     private float expToNextLevel;
 
@@ -32,6 +34,16 @@ abstract public class Player extends Character
 
         //else if ( in battle mode )
         //screen.add( getBattleSprite() );
+    }
+
+    public PlayerType getType()
+    {
+        return type;
+    }
+
+    public void setType(PlayerType type)
+    {
+        this.type = type;
     }
 
     /**
