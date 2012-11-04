@@ -24,6 +24,7 @@ public class Warrior extends Player
     public Warrior(String name)
     {
         this.setName(name);
+        this.setType(PlayerType.WARRIOR);
 
         this.setMaxHealth(120.0f);
         this.setMaxMana(100.0f);
@@ -60,9 +61,10 @@ public class Warrior extends Player
     public void levelUp()
     {
         // Increase statuses.
-        this.setMaxHealth(getMaxHealth() + 15.0f);
+        this.setMaxHealth(getMaxHealth() + 13.0f);
+        this.setMaxStamina(getMaxStamina() + 12.0f);
         this.setMaxMana(getMaxMana() + 8.0f);
-        this.setStrength(getStrength() + 15.0f);
+        this.setStrength(getStrength() + 13.0f);
         this.setDefense(getDefense() + 12.0f);
         this.setDexterity(getDexterity() + 6.0f);
         this.setIntelligence(getIntelligence() + 5.0f);
