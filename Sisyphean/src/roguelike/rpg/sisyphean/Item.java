@@ -13,21 +13,37 @@ abstract public class Item
     private String description;
 
 
+    /**
+     * Returns the name of the item.
+     * @return String The string name of the item
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * Sets the name of the item.
+     * @param name The name of the item
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * Returns the description of the item.
+     * @return String The string description of the item
+     */
     public String getDescription()
     {
         return description;
     }
 
+    /**
+     * Sets the description of the item.
+     * @param description The description of the item
+     */
     public void setDescription(String description)
     {
         this.description = description;
