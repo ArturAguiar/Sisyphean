@@ -157,7 +157,15 @@ abstract public class Character
      */
     public void setHealth(float health)
     {
-        this.health = health;
+        if ( health > getMaxHealth() )
+        {
+            this.health = getMaxHealth();
+        }
+        else
+        {
+            this.health = health;
+        }
+
     }
 
     /**
@@ -207,7 +215,14 @@ abstract public class Character
      */
     public void setMana(float mana)
     {
-        this.mana = mana;
+        if ( mana > getMaxMana() )
+        {
+            this.mana = getMaxMana();
+        }
+        else
+        {
+            this.mana = mana;
+        }
     }
 
     /**
@@ -257,7 +272,14 @@ abstract public class Character
      */
     public void setStamina(float stamina)
     {
-        this.stamina = stamina;
+        if ( stamina > getMaxStamina() )
+        {
+            this.stamina = getMaxStamina();
+        }
+        else
+        {
+            this.stamina = stamina;
+        }
     }
 
     /**
