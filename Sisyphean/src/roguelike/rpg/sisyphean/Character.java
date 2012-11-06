@@ -1,7 +1,7 @@
 package roguelike.rpg.sisyphean;
 
-import java.util.ArrayList;
-import sofia.app.ShapeScreen;
+import android.graphics.PointF;
+import java.util.HashSet;
 import sofia.graphics.ImageShape;
 
 /**
@@ -46,8 +46,7 @@ abstract public class Character
     protected enum EnemyType { ZOMBIE, HARPY, RAT };
 
     //Skills.
-    // TODO: is an ArrayList the best data structure for this?
-    private ArrayList<Skill> skills;
+    private HashSet<Skill> skills;
 
 
     // Sprites
@@ -64,12 +63,10 @@ abstract public class Character
     // Abstract
 
     /**
-     * The method called to draw this character on the screen.
-     * TODO: Do we need this if we're using sophia?
-     *
-     * @param screen The screen to draw on.
+     * The method called to run any update logic on this character.
+     * TODO: can we use Observable to do this?
      */
-    abstract public void drawMe(ShapeScreen screen);
+    abstract public void update();
 
 
     // Getters and setters
@@ -358,8 +355,13 @@ abstract public class Character
      * Returns the skills the character has.
      * @return ArrayList<Skill> Returns all the skills of the character
      */
-    public ArrayList<Skill> getSkills()
+    public HashSet<Skill> getSkills()
     {
+        if (skills == null)
+        {
+            skills = new HashSet<Skill>();
+        }
+
         return skills;
     }
 
@@ -399,4 +401,26 @@ abstract public class Character
         this.battleSprite = battleSprite;
     }
 
+    /**
+     * Returns this character's position, which is the same as the position of
+     * it's sprite.
+     * @return The character's position.
+     */
+    public PointF getPosition()
+    {
+        return getMazeSprite().getPosition();
+    }
+
+    /**
+     * Changes the characters position by changing its sprite position.
+     * @param x The x coordinate of the new position.
+     * @param y The y coordinate of the new position.
+     */
+    public void setPosition(float x, float y)
+    {
+        if (getMazeSprite() != null)
+        {
+            this.getMazeSprite().setPosition(x, y);
+        }
+    }
 }

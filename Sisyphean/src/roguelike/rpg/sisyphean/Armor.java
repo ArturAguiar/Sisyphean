@@ -33,6 +33,7 @@ public class Armor extends Item
         this.setDescription(description);
         this.defense = defense;
         this.mazeSprite = mazeSprite;
+        mazeSprite.setSourceBounds(32, 0, 64, 32);
     }
 
     /**
