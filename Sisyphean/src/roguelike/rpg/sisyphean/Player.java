@@ -72,6 +72,8 @@ abstract public class Player extends Character
 
     /**
      * The method called when the player gets hit by an enemy.
+     * The damage returned by this method will be displayed over the enemy when
+     * the attack is done.
      * @param enemy The enemy hitting the player.
      * @return The total damage done.
      */
@@ -191,10 +193,14 @@ abstract public class Player extends Character
 
     public void moveBy(float x, float y)
     {
-        // TODO: I think that this should take the maze cell coordinates
-        // instead of regular coordinates.
+        // TODO: I think that this should take the maze cell coordinates instead of regular coordinates.
         walking = true;
-        this.getMazeSprite().animate(1500).moveBy(x, y).play();
+        this.getMazeSprite().animate(1500).name("walk").moveBy(x, y).play();
+    }
+
+    public void walkAnimationEnded()
+    {
+        walking = false;
     }
 
 }
