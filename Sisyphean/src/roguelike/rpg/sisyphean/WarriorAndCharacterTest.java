@@ -20,7 +20,7 @@ public class WarriorAndCharacterTest extends TestCase
      */
     public void setUp()
     {
-        newChar = new Warrior("Sisyphean");
+        newChar = new Warrior("Sisyphean", 10.0f, 10.0f);
     }
 
     //Test Methods-------------------------------------------------------------
@@ -185,6 +185,14 @@ public class WarriorAndCharacterTest extends TestCase
         assertEquals(1, newChar.getSkills().size());
         */
 
+    }
+
+    /**
+     * Tests the mazeSprite of the warrior.
+     */
+    public void testGetMazeSprite()
+    {
+        assertNotNull(newChar.getMazeSprite());
     }
 }
 

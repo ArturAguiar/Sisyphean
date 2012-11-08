@@ -20,8 +20,10 @@ public class Warrior extends Player
      * Adds initial equipment.
      *
      * @param name The name of the warrior (player).
+     * @param x The x coordinate of the warrior (player).
+     * @param y The y coordinate of the warrior (player).
      */
-    public Warrior(String name)
+    public Warrior(String name, float x, float y)
     {
         this.setName(name);
         this.setType(PlayerType.WARRIOR);
@@ -40,21 +42,27 @@ public class Warrior extends Player
         this.setExperience(0.0f);
 
         // Set the base sprite for the player
-        this.setMazeSprite(new ImageShape(R.drawable.male_base_single,
+        this.setMazeSprite(new ImageShape(R.drawable.male_base,
             new RectF(0.0f, 0.0f, 32.0f, 32.0f)) );
+        this.getMazeSprite().setSourceBounds(32, 0, 64, 32);
+
+        // Set the location of the sprite based on the given parameters.
+        this.setPosition(x, y);
+
 
         // Initial equipment
         this.setArmor(new Armor(
             "Prisoner Garments",
             "Rusty handcuffs and dark pants.%nHardly any protection.",
             2.0f,
-            new ImageShape(R.drawable.prisoner_garments_single,
+            new ImageShape(R.drawable.prisoner_garments,
                            new RectF(0.0f, 0.0f, 32.0f, 32.0f)) ));
 
         this.setWeapon(new Weapon(
             "Rusty Dagger",
             "If tetanus killed quickly, this would actually be half-decent.",
-            3.0f));
+            6.0f));
+        this.getWeapon().addBonusDamage("ZOMBIE", 2.0f);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import java.util.HashMap;
+
 /**
  *  Weapon gives attack bonuses to the player.
  *  Only one can be equipped/carried at a time.
@@ -10,6 +12,8 @@ package roguelike.rpg.sisyphean;
 public class Weapon extends Item
 {
     private float damage;
+
+    private HashMap<String, Float> bonusDamage;
 
 
     /**
@@ -23,6 +27,7 @@ public class Weapon extends Item
         this.setName(name);
         this.setDescription(description);
         this.damage = damage;
+        this.bonusDamage = new HashMap<String, Float>();
     }
 
     /**
@@ -33,4 +38,24 @@ public class Weapon extends Item
     {
         return damage;
     }
+
+    /**
+     * The bonus damage getter.
+     * @return The bonus damage HashMap.
+     */
+    public HashMap<String, Float> getBonusDamageHash()
+    {
+        return bonusDamage;
+    }
+
+    /**
+     * Adds a bonus damage to an enemy type given as a string.
+     * @param enemyType The type of the enemy that this sword is strong against.
+     * @param damageToAdd The damage to be added when attacking such enemy.
+     */
+    public void addBonusDamage(String enemyType, Float damageToAdd)
+    {
+        this.getBonusDamageHash().put(enemyType, damageToAdd);
+    }
+
 }

@@ -1,6 +1,7 @@
 package roguelike.rpg.sisyphean;
 
-import sofia.app.ShapeScreen;
+
+import android.graphics.Rect;
 
 /**
  *  The class for the character controlled by the player.
@@ -18,23 +19,77 @@ abstract public class Player extends Character
     private Weapon weapon;
     private Armor armor;
 
+    private enum Facing { DOWN, LEFT, RIGHT, UP };
+    private Facing facing = Facing.DOWN;
+
+    private float walkFrame = 1.0f;
+    private boolean walking = false;
+
     /**
      * Method to be called when the player levels up.
      */
     abstract public void levelUp();
 
     @Override
-    public void drawMe(ShapeScreen screen)
+    public void update()
     {
         // TODO: How do we know if we are in battle mode or maze exploration mode?
 
-        //if ( in maze mode )
-        //screen.add( getMazeSprite() );
-        //screen.add( armor.getMazeSprite() );
+        // Update the armor location to always be covering the character.
+        this.getArmor().getMazeSprite().setPosition(getPosition());
 
-        //else if ( in battle mode )
-        //screen.add( getBattleSprite() );
+        /* The walking animation frame-change.
+         * On frame 1 the character is standing, on frame 0 and 2 he is walking.
+         * Animation goes 1 -> 2 -> 1 -> 0 -> repeat (columns)
+         * and the row is determined by the facing direction enum type. */
+        if (walking)
+        {
+            int temp = (int)(walkFrame);
+
+            if (temp == 3)
+            {
+                temp = 1;
+            }
+
+            Rect source = new Rect(32 * temp, 32 * facing.ordinal(),
+                                   32 * temp + 32, 32 * facing.ordinal() + 32);
+
+            this.getMazeSprite().setSourceBounds(source);
+            this.getArmor().getMazeSprite().setSourceBounds(source);
+
+            walkFrame += 0.1f;
+
+            if (walkFrame >= 4.0f)
+            {
+                walkFrame = 0;
+            }
+        }
+        else
+        {
+            walkFrame = 1.0f;
+        }
     }
+
+    /**
+     * The method called when the player gets hit by an enemy.
+     * The damage returned by this method will be displayed over the enemy when
+     * the attack is done.
+     * @param enemy The enemy hitting the player.
+     * @return The total damage done.
+     */
+    public float wasHit(Enemy enemy)
+    {
+        // TODO: This is probably not the best way to calculate things...
+        float damageDone = enemy.getStrength() - getDefense();
+        if ( damageDone > 0 )
+        {
+            this.setHealth( getHealth() - damageDone );
+            return damageDone;
+        }
+
+        return 0.0f;
+    }
+
 
     public PlayerType getType()
     {
@@ -122,6 +177,30 @@ abstract public class Player extends Character
     public void setWeapon(Weapon weapon)
     {
         this.weapon = weapon;
+    }
+
+    /* Don't think we'll need this.
+    public Facing getFacing()
+    {
+        return facing;
+    }
+
+    public void setFacing(Facing facing)
+    {
+        this.facing = facing;
+    }
+    */
+
+    public void moveBy(float x, float y)
+    {
+        // TODO: I think that this should take the maze cell coordinates instead of regular coordinates.
+        walking = true;
+        this.getMazeSprite().animate(1500).name("walk").moveBy(x, y).play();
+    }
+
+    public void walkAnimationEnded()
+    {
+        walking = false;
     }
 
 }

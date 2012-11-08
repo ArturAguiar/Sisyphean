@@ -2,8 +2,6 @@ package roguelike.rpg.sisyphean;
 
 import android.graphics.RectF;
 import sofia.graphics.ImageShape;
-import android.util.FloatMath;
-import sofia.app.ShapeScreen;
 
 public class Enemy extends Character
 {
@@ -49,10 +47,35 @@ public class Enemy extends Character
     }
 
     @Override
-    public void drawMe(ShapeScreen screen)
+    public void update()
     {
         // TODO Auto-generated method stub
 
+    }
+
+    /**
+     * The method called when this enemy gets hit by the player.
+     * @param player The player hitting this enemy.
+     * @return The total damage done.
+     */
+    public float wasHit(Player player)
+    {
+        // TODO: This is probably not the best way to calculate things...
+        float damageDone = player.getStrength() + player.getWeapon().getDamage() - getDefense();
+        Float bonusDamage = player.getWeapon().getBonusDamageHash().get(this.type.toString());
+
+        if (bonusDamage != null)
+        {
+            damageDone += bonusDamage.floatValue();
+        }
+
+        if ( damageDone > 0 )
+        {
+            this.setHealth( getHealth() - damageDone );
+            return damageDone;
+        }
+
+        return 0.0f;
     }
 
     public String getDescription()
