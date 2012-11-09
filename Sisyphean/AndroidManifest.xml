@@ -33,6 +33,8 @@
 	        android:name=".GameScreen"
 	        android:screenOrientation="landscape" >
 	    </activity>
+	    <activity
+	        android:name=".HelpScreen" ></activity>
     </application>
 
 </manifest>
