@@ -27,4 +27,9 @@ public class MainMenuScreen extends Screen
     {
         presentScreen(GameScreen.class);
     }
+
+    public void helpClicked()
+    {
+        presentScreen(HelpScreen.class);
+    }
 }
