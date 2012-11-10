@@ -15,7 +15,7 @@ import sofia.app.Screen;
 public class HelpScreen extends Screen
 {
 
-    private Button help;
+    private Button game;
 
     // ----------------------------------------------------------
     /**
@@ -30,7 +30,7 @@ public class HelpScreen extends Screen
     /**
      * Place a description of your method here.
      */
-    public void helpClicked()
+    public void gameClicked()
     {
         presentScreen(GameScreen.class);
         finish();
