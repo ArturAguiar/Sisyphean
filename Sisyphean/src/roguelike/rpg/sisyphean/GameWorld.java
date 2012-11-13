@@ -17,6 +17,10 @@ public class GameWorld
 
     private Player player;
 
+    // ----------------------------------------------------------
+    /**
+     * Instantiates a new GameWorld object.
+     */
     public GameWorld()
     {
         allCharacters = new HashSet<Character>();
@@ -25,18 +29,33 @@ public class GameWorld
 
         // TODO: The player needs to be set after the user chooses the player class!
         // How do I get this data in order to create the player?
-    }
+  // ----------------------------------------------------------
 
+
+      }
+    /**
+     * Gets all the characters in the Hash Set of characters.
+     * @return allCharacters The hashSet of all the characters involved
+     */
     public HashSet<Character> getAllCharacters()
     {
         return allCharacters;
     }
 
+    // ----------------------------------------------------------
+    /**
+     * Returns the player.
+     * @return player Returns the player
+     */
     public Player getPlayer()
     {
         return player;
     }
 
+    /**
+     * Sets the player.
+     * @param player The player to be set
+     */
     public void setPlayer(Player player)
     {
         this.player = player;

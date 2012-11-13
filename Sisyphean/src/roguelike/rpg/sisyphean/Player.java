@@ -91,11 +91,21 @@ abstract public class Player extends Character
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Returns the players type.
+     * @return type The players type
+     */
     public PlayerType getType()
     {
         return type;
     }
 
+    // ----------------------------------------------------------
+    /**
+     * Sets the player type.
+     * @param type The new player type
+     */
     public void setType(PlayerType type)
     {
         this.type = type;
@@ -191,6 +201,12 @@ abstract public class Player extends Character
     }
     */
 
+    // ----------------------------------------------------------
+    /**
+     * Creates a method to show the animation of the player moving.
+     * @param x The x parameter
+     * @param y The y parameter
+     */
     public void moveBy(float x, float y)
     {
         // TODO: I think that this should take the maze cell coordinates instead of regular coordinates.
@@ -198,6 +214,9 @@ abstract public class Player extends Character
         this.getMazeSprite().animate(1500).name("walk").moveBy(x, y).play();
     }
 
+    /**
+     * Method to show the animation of the player walking ending.
+     */
     public void walkAnimationEnded()
     {
         walking = false;

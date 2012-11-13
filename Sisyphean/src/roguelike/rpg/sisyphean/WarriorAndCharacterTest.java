@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 /**
  *  Tests the character class.
  *
- *  @author Pietas
+ *  @author whlund15
  *  @version Nov 4, 2012
  */
 public class WarriorAndCharacterTest extends TestCase
