@@ -1,6 +1,9 @@
 package roguelike.rpg.sisyphean;
 
 
+import android.graphics.PointF;
+import android.graphics.RectF;
+import android.util.Log;
 import android.graphics.Rect;
 
 /**
@@ -25,25 +28,84 @@ abstract public class Player extends Character
     private float walkFrame = 1.0f;
     private boolean walking = false;
 
+    private float moveSpeed = 0.5f;
+
+    public enum BattleAction { ATTACKING, MOVING, IDLE };
+    private BattleAction battleAction = BattleAction.IDLE;
+
+    private PointF moveBy = new PointF();
+
+    private float battleFrame = 0.0f;
+
+    // TODO: this should probably go to the Character class.
+    private boolean battleMode = true;
+
     /**
      * Method to be called when the player levels up.
      */
     abstract public void levelUp();
 
     @Override
-    public void update()
+    synchronized public void update()
     {
         // TODO: How do we know if we are in battle mode or maze exploration mode?
 
         // Update the armor location to always be covering the character.
-        this.getArmor().getMazeSprite().setPosition(getPosition());
+        this.getArmor().getMazeSprite().setPosition(getPosition().x, getPosition().y);
 
-        /* The walking animation frame-change.
+        /* The walking movement and animation frame-change in maze mode.
          * On frame 1 the character is standing, on frame 0 and 2 he is walking.
          * Animation goes 1 -> 2 -> 1 -> 0 -> repeat (columns)
-         * and the row is determined by the facing direction enum type. */
-        if (walking)
+         * and the row is determined by the facing direction enum type.
+         */
+        if (walking && !battleMode)
         {
+            // Actual walking.
+            if (moveBy.y > 0.0f)
+            {
+                this.getMazeSprite().move(0.0f, 0.3f);
+                moveBy.set(moveBy.x, moveBy.y - 0.3f);
+                if (moveBy.y < 0.0f)
+                {
+                    moveBy.set(moveBy.x, 0.0f);
+                }
+            }
+            else if (moveBy.y < 0.0f)
+            {
+                this.getMazeSprite().move(0.0f, -0.3f);
+                moveBy.set(moveBy.x, moveBy.y + 0.3f);
+                if (moveBy.y > 0.0f)
+                {
+                    moveBy.set(moveBy.x, 0.0f);
+                }
+            }
+            else if (moveBy.x > 0.0f)
+            {
+                this.getMazeSprite().move(0.3f, 0.0f);
+                moveBy.set(moveBy.x - 0.3f, moveBy.y);
+                if (moveBy.x < 0.0f)
+                {
+                    moveBy.set(0.0f, moveBy.y);
+                }
+            }
+            else if (moveBy.x < 0.0f)
+            {
+                this.getMazeSprite().move(-0.3f, 0.0f);
+                moveBy.set(moveBy.x + 0.3f, moveBy.y);
+                if (moveBy.x > 0.0f)
+                {
+                    moveBy.set(0.0f, moveBy.y);
+                }
+            }
+            else
+            {
+                // This makes the character animation stop one frame after it
+                // should, but I don't believe it will be a problem.
+                walking = false;
+                walkFrame = 1.0f;
+            }
+
+            // Walking animation.
             int temp = (int)(walkFrame);
 
             if (temp == 3)
@@ -51,11 +113,8 @@ abstract public class Player extends Character
                 temp = 1;
             }
 
-            Rect source = new Rect(32 * temp, 32 * facing.ordinal(),
-                                   32 * temp + 32, 32 * facing.ordinal() + 32);
-
-            this.getMazeSprite().setSourceBounds(source);
-            this.getArmor().getMazeSprite().setSourceBounds(source);
+            this.getMazeSprite().setCol(temp);
+            this.getArmor().getMazeSprite().setCol(temp);
 
             walkFrame += 0.1f;
 
@@ -64,10 +123,36 @@ abstract public class Player extends Character
                 walkFrame = 0;
             }
         }
-        else
+
+        /*
+         * The animations in battle mode.
+         */
+        else if (battleMode)
         {
-            walkFrame = 1.0f;
+            int temp = (int)(battleFrame);
+
+            this.getBattleSprite().setCol(temp);
+
+            battleFrame += 0.2f;
+
+            switch (battleAction)
+            {
+                case IDLE:
+                    if (battleFrame >= 6.0f)
+                    {
+                        battleFrame = 0.0f;
+                    }
+                    break;
+
+                default:
+                    if (battleFrame >= 8.0f)
+                    {
+                        battleFrame = 0.0f;
+                    }
+                    break;
+            }
         }
+
     }
 
     /**
@@ -179,28 +264,47 @@ abstract public class Player extends Character
         this.weapon = weapon;
     }
 
-    /* Don't think we'll need this.
-    public Facing getFacing()
+    synchronized public void move(String direction)
     {
-        return facing;
-    }
-
-    public void setFacing(Facing facing)
-    {
-        this.facing = facing;
-    }
-    */
-
-    public void moveBy(float x, float y)
-    {
-        // TODO: I think that this should take the maze cell coordinates instead of regular coordinates.
+        //TODO: I need to know the cell size here in order to calculate the movement.
+        if (direction == null)
+        {
+            return;
+        }
+        else if (direction.equals("down"))
+        {
+            moveBy.set(0.0f, 30.0f);
+            facing = Facing.DOWN;
+        }
+        else if (direction.equals("up"))
+        {
+            moveBy.set(0.0f, -30.0f);
+            facing = Facing.UP;
+        }
+        else if (direction.equals("right"))
+        {
+            moveBy.set(30.0f, 0.0f);
+            facing = Facing.RIGHT;
+        }
+        else if (direction.equals("left"))
+        {
+            moveBy.set(-30.0f, 0.0f);
+            facing = Facing.LEFT;
+        }
+        else
+        {
+            return;
+        }
         walking = true;
-        this.getMazeSprite().animate(1500).name("walk").moveBy(x, y).play();
+        this.getMazeSprite().setRow(facing.ordinal());
+        this.getArmor().getMazeSprite().setRow(facing.ordinal());
     }
 
-    public void walkAnimationEnded()
+    public void setBattleAction(BattleAction action)
     {
-        walking = false;
+        battleFrame = 0.0f;
+        battleAction = action;
+        this.getBattleSprite().setRow(battleAction.ordinal());
     }
 
 }

@@ -1,5 +1,6 @@
 package roguelike.rpg.sisyphean;
 
+import android.util.DisplayMetrics;
 import java.util.HashSet;
 
 /**
@@ -17,14 +18,12 @@ public class GameWorld
 
     private Player player;
 
+    private DisplayMetrics displayMetrics;
+
     public GameWorld()
     {
         allCharacters = new HashSet<Character>();
-
-
-
-        // TODO: The player needs to be set after the user chooses the player class!
-        // How do I get this data in order to create the player?
+        displayMetrics = new DisplayMetrics();
     }
 
     public HashSet<Character> getAllCharacters()
@@ -40,6 +39,17 @@ public class GameWorld
     public void setPlayer(Player player)
     {
         this.player = player;
+
+        // Do I need to do this check if the set can't support duplicates?
+        if (!getAllCharacters().contains(player))
+        {
+            getAllCharacters().add(player);
+        }
+    }
+
+    public DisplayMetrics getDisplayMetrics()
+    {
+        return displayMetrics;
     }
 
 }

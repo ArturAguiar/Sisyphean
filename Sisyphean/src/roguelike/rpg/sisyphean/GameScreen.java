@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import sofia.graphics.Color;
 import sofia.graphics.RectangleShape;
 import sofia.app.ShapeScreen;
@@ -16,8 +18,17 @@ import sofia.app.ShapeScreen;
  */
 public class GameScreen extends ShapeScreen
 {
+    private GameWorld gameWorld;
+
     private Maze maze;
     private RectangleShape[][] visualMaze;
+    private float cellSize;
+
+    private LogicThread logicThread;
+
+
+    //for testing
+    private int action = 0;
 
     // ----------------------------------------------------------
     /**
@@ -25,13 +36,23 @@ public class GameScreen extends ShapeScreen
      */
     public void initialize()
     {
-        // Stuff here.
+        gameWorld = new GameWorld();
+        this.getWindowManager().getDefaultDisplay().getMetrics(gameWorld.getDisplayMetrics());
+
+        gameWorld.setPlayer(new Warrior("Daedalus", this.getWidth()/2.0f,this.getHeight()/2.0f, gameWorld));
+
+        // Start the logic thread.
+        logicThread = new LogicThread(gameWorld);
+        logicThread.setRunning(true);
+        logicThread.start();
+
+
         maze = new Maze(1);
         visualMaze = new RectangleShape[10][10];
         float y = getHeight();
         float x = getWidth();
         float size = Math.min(y, x);
-        float cellSize = size / 10;
+        cellSize = size / 10;
         float bottom = cellSize;
         float right = cellSize;
         float top = 0;
@@ -55,6 +76,59 @@ public class GameScreen extends ShapeScreen
             }
 
         }
+
+        // Add the player's sprites.
+        // TODO: Is there a way to do this in the player class?
+        this.add(gameWorld.getPlayer().getMazeSprite().getImageShape());
+        this.add(gameWorld.getPlayer().getArmor().getMazeSprite().getImageShape());
+        this.add(gameWorld.getPlayer().getBattleSprite().getImageShape());
+    }
+
+    public void downClicked()
+    {
+        gameWorld.getPlayer().move("down");
+    }
+
+    public void upClicked()
+    {
+        gameWorld.getPlayer().move("up");
+    }
+
+    public void rightClicked()
+    {
+        gameWorld.getPlayer().move("right");
+    }
+
+    public void leftClicked()
+    {
+        gameWorld.getPlayer().move("left");
+    }
+
+    public void onTouchDown(MotionEvent event)
+    {
+        // This cycles through the animation types when the screen is touched.
+        // For testing.
+        switch(action)
+        {
+            case 0:
+                gameWorld.getPlayer().setBattleAction(Player.BattleAction.ATTACKING);
+                action++;
+                break;
+
+            case 1:
+                gameWorld.getPlayer().setBattleAction(Player.BattleAction.MOVING);
+                action++;
+                break;
+
+            case 2:
+                gameWorld.getPlayer().setBattleAction(Player.BattleAction.IDLE);
+                action = 0;
+                break;
+
+            default:
+                break;
+        }
+
     }
 
 }

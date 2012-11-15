@@ -20,7 +20,7 @@ public class WarriorAndCharacterTest extends TestCase
      */
     public void setUp()
     {
-        newChar = new Warrior("Sisyphean", 10.0f, 10.0f);
+        newChar = new Warrior("Sisyphean", 10.0f, 10.0f, new GameWorld());
     }
 
     //Test Methods-------------------------------------------------------------

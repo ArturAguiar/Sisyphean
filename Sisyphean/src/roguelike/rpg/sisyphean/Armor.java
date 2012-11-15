@@ -17,7 +17,7 @@ public class Armor extends Item
      * The image displayed on the character when he is wearing this armor
      * outside of battle mode.
      */
-    private ImageShape mazeSprite;
+    private Sprite mazeSprite;
 
 
     /**
@@ -27,13 +27,13 @@ public class Armor extends Item
      * @param defense The defense bonus given by this armor.
      * @param mazeSprite The sprite displayed when not in battle mode.
      */
-    public Armor(String name, String description, float defense, ImageShape mazeSprite)
+    public Armor(String name, String description, float defense, Sprite mazeSprite)
     {
         this.setName(name);
         this.setDescription(description);
         this.defense = defense;
         this.mazeSprite = mazeSprite;
-        mazeSprite.setSourceBounds(32, 0, 64, 32);
+        this.mazeSprite.setCol(1);
     }
 
     /**
@@ -49,7 +49,7 @@ public class Armor extends Item
      * The maze sprite getter.
      * @return The maze sprite of this armor.
      */
-    public ImageShape getMazeSprite()
+    public Sprite getMazeSprite()
     {
         return mazeSprite;
     }

@@ -1,8 +1,5 @@
 package roguelike.rpg.sisyphean;
 
-import android.graphics.RectF;
-import sofia.graphics.ImageShape;
-
 /**
  * // -------------------------------------------------------------------------
 /**
@@ -22,9 +19,12 @@ public class Warrior extends Player
      * @param name The name of the warrior (player).
      * @param x The x coordinate of the warrior (player).
      * @param y The y coordinate of the warrior (player).
+     * @param gameWorld The reference to the game world.
      */
-    public Warrior(String name, float x, float y)
+    public Warrior(String name, float x, float y, GameWorld gameWorld)
     {
+        this.gameWorld = gameWorld;
+
         this.setName(name);
         this.setType(PlayerType.WARRIOR);
 
@@ -41,10 +41,14 @@ public class Warrior extends Player
         this.setExpToNextLevel(10.0f);
         this.setExperience(0.0f);
 
-        // Set the base sprite for the player
-        this.setMazeSprite(new ImageShape(R.drawable.male_base,
-            new RectF(0.0f, 0.0f, 32.0f, 32.0f)) );
-        this.getMazeSprite().setSourceBounds(32, 0, 64, 32);
+        // The sprite in maze mode.
+        this.setMazeSprite(new Sprite(R.drawable.male_base, 96, 128, 3, 4, gameWorld.getDisplayMetrics().density));
+        this.getMazeSprite().setCol(1);
+
+        // The sprite in battle mode.
+        this.setBattleSprite(new Sprite(R.drawable.crusader_sprite_sheet, 1440, 390, 8, 3, gameWorld.getDisplayMetrics().density));
+        this.getBattleSprite().setRow(2);
+
 
         // Set the location of the sprite based on the given parameters.
         this.setPosition(x, y);
@@ -55,8 +59,9 @@ public class Warrior extends Player
             "Prisoner Garments",
             "Rusty handcuffs and dark pants.%nHardly any protection.",
             2.0f,
-            new ImageShape(R.drawable.prisoner_garments,
-                           new RectF(0.0f, 0.0f, 32.0f, 32.0f)) ));
+            new Sprite(R.drawable.prisoner_garments,
+                       96, 128, 3, 4,
+                       gameWorld.getDisplayMetrics().density)));
 
         this.setWeapon(new Weapon(
             "Rusty Dagger",
