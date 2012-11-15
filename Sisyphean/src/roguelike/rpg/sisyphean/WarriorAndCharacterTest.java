@@ -1,3 +1,4 @@
+
 package roguelike.rpg.sisyphean;
 
 import junit.framework.TestCase;
@@ -8,7 +9,7 @@ import junit.framework.TestCase;
 /**
  *  Tests the character class.
  *
- *  @author whlund15
+ *  @author Pietas
  *  @version Nov 4, 2012
  */
 public class WarriorAndCharacterTest extends TestCase
@@ -20,7 +21,7 @@ public class WarriorAndCharacterTest extends TestCase
      */
     public void setUp()
     {
-        newChar = new Warrior("Sisyphean", 10.0f, 10.0f);
+        newChar = new Warrior("Sisyphean", 10.0f, 10.0f, new GameWorld());
     }
 
     //Test Methods-------------------------------------------------------------
@@ -175,15 +176,12 @@ public class WarriorAndCharacterTest extends TestCase
      */
     public void testGetSkills()
     {
-        //Finish after the skills issue is fixed.
-        /*
         assertEquals(0, newChar.getSkills().size());
 
         newChar.levelUp();
         newChar.levelUp();
 
         assertEquals(1, newChar.getSkills().size());
-        */
 
     }
 
@@ -195,4 +193,4 @@ public class WarriorAndCharacterTest extends TestCase
         assertNotNull(newChar.getMazeSprite());
     }
 }
-
+>>>>>>> refs/remotes/origin/master

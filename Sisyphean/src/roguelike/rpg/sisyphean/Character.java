@@ -17,6 +17,9 @@ abstract public class Character
 {
     /////FIELDS-----------------------------------------------------------------
 
+    /** A reference to the game world. */
+    protected GameWorld gameWorld;
+
     // Name
     private String name;
 
@@ -52,10 +55,10 @@ abstract public class Character
     // Sprites
 
     /** The sprite to use when not in battle */
-    private ImageShape mazeSprite;
+    private Sprite mazeSprite;
 
     /** The sprite to use while in battle */
-    private ImageShape battleSprite;
+    private Sprite battleSprite;
 
 
     /////METHODS----------------------------------------------------------------
@@ -369,7 +372,7 @@ abstract public class Character
      * Returns an image of the sprite.
      * @return ImageShape The image of the sprite
      */
-    public ImageShape getMazeSprite()
+    public Sprite getMazeSprite()
     {
         return mazeSprite;
     }
@@ -378,16 +381,19 @@ abstract public class Character
      * Sets the image of the sprite.
      * @param mazeSprite Sets the maze sprite image
      */
-    public void setMazeSprite(ImageShape mazeSprite)
+    public void setMazeSprite(Sprite mazeSprite)
     {
         this.mazeSprite = mazeSprite;
+
+        //mazeFrameWidth = frameWidth;
+        //mazeFrameHeight = frameHeight;
     }
 
     /**
      * Returns the battle sprite image.
      * @return ImageShape the battle sprite image
      */
-    public ImageShape getBattleSprite()
+    public Sprite getBattleSprite()
     {
         return battleSprite;
     }
@@ -396,7 +402,7 @@ abstract public class Character
      * Sets the battle sprite image.
      * @param battleSprite The battle sprite image
      */
-    public void setBattleSprite(ImageShape battleSprite)
+    public void setBattleSprite(Sprite battleSprite)
     {
         this.battleSprite = battleSprite;
     }

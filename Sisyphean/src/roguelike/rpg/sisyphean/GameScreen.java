@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import android.widget.Toast;
+import sofia.graphics.ImageShape;
 import sofia.graphics.Color;
 import sofia.graphics.RectangleShape;
 import sofia.app.ShapeScreen;
@@ -27,34 +29,66 @@ public class GameScreen extends ShapeScreen
     {
         // Stuff here.
         maze = new Maze(1);
-        visualMaze = new RectangleShape[10][10];
+        visualMaze = new RectangleShape[maze.size()][maze.size()];
         float y = getHeight();
         float x = getWidth();
         float size = Math.min(y, x);
-        float cellSize = size / 10;
+        float cellSize = size / maze.size();
         float bottom = cellSize;
         float right = cellSize;
         float top = 0;
         float left = 0;
-        for ( int row = 0; row < 10; row++)
+        for ( int row = 0; row < maze.size(); row++)
         {
             left = 0;
             right = cellSize;
             top = cellSize * row;
             bottom = cellSize * (row + 1);
-            for ( int col = 0; col < 10; col++)
+            for ( int col = 0; col < maze.size(); col++)
             {
                 left = cellSize * col;
                 right = cellSize * (col + 1);
-                visualMaze[row][col] =
+                visualMaze[col][row] =
                     new RectangleShape(left, top, right, bottom);
-                visualMaze[row][col].setColor(Color.black);
-                visualMaze[row][col].setFilled(true);
-                visualMaze[row][col].setFillColor(Color.white);
-                add(visualMaze[row][col]);
+                visualMaze[col][row].setColor(Color.black);
+                visualMaze[col][row].setFilled(true);
+                visualMaze[col][row].setFillColor(Color.white);
+                add(visualMaze[col][row]);
+
+                add(new ImageShape(
+                        "ground", left, top, right, bottom));
+
+                if (maze.getCell(col, row).getWalls()[0]) //top wall
+                {
+                    add(new ImageShape(
+                        "back", left, top, right, bottom));
+                }
+                if (maze.getCell(col, row).getWalls()[1]) //right wall
+                {
+                    add(new ImageShape(
+                        "right", left, top, right, bottom));
+                }
+                if (maze.getCell(col, row).getWalls()[3]) //left wall
+                {
+                    add(new ImageShape(
+                        "left", left, top, right, bottom));
+                }
             }
 
         }
+
+        //check();
     }
 
+    public void check()
+    {
+        for (int col = 0; col < maze.size(); col++)
+        {
+            for (int row = 0; row < maze.size(); row++)
+            {
+                String s = "(" + maze.getCell(col, row).x() + ", " + maze.getCell(col, row).y() + ") " + maze.getCell(col, row).wallString();
+                Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }

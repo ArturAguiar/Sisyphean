@@ -43,8 +43,7 @@ public class Enemy extends Character
                 this.setDexterity(8.0f + getLevel() * 5.0f );
                 this.setDefense(18.0f + getLevel() * 10.0f );
                 this.setMazeSprite(
-                    new ImageShape(R.drawable.zombie_single,
-                                   new RectF(0.0f, 0.0f, 32.0f, 32.0f)));
+                    new Sprite(R.drawable.zombie_single, 32, 32, 1, 1, gameWorld.getDisplayMetrics().density));
                 break;
 
             case HARPY:

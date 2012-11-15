@@ -43,6 +43,8 @@ public class LogicThread extends Thread
     {
         while (run)
         {
+            long startTime = System.nanoTime();
+
             for (Character character : gameWorld.getAllCharacters())
             {
                 character.update();
@@ -50,12 +52,22 @@ public class LogicThread extends Thread
 
             try
             {
-                // running at ~ 60fps
-                Thread.sleep(1000/60);
+                long currentTime = System.nanoTime();
+                int sleepTimeNanos = (int)((1.0f/60.0f) * 1000000000) - (int)(currentTime - startTime);
+
+                if (sleepTimeNanos > 0)
+                {
+                    int millis = sleepTimeNanos / 1000000;
+                    Thread.sleep( millis, sleepTimeNanos - millis*1000000 );
+                }
+                else
+                {
+                    //Log.i("Logic Thread", "Running behind!");
+                }
             }
             catch (InterruptedException e)
             {
-                Log.v("Logic Thread Exception", e.getMessage());
+                Log.v("LogicThread Exception", e.getMessage());
             }
         }
     }
