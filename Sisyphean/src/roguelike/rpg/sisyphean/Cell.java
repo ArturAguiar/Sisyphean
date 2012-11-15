@@ -142,6 +142,10 @@ public class Cell
         return walls;
     }
 
+    /**
+     * Returns the x coordinate.
+     * @return x The x coordinate
+     */
     public int x()
     {
         return x;
@@ -152,6 +156,10 @@ public class Cell
         this.x = x;
     }
 */
+    /**
+     * Returns the y coordinate.
+     * @return y The y coordinate
+     */
     public int y()
     {
         return y;
@@ -162,26 +170,46 @@ public class Cell
         this.y = y;
     }
 */
+    /**
+     * Returns the item.
+     * @return Item The item to be returned
+     */
     public Item getItem()
     {
         return item;
     }
 
+    /**
+     * Sets the item.
+     * @param item Sets the next item placement
+     */
     public void setItem(Item item)
     {
         this.item = item;
     }
 
+    /**
+     * Returns the enemy.
+     * @return  The enemy to be returned
+     */
     public Character getEnemy()
     {
         return enemy;
     }
 
+    /**
+     * Sets the enemy placement.
+     * @param enemy The enemy to be set
+     */
     public void setEnemy()
     {
         this.enemy = enemy;
     }
 
+    /**
+     * Has the character exited the map or not.
+     * @return boolean The boolean value if he has exited or not
+     */
     public boolean isExit()
     {
         return exit;
@@ -215,11 +243,19 @@ public class Cell
         }
     }
 
+    /**
+     * Returns the number of walls in the map.
+     * @return int The number of walls
+     */
     public int numberOfWalls()
     {
         return numberOfWalls;
     }
 
+    /**
+     * Returns a wall string.
+     * @return String The wall string to be returned
+     */
     public String wallString()
     {
         String string = "";
