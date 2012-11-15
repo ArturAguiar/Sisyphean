@@ -243,6 +243,10 @@ public class Maze
         }
     }
 
+    /**
+     * Returns the size of the maze.
+     * @return int
+     */
     public int size()
     {
         return size;

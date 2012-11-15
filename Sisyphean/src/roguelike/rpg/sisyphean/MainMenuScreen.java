@@ -23,11 +23,17 @@ public class MainMenuScreen extends Screen
         // Logic here.
     }
 
+    /**
+     * Notes if the start game button is clicked or not.
+     */
     public void startGameClicked()
     {
         presentScreen(GameScreen.class);
     }
 
+    /**
+     * Notes if the help button is clicked or not.
+     */
     public void helpClicked()
     {
         presentScreen(HelpScreen.class);
