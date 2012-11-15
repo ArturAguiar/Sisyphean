@@ -4,12 +4,12 @@ import android.util.DisplayMetrics;
 import java.util.HashSet;
 
 /**
- *  The class that contains all the pertinent game information.
- *  Contains the set of all characters and the current maze.
- *
- *  @author Artur
- *  @version Nov 5, 2012
- */
+* The class that contains all the pertinent game information.
+* Contains the set of all characters and the current maze.
+*
+* @author Artur
+* @version Nov 5, 2012
+*/
 public class GameWorld
 {
     private HashSet<Character> allCharacters;

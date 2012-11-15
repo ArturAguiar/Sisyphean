@@ -4,11 +4,11 @@ package roguelike.rpg.sisyphean;
 import android.graphics.PointF;
 
 /**
- *  The class for the character controlled by the player.
- *
- *  @author Artur
- *  @version Nov 3, 2012
- */
+* The class for the character controlled by the player.
+*
+* @author Artur
+* @version Nov 3, 2012
+*/
 abstract public class Player extends Character
 {
     private PlayerType type;
@@ -41,8 +41,8 @@ abstract public class Player extends Character
     private boolean battleMode = true;
 
     /**
-     * Method to be called when the player levels up.
-     */
+* Method to be called when the player levels up.
+*/
     abstract public void levelUp();
 
     @Override
@@ -54,10 +54,10 @@ abstract public class Player extends Character
         this.getArmor().getMazeSprite().setPosition(getPosition().x, getPosition().y);
 
         /* The walking movement and animation frame-change in maze mode.
-         * On frame 1 the character is standing, on frame 0 and 2 he is walking.
-         * Animation goes 1 -> 2 -> 1 -> 0 -> repeat (columns)
-         * and the row is determined by the facing direction enum type.
-         */
+* On frame 1 the character is standing, on frame 0 and 2 he is walking.
+* Animation goes 1 -> 2 -> 1 -> 0 -> repeat (columns)
+* and the row is determined by the facing direction enum type.
+*/
         if (walking && !battleMode)
         {
             // Actual walking.
@@ -125,8 +125,8 @@ abstract public class Player extends Character
         }
 
         /*
-         * The animations in battle mode.
-         */
+* The animations in battle mode.
+*/
         else if (battleMode)
         {
             tempFrame = (int)(battleFrame);
@@ -157,12 +157,12 @@ abstract public class Player extends Character
     }
 
     /**
-     * The method called when the player gets hit by an enemy.
-     * The damage returned by this method will be displayed over the enemy when
-     * the attack is done.
-     * @param enemy The enemy hitting the player.
-     * @return The total damage done.
-     */
+* The method called when the player gets hit by an enemy.
+* The damage returned by this method will be displayed over the enemy when
+* the attack is done.
+* @param enemy The enemy hitting the player.
+* @return The total damage done.
+*/
     public float wasHit(Enemy enemy)
     {
         // TODO: This is probably not the best way to calculate things...
@@ -195,18 +195,18 @@ abstract public class Player extends Character
     }
 
     /**
-     * The experience getter.
-     * @return The experience of the player.
-     */
+* The experience getter.
+* @return The experience of the player.
+*/
     public float getExperience()
     {
         return experience;
     }
 
     /**
-     * The experience setter.
-     * @param experience The new experience of the player.
-     */
+* The experience setter.
+* @param experience The new experience of the player.
+*/
     public void setExperience(float experience)
     {
         this.experience = experience;
@@ -218,55 +218,55 @@ abstract public class Player extends Character
     }
 
     /**
-     * The getter for the experience required to get to the next level.
-     * @return The experience required to get to the next level.
-     */
+* The getter for the experience required to get to the next level.
+* @return The experience required to get to the next level.
+*/
     public float getExpToNextLevel()
     {
         return expToNextLevel;
     }
 
     /**
-     * The setter for the experience required to get to the next level.
-     * @param expToNextLevel The new value for the experience required to reach
-     * the next level.
-     */
+* The setter for the experience required to get to the next level.
+* @param expToNextLevel The new value for the experience required to reach
+* the next level.
+*/
     public void setExpToNextLevel(float expToNextLevel)
     {
         this.expToNextLevel = expToNextLevel;
     }
 
     /**
-     * The player's armor getter.
-     * @return The player's current armor.
-     */
+* The player's armor getter.
+* @return The player's current armor.
+*/
     public Armor getArmor()
     {
         return armor;
     }
 
     /**
-     * The player's armor setter.
-     * @param armor The new armor for the player to equip.
-     */
+* The player's armor setter.
+* @param armor The new armor for the player to equip.
+*/
     public void setArmor(Armor armor)
     {
         this.armor = armor;
     }
 
     /**
-     * The player's Weapon getter.
-     * @return The player's current weapon.
-     */
+* The player's Weapon getter.
+* @return The player's current weapon.
+*/
     public Weapon getWeapon()
     {
         return weapon;
     }
 
     /**
-     * The player's weapon setter.
-     * @param weapon The new weapon for the player to equip.
-     */
+* The player's weapon setter.
+* @param weapon The new weapon for the player to equip.
+*/
     public void setWeapon(Weapon weapon)
     {
         this.weapon = weapon;

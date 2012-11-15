@@ -1,3 +1,4 @@
+
 package roguelike.rpg.sisyphean;
 
 import junit.framework.TestCase;
@@ -192,3 +193,4 @@ public class WarriorAndCharacterTest extends TestCase
         assertNotNull(newChar.getMazeSprite());
     }
 }
+>>>>>>> refs/remotes/origin/master

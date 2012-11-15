@@ -3,6 +3,15 @@ package roguelike.rpg.sisyphean;
 import android.graphics.RectF;
 import sofia.graphics.ImageShape;
 
+
+// -------------------------------------------------------------------------
+/**
+ *  Creates a class to make enemies and set their abilities and a brief
+ *  description of what they are strong/weak against.
+ *
+ *  @author Artur
+ *  @version 2012.11.13
+ */
 public class Enemy extends Character
 {
     private EnemyType type;
@@ -77,11 +86,21 @@ public class Enemy extends Character
         return 0.0f;
     }
 
+    // ----------------------------------------------------------
+    /**
+     * Returns the description of the enemy.
+     * @return description The notes on the enemy.
+     */
     public String getDescription()
     {
         return description;
     }
 
+    // ----------------------------------------------------------
+    /**
+     * Sets the description of the enemy.
+     * @param description The description to be set to the enemy
+     */
     public void setDescription(String description)
     {
         this.description = description;
