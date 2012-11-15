@@ -16,6 +16,11 @@ public class LogicThread extends Thread
 
     private boolean run;
 
+    private long startTime;
+    private long currentTime;
+    private int sleepTimeNanos;
+    private int millis;
+
     /**
      * Thread constructor.
      * @param myGameWorld The reference back to the game world.
@@ -43,7 +48,7 @@ public class LogicThread extends Thread
     {
         while (run)
         {
-            long startTime = System.nanoTime();
+            startTime = System.nanoTime();
 
             for (Character character : gameWorld.getAllCharacters())
             {
@@ -52,12 +57,12 @@ public class LogicThread extends Thread
 
             try
             {
-                long currentTime = System.nanoTime();
-                int sleepTimeNanos = (int)((1.0f/60.0f) * 1000000000) - (int)(currentTime - startTime);
+                currentTime = System.nanoTime();
+                sleepTimeNanos = (int)((1.0f/60.0f) * 1000000000) - (int)(currentTime - startTime);
 
                 if (sleepTimeNanos > 0)
                 {
-                    int millis = sleepTimeNanos / 1000000;
+                    millis = sleepTimeNanos / 1000000;
                     Thread.sleep( millis, sleepTimeNanos - millis*1000000 );
                 }
                 else

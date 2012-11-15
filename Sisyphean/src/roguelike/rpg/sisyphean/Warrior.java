@@ -62,6 +62,7 @@ public class Warrior extends Player
             new Sprite(R.drawable.prisoner_garments,
                        96, 128, 3, 4,
                        gameWorld.getDisplayMetrics().density)));
+        this.getArmor().getMazeSprite().setPosition(x, y);
 
         this.setWeapon(new Weapon(
             "Rusty Dagger",

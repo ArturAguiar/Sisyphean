@@ -8,8 +8,6 @@ import sofia.graphics.ImageShape;
  *  The abstract class for every character in the game.
  *  This could be a player, an enemy and etc.
  *
- *  TODO: how to loop through an animation sprite using sofia?!
- *
  *  @author Artur
  *  @version Nov 3, 2012
  */

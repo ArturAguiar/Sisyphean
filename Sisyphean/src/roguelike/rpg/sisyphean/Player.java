@@ -2,9 +2,6 @@ package roguelike.rpg.sisyphean;
 
 
 import android.graphics.PointF;
-import android.graphics.RectF;
-import android.util.Log;
-import android.graphics.Rect;
 
 /**
  *  The class for the character controlled by the player.
@@ -30,12 +27,15 @@ abstract public class Player extends Character
 
     private float moveSpeed = 0.5f;
 
+    /** The action being taken in battle */
     public enum BattleAction { ATTACKING, MOVING, IDLE };
     private BattleAction battleAction = BattleAction.IDLE;
 
     private PointF moveBy = new PointF();
 
     private float battleFrame = 0.0f;
+
+    private int tempFrame = 0;
 
     // TODO: this should probably go to the Character class.
     private boolean battleMode = true;
@@ -63,8 +63,8 @@ abstract public class Player extends Character
             // Actual walking.
             if (moveBy.y > 0.0f)
             {
-                this.getMazeSprite().move(0.0f, 0.3f);
-                moveBy.set(moveBy.x, moveBy.y - 0.3f);
+                this.getMazeSprite().move(0.0f, moveSpeed);
+                moveBy.set(moveBy.x, moveBy.y - moveSpeed);
                 if (moveBy.y < 0.0f)
                 {
                     moveBy.set(moveBy.x, 0.0f);
@@ -72,8 +72,8 @@ abstract public class Player extends Character
             }
             else if (moveBy.y < 0.0f)
             {
-                this.getMazeSprite().move(0.0f, -0.3f);
-                moveBy.set(moveBy.x, moveBy.y + 0.3f);
+                this.getMazeSprite().move(0.0f, -moveSpeed);
+                moveBy.set(moveBy.x, moveBy.y + moveSpeed);
                 if (moveBy.y > 0.0f)
                 {
                     moveBy.set(moveBy.x, 0.0f);
@@ -81,8 +81,8 @@ abstract public class Player extends Character
             }
             else if (moveBy.x > 0.0f)
             {
-                this.getMazeSprite().move(0.3f, 0.0f);
-                moveBy.set(moveBy.x - 0.3f, moveBy.y);
+                this.getMazeSprite().move(moveSpeed, 0.0f);
+                moveBy.set(moveBy.x - moveSpeed, moveBy.y);
                 if (moveBy.x < 0.0f)
                 {
                     moveBy.set(0.0f, moveBy.y);
@@ -90,8 +90,8 @@ abstract public class Player extends Character
             }
             else if (moveBy.x < 0.0f)
             {
-                this.getMazeSprite().move(-0.3f, 0.0f);
-                moveBy.set(moveBy.x + 0.3f, moveBy.y);
+                this.getMazeSprite().move(-moveSpeed, 0.0f);
+                moveBy.set(moveBy.x + moveSpeed, moveBy.y);
                 if (moveBy.x > 0.0f)
                 {
                     moveBy.set(0.0f, moveBy.y);
@@ -106,15 +106,15 @@ abstract public class Player extends Character
             }
 
             // Walking animation.
-            int temp = (int)(walkFrame);
+            tempFrame = (int)(walkFrame);
 
-            if (temp == 3)
+            if (tempFrame == 3)
             {
-                temp = 1;
+                tempFrame = 1;
             }
 
-            this.getMazeSprite().setCol(temp);
-            this.getArmor().getMazeSprite().setCol(temp);
+            this.getMazeSprite().setCol(tempFrame);
+            this.getArmor().getMazeSprite().setCol(tempFrame);
 
             walkFrame += 0.1f;
 
@@ -129,9 +129,9 @@ abstract public class Player extends Character
          */
         else if (battleMode)
         {
-            int temp = (int)(battleFrame);
+            tempFrame = (int)(battleFrame);
 
-            this.getBattleSprite().setCol(temp);
+            this.getBattleSprite().setCol(tempFrame);
 
             battleFrame += 0.2f;
 
@@ -148,6 +148,7 @@ abstract public class Player extends Character
                     if (battleFrame >= 8.0f)
                     {
                         battleFrame = 0.0f;
+                        this.setBattleAction(BattleAction.IDLE);
                     }
                     break;
             }
@@ -175,12 +176,19 @@ abstract public class Player extends Character
         return 0.0f;
     }
 
-
+    /**
+     * Returns the player type/class.
+     * @return The class of the player character.
+     */
     public PlayerType getType()
     {
         return type;
     }
 
+    /**
+     * Sets the player's character type/class.
+     * @param type The new type of the player.
+     */
     public void setType(PlayerType type)
     {
         this.type = type;
@@ -264,7 +272,12 @@ abstract public class Player extends Character
         this.weapon = weapon;
     }
 
-    synchronized public void move(String direction)
+    /**
+     * Orders the movement of the character in one of the main
+     * cardinal directions.
+     * @param direction The direction to move to.
+     */
+    public void move(String direction)
     {
         //TODO: I need to know the cell size here in order to calculate the movement.
         if (direction == null)
@@ -300,6 +313,10 @@ abstract public class Player extends Character
         this.getArmor().getMazeSprite().setRow(facing.ordinal());
     }
 
+    /**
+     * Changes the action being taken during battle.
+     * @param action The new action being taken.
+     */
     public void setBattleAction(BattleAction action)
     {
         battleFrame = 0.0f;
