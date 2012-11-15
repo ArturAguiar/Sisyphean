@@ -1,4 +1,3 @@
-
 package roguelike.rpg.sisyphean;
 
 import android.widget.Toast;
@@ -49,13 +48,12 @@ public class GameScreen extends ShapeScreen
             {
                 left = cellSize * col;
                 right = cellSize * (col + 1);
-                visualMaze[col][row] =
+                /*visualMaze[col][row] =
                     new RectangleShape(left, top, right, bottom);
                 visualMaze[col][row].setColor(Color.black);
                 visualMaze[col][row].setFilled(true);
                 visualMaze[col][row].setFillColor(Color.white);
-                add(visualMaze[col][row]);
-
+                add(visualMaze[col][row]);*/
                 add(new ImageShape(
                         "ground", left, top, right, bottom));
 
@@ -69,10 +67,20 @@ public class GameScreen extends ShapeScreen
                     add(new ImageShape(
                         "right", left, top, right, bottom));
                 }
+                else if (row > 0 && maze.getCell(col, row - 1).getWalls()[1])
+                {
+                    add(new ImageShape(
+                        "right_front", left, top, right, bottom));
+                }
                 if (maze.getCell(col, row).getWalls()[3]) //left wall
                 {
                     add(new ImageShape(
                         "left", left, top, right, bottom));
+                }
+                else if (row > 0 && maze.getCell(col, row - 1).getWalls()[3])
+                {
+                    add(new ImageShape(
+                        "left_front", left, top, right, bottom));
                 }
             }
 

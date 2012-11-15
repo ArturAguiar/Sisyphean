@@ -139,7 +139,10 @@ public class Maze
             //Remove the searched cell from the queue and start over at the next
             // cell.
             queue.dequeue();
-            currentCell = queue.front();
+            if (!queue.isEmpty())
+            {
+                currentCell = queue.front();
+            }
         }
     }
 
