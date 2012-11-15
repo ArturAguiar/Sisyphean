@@ -22,6 +22,7 @@ public class MazeTest
     extends TestCase
 {
     private Maze maze;
+    private GameWorld gameWorld;
 
     protected void setUp()
         throws Exception
@@ -51,7 +52,7 @@ public class MazeTest
             0, 1, 2, 3);        // Looking at cells adjacent to (3, 0)
 
 
-        maze = new Maze(0);
+        maze = new Maze(gameWorld, 0);
     }
 
     // ----------------------------------------------------------

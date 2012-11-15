@@ -19,7 +19,7 @@ import sofia.app.ShapeScreen;
 public class GameScreen extends ShapeScreen
 {
     private Maze maze;
-    private RectangleShape[][] visualMaze;
+    private GameWorld gameWorld;
 
     // ----------------------------------------------------------
     /**
@@ -27,9 +27,9 @@ public class GameScreen extends ShapeScreen
      */
     public void initialize()
     {
-        // Stuff here.
-        maze = new Maze(1);
-        visualMaze = new RectangleShape[maze.size()][maze.size()];
+        gameWorld = new GameWorld();
+        this.getWindowManager().getDefaultDisplay().getMetrics(gameWorld.getDisplayMetrics());
+        maze = new Maze(gameWorld, 1);
         float y = getHeight();
         float x = getWidth();
         float size = Math.min(y, x);
@@ -48,12 +48,6 @@ public class GameScreen extends ShapeScreen
             {
                 left = cellSize * col;
                 right = cellSize * (col + 1);
-                /*visualMaze[col][row] =
-                    new RectangleShape(left, top, right, bottom);
-                visualMaze[col][row].setColor(Color.black);
-                visualMaze[col][row].setFilled(true);
-                visualMaze[col][row].setFillColor(Color.white);
-                add(visualMaze[col][row]);*/
                 add(new ImageShape(
                         "ground", left, top, right, bottom));
 

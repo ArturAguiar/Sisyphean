@@ -22,16 +22,21 @@ public class Maze
     private int startX;
     private int startY;
 
-    Random rand;
+    private GameWorld gameWorld;
+
+    private Random rand;
 
 
     // ----------------------------------------------------------
     /**
      * Create a new Maze object, the size of which is proportional to the floor.
+     * @param gameWorld The GameWorld in which the maze is being created
      * @param floor The level of the dungeon the player is traversing
      */
-    public Maze(int floor)
+    public Maze(GameWorld gameWorld, int floor)
     {
+        this.gameWorld = gameWorld;
+
         // TODO: Determine size proportionality (for now is floor * 10)
         if (floor < 1)
         {
