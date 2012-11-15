@@ -192,4 +192,3 @@ public class WarriorAndCharacterTest extends TestCase
         assertNotNull(newChar.getMazeSprite());
     }
 }
-

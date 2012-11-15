@@ -17,6 +17,7 @@ public class Maze
 {
     private Cell[][] grid;
     private int floor;
+    private int size;
 
     private int startX;
     private int startY;
@@ -35,11 +36,13 @@ public class Maze
         if (floor < 1)
         {
             grid = new Cell[4][4];
+            size = 4;
             this.floor = 1;
         }
         else
         {
-            grid = new Cell[floor * 10][floor * 10];
+            size = floor * 10;
+            grid = new Cell[size][size];
             this.floor = floor;
         }
         for (int i = 0; i < grid.length; i++)
@@ -230,6 +233,11 @@ public class Maze
         {
             return null;
         }
+    }
+
+    public int size()
+    {
+        return size;
     }
 
     // -------------------------------------------------------------------------

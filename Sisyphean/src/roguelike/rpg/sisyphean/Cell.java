@@ -133,8 +133,9 @@ public class Cell
 
     // ----------------------------------------------------------
     /**
-     * Place a description of your method here.
-     * @return
+     * Accessor for the list of booleans indicating the presence of walls,
+     * ordered top, right, bottom, left.
+     * @return boolean[] The list of booleans
      */
     public boolean[] getWalls()
     {
