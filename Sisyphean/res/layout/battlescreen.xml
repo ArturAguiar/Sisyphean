@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Button
+        android:id="@+id/escape"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="24dp"
+        android:text="Escape" />
+
+    <Button
+        android:id="@+id/attack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/escape"
+        android:layout_alignRight="@+id/escape"
+        android:text="Attack" />
+
+    <TextView
+        android:id="@+id/healthPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/attack"
+        android:layout_alignBottom="@+id/attack"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:text="100/100"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/manaPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/healthPoints"
+        android:layout_alignTop="@+id/escape"
+        android:text="50/50"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>

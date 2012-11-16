@@ -25,9 +25,10 @@ public class GameScreen extends ShapeScreen
     /**
      * Place a description of your method here.
      */
-    public void initialize()
+    public void initialize(GameWorld theGame, Player thePlaya)
     {
-        gameWorld = new GameWorld();
+        GameWorld gameWorld = theGame;
+        Player thePlayer = thePlaya;
         this.getWindowManager().getDefaultDisplay().getMetrics(gameWorld.getDisplayMetrics());
         maze = new Maze(gameWorld, 1);
         float y = getHeight();
