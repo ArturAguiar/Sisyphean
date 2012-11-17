@@ -38,5 +38,14 @@
         android:layout_alignTop="@+id/escape"
         android:text="50/50"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <sofia.graphics.ShapeView
+        android:id="@+id/shapeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/attack"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>

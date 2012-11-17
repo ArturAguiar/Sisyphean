@@ -22,8 +22,6 @@ public class ClassChoiceScreen extends Screen
     private CheckBox mage, warrior, ranger;
     private EditText name;
     private Button submit;
-    private Warrior playerIsWarrior;
-    private GameWorld newGame;
 
     // ----------------------------------------------------------
     /**
@@ -31,7 +29,7 @@ public class ClassChoiceScreen extends Screen
      */
     public void initialize()
     {
-        newGame = new GameWorld();
+        // Empty
     }
 
     // ----------------------------------------------------------
@@ -42,8 +40,8 @@ public class ClassChoiceScreen extends Screen
     {
         if (warrior.isChecked() && !(mage.isChecked() || ranger.isChecked()))
         {
-            playerIsWarrior = new Warrior(name.toString(), 0, 0, newGame);
-            presentScreen(GameScreen.class, playerIsWarrior, newGame);
+            presentScreen(GameScreen.class, Character.PlayerType.WARRIOR);
+            finish();
         }
         else if (mage.isChecked() &&
             !(warrior.isChecked() || ranger.isChecked()))

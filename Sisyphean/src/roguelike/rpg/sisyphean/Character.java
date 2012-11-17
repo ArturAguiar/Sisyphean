@@ -43,8 +43,8 @@ abstract public class Character
     private float intelligence;
 
     // Type
-    protected enum PlayerType { WARRIOR, WIZARD, ARCHER };
-    protected enum EnemyType { ZOMBIE, HARPY, RAT };
+    public enum PlayerType { WARRIOR, WIZARD, ARCHER };
+    public enum EnemyType { ZOMBIE, HARPY, RAT };
 
     //Skills.
     private HashSet<Skill> skills;

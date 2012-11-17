@@ -28,7 +28,8 @@ public class MainMenuScreen extends Screen
      */
     public void startGameClicked()
     {
-        presentScreen(GameScreen.class);
+        presentScreen(ClassChoiceScreen.class);
+        finish();
     }
 
     /**

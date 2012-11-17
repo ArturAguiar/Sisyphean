@@ -33,8 +33,22 @@
 	        android:name=".GameScreen"
 	        android:screenOrientation="landscape" >
 	    </activity>
+	    
 	    <activity
-	        android:name=".HelpScreen" ></activity>
+	        android:name=".HelpScreen"
+	        android:screenOrientation="landscape" >	        
+	    </activity>
+	    
+	    <activity
+            android:name=".ClassChoiceScreen"
+            android:screenOrientation="landscape" >         
+        </activity>
+        
+	    <activity
+            android:name=".BattleScreen"
+            android:screenOrientation="landscape" >       
+        </activity>
+	    
     </application>
 
 </manifest>
