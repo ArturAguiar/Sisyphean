@@ -23,13 +23,14 @@ public class GameScreen extends ShapeScreen
 {
     private Maze maze;
     private GameWorld gameWorld;
+    private int floor;
 
     // ----------------------------------------------------------
     /**
      * Place a description of your method here.
      * @param playerClass The class of the player's character.
      */
-    public void initialize(Character.PlayerType playerClass)
+    public void initialize(Character.PlayerType playerClass, int floor)
     {
         this.gameWorld = new GameWorld();
         this.getWindowManager().getDefaultDisplay().getMetrics(gameWorld.getDisplayMetrics());
@@ -43,12 +44,13 @@ public class GameScreen extends ShapeScreen
                 break;
         }
 
-        maze = new Maze(gameWorld, 1);
+        maze = new Maze(gameWorld, floor);
+        this.floor = floor;
 
         float y = getHeight();
         float x = getWidth();
         float size = Math.min(y, x);
-        float cellSize = size / maze.size();
+        float cellSize = size / maze.floorSize();
         float bottom = cellSize;
         float right = cellSize;
         float top = 0;
@@ -62,14 +64,14 @@ public class GameScreen extends ShapeScreen
         Image leftImage = new Image(R.drawable.left);
         Image leftFrontImage = new Image(R.drawable.left_front);
 
-        for ( int row = 0; row < maze.size(); row++)
+        for ( int row = 0; row < maze.floorSize(); row++)
         {
             left = 0;
             right = cellSize;
             top = cellSize * row;
             bottom = cellSize * (row + 1);
             RectF position = new RectF();
-            for ( int col = 0; col < maze.size(); col++)
+            for ( int col = 0; col < maze.floorSize(); col++)
             {
                 left = cellSize * col;
                 right = cellSize * (col + 1);
@@ -77,6 +79,10 @@ public class GameScreen extends ShapeScreen
                 position.set(left, top, right, bottom);
 
                 add(new ImageShape(groundImage, position));
+                /*if (maze.roomCells().contains(maze.getCell(col, row)))
+                {
+                    add(new ImageShape(new Image("ic_action_search"), position));
+                }*/
 
                 if (maze.getCell(col, row).getWalls()[0]) //top wall
                 {
@@ -102,23 +108,37 @@ public class GameScreen extends ShapeScreen
 
         }
 
-        //check();
-    }
+        add(new ImageShape("ic_launcher",
+            cellSize * maze.startColumn(),
+            cellSize * maze.startRow(),
+            cellSize * (maze.startColumn() + 1),
+            cellSize * (maze.startRow() + 1)));
+        add(new ImageShape("ic_launcher",
+            cellSize * maze.exitColumn(),
+            cellSize * maze.exitRow(),
+            cellSize * (maze.exitColumn() + 1),
+            cellSize * (maze.exitRow() + 1)));
 
-    public void check()
-    {
-        for (int col = 0; col < maze.size(); col++)
-        {
-            for (int row = 0; row < maze.size(); row++)
-            {
-                String s = "(" + maze.getCell(col, row).x() + ", " + maze.getCell(col, row).y() + ") " + maze.getCell(col, row).wallString();
-                Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-            }
-        }
     }
 
     public void onTouchDown(MotionEvent event)
     {
         presentScreen(BattleScreen.class, gameWorld.getPlayer());
+
+        // If you click on the exit cell, you move to the next floor
+        /*float cellSize = Math.min(getHeight(), getWidth()) / maze.floorSize();
+        if (event.getX() > cellSize * maze.exitColumn() &&
+            event.getX() < cellSize * (maze.exitColumn() + 1) &&
+            event.getY() > cellSize * maze.exitRow() &&
+            event.getY() < cellSize * (maze.exitRow() + 1))
+        {
+            presentScreen(GameScreen.class, Character.PlayerType.WARRIOR, ++floor);
+            finish();
+        }
+        else
+        {
+            // Pops up a toast with information for testing purposes
+            Toast.makeText(this, "" + maze.fs() + ", " + maze.counter() + ", " + maze.generations + ", " + maze.generated, Toast.LENGTH_LONG).show();
+        }*/
     }
 }
