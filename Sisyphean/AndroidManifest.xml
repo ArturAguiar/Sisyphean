@@ -28,7 +28,11 @@
 	            <category android:name="android.intent.category.LAUNCHER" />
 	        </intent-filter>
 	    </activity>
-	    
+	    <activity
+	        android:name=".ClassChoiceScreen"
+	        android:screenOrientation="landscape" >
+	        
+	    </activity>
 	    <activity 
 	        android:name=".GameScreen"
 	        android:screenOrientation="landscape" >

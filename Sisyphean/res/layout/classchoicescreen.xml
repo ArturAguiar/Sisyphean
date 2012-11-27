@@ -17,31 +17,31 @@
     </EditText>
 
     <CheckBox
-        android:id="@+id/ranger"
+        android:id="@+id/archer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/name"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="33dp"
-        android:text="Ranger" />
+        android:text="Archer" />
 
     <CheckBox
         android:id="@+id/warrior"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ranger"
-        android:layout_alignLeft="@+id/ranger"
+        android:layout_above="@+id/archer"
+        android:layout_alignLeft="@+id/archer"
         android:layout_marginBottom="29dp"
         android:text="Warrior" />
 
     <CheckBox
-        android:id="@+id/mage"
+        android:id="@+id/wizard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/warrior"
         android:layout_alignLeft="@+id/warrior"
         android:layout_marginBottom="18dp"
-        android:text="Mage" />
+        android:text="Wizard" />
 
     <Button
         android:id="@+id/submit"
