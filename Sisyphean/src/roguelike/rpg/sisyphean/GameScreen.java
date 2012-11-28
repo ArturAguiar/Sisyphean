@@ -1,12 +1,11 @@
 package roguelike.rpg.sisyphean;
 
+import android.util.Log;
 import android.graphics.RectF;
 import sofia.graphics.Image;
 import android.view.MotionEvent;
 import android.widget.Toast;
 import sofia.graphics.ImageShape;
-import sofia.graphics.Color;
-import sofia.graphics.RectangleShape;
 import sofia.app.ShapeScreen;
 
 // -------------------------------------------------------------------------
@@ -31,13 +30,16 @@ public class GameScreen extends ShapeScreen
      */
     public void initialize(Character.PlayerType playerClass)
     {
+        // Create the game world and set the display metrics.
         this.gameWorld = new GameWorld();
         this.getWindowManager().getDefaultDisplay().getMetrics(gameWorld.getDisplayMetrics());
 
+        // Create the player based on the chosen class.
         switch (playerClass)
         {
             case WARRIOR:
                 gameWorld.setPlayer(new Warrior("John Doe", 250.0f, 250.0f, gameWorld));
+                Log.v("GameScreen", "Warrior created.");
                 break;
             default:
                 break;
@@ -102,9 +104,14 @@ public class GameScreen extends ShapeScreen
 
         }
 
+        Log.v("GameScreen", "Maze created.");
+
         //check();
     }
 
+    /**
+     * Just for testing.
+     */
     public void check()
     {
         for (int col = 0; col < maze.size(); col++)
@@ -117,6 +124,11 @@ public class GameScreen extends ShapeScreen
         }
     }
 
+    /**
+     * Method called when the user touches the screen.
+     * Used for testing at the moment.
+     * @param event The information about the touch.
+     */
     public void onTouchDown(MotionEvent event)
     {
         presentScreen(BattleScreen.class, gameWorld.getPlayer());

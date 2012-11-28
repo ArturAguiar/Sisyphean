@@ -2,7 +2,7 @@ Sisyphean
 ===================
 <p>
 <b>A rogue-like rpg for android.</b> <br>
-Created by Artur Aguiar, Willy Lund, Petey Meinardi and T'Keyaha Sawyers.
+Created by Artur Aguiar, Willy Lund, Petey Mainardi and T'Keyaha Sawyers.
 </p>
 
 <br>

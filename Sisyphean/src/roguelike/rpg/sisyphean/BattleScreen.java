@@ -2,21 +2,20 @@ package roguelike.rpg.sisyphean;
 
 import android.util.Log;
 import sofia.app.ShapeScreen;
-import android.widget.TextView;
-import android.widget.Button;
 
+/**
+ *  This class handles the battle system.
+ *  It is created when the player collides with an enemy and it is destroyed
+ *  when the battle ends.
+ *
+ *  @author TK
+ *  @author Artur
+ *  @version Nov 17, 2012
+ */
 public class BattleScreen extends ShapeScreen
 {
-    private Button attack, escape;
-    private TextView healthPoints, manaPoints;
-
-    /**
-     * Default initializer.
-     */
-    public void initialize()
-    {
-        Log.v("BattleScreen", "default initialized!");
-    }
+    //private Button attack, escape;
+    //private TextView healthPoints, manaPoints;
 
     /**
      * Called when the battle starts.
@@ -34,7 +33,7 @@ public class BattleScreen extends ShapeScreen
      */
     public void attackClicked()
     {
-
+        // Nothing here yet.
     }
 
     /**
@@ -42,7 +41,7 @@ public class BattleScreen extends ShapeScreen
      */
     public void escapeClicked()
     {
-
+        // Nothing here yet.
     }
 
 }
