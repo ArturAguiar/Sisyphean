@@ -12,31 +12,26 @@ import junit.framework.TestCase;
  */
 public class WeaponTest extends TestCase
 {
+    private Weapon silverSword;
 
     /**
      * Instantiates a new weapon object.
      */
     public void setUp()
     {
-      //TODO: Create method.
+        silverSword = new Weapon("Wicked sword of Magror", "This sword " +
+      		    "raises the chance of fearing the target for one attack turn",
+      		    45);
     }
 
     //Methods.
-
-    /**
-     * Tests the constructor.
-     */
-    public void testConstruct()
-    {
-      //TODO: Create method.
-    }
 
     /**
      * Tests the get damage method.
      */
     public void testDamage()
     {
-      //TODO: Create method.
+        assertEquals(45.0F, silverSword.getDamage());
     }
 
     /**
