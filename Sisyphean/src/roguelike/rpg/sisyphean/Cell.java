@@ -223,16 +223,7 @@ public class Cell
      */
     public boolean setExit()
     {
-        /*int numberOfWalls = 0;
-        for (boolean wall : walls)
-        {
-            if (wall) //Check if there's a wall, if so increase the counter
-            {
-                numberOfWalls++;
-            }
-        }
-*/
-        if (numberOfWalls == 3)
+        /*if (numberOfWalls == 3)
         {
             exit = true;
             return true;
@@ -240,7 +231,9 @@ public class Cell
         else
         {
             return false;
-        }
+        }*/
+        exit = true;
+        return exit;
     }
 
     /**
