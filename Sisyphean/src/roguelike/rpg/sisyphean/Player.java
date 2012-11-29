@@ -41,8 +41,8 @@ abstract public class Player extends Character
     private boolean battleMode = true;
 
     /**
-* Method to be called when the player levels up.
-*/
+     * Method to be called when the player levels up.
+     */
     abstract public void levelUp();
 
     @Override
