@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
 import android.graphics.RectF;
 import sofia.graphics.Image;
 import android.view.MotionEvent;
@@ -120,7 +122,17 @@ public class GameScreen extends ShapeScreen
             cellSize * maze.startRow(),
             cellSize * (maze.startColumn() + 1),
             cellSize * (maze.startRow() + 1)));
-        add(new ImageShape("ic_launcher",
+        if (maze.getCell(maze.exitColumn(), maze.exitRow()).getWalls()[3]
+            && !maze.getCell(maze.exitColumn(), maze.exitRow()).getWalls()[1])
+        {
+            // Flip the image somehow...
+            add(new ImageShape("stairs",
+                cellSize * (maze.exitColumn() + 1),
+                cellSize * maze.exitRow(),
+                cellSize * maze.exitColumn(),
+                cellSize * (maze.exitRow() + 1)));
+        }
+        add(new ImageShape("stairs",
             cellSize * maze.exitColumn(),
             cellSize * maze.exitRow(),
             cellSize * (maze.exitColumn() + 1),
@@ -145,7 +157,7 @@ public class GameScreen extends ShapeScreen
         else
         {
             // Pops up a toast with information for testing purposes
-            Toast.makeText(this, "" + maze.fs() + ", " + maze.counter() + ", " + maze.generations + ", " + maze.generated, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "" + maze.fs() + ", " + maze.counter() + ", " + maze.generations + ", " + maze.generated, Toast.LENGTH_LONG).show();
         }*/
     }
 
