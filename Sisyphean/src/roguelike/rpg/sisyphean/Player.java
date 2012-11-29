@@ -233,7 +233,7 @@ abstract public class Player extends Character
     */
     public void addExperience(float experience)
     {
-        this.experience = experience;
+        this.experience += experience;
 
         if (this.experience >= getExpToNextLevel())
         {
