@@ -12,7 +12,7 @@ abstract public class Player extends Character
 {
     private PlayerType type;
 
-    private float experience;
+    private float experience = 0.0f;
     private float expToNextLevel;
 
     private Weapon weapon;
@@ -228,10 +228,10 @@ abstract public class Player extends Character
     }
 
     /**
-    * The experience setter.
-    * @param experience The new experience of the player.
+    * Increases the player's experience by the value given.
+    * @param experience The experience gained by the player.
     */
-    public void setExperience(float experience)
+    public void addExperience(float experience)
     {
         this.experience = experience;
 

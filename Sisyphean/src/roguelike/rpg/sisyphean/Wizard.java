@@ -40,7 +40,6 @@ public class Wizard
 
         this.setLevel(1);
         this.setExpToNextLevel(10.0f);
-        this.setExperience(0.0f);
 
         // The sprite in maze mode.
         this.setMazeSprite(new Sprite(R.drawable.male_base, 96, 128, 3, 4, gameWorld.getDisplayMetrics().density));
@@ -88,8 +87,7 @@ public class Wizard
 
         // Update the level and experience.
         this.setLevel(getLevel() + 1);
-        this.setExperience(getExperience() - getExpToNextLevel());
-        this.setExpToNextLevel(getExpToNextLevel() * 2.0f);
+        this.setExpToNextLevel(getExpToNextLevel() * 2.5f);
 
         // Update skills.
         switch (getLevel())

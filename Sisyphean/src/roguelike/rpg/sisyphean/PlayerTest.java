@@ -91,7 +91,7 @@ public class PlayerTest extends TestCase
     {
         assertEquals(0.0F, sisyphean.getExperience());
 
-        sisyphean.setExperience(7);
+        sisyphean.addExperience(7);
         assertEquals(7.0F, sisyphean.getExperience());
         assertEquals(7.0F, sisyphean.getExperience());
     }
@@ -104,16 +104,16 @@ public class PlayerTest extends TestCase
     {
         assertEquals(10.0F, sisyphean.getExpToNextLevel());
 
-        sisyphean.setExperience(10);
+        sisyphean.addExperience(10);
         assertEquals(2, sisyphean.getLevel());
 
-        sisyphean.setExperience(10);
+        sisyphean.addExperience(10);
         assertEquals(2, sisyphean.getLevel());
 
-        sisyphean.setExperience(20);
+        sisyphean.addExperience(20);
         assertEquals(3, sisyphean.getLevel());
 
-        sisyphean.setExperience(120);
+        sisyphean.addExperience(120);
         assertEquals(5, sisyphean.getLevel());
 
 

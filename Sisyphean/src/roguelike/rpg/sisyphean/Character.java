@@ -115,7 +115,7 @@ abstract public class Character
      * Sets the level of the character.
      * @param level The new level of the character
      */
-    public void setLevel(int level)
+    protected void setLevel(int level)
     {
         this.level = level;
     }
