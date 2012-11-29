@@ -1,7 +1,6 @@
 package roguelike.rpg.sisyphean;
 
-import android.graphics.RectF;
-import sofia.graphics.ImageShape;
+import android.util.Log;
 
 
 // -------------------------------------------------------------------------
@@ -19,12 +18,16 @@ public class Enemy extends Character
     private String description;
 
     /**
-     * No parameter constructor that randomizes all statuses.
+     * This should randomize the enemy's statuses based on which floor it is
+     * being created in.
      *
      * @param floor The current maze floor that the player is in.
+     * @param gameWorld The game world reference.
      */
-    public Enemy(int floor)
+    public Enemy(int floor, GameWorld gameWorld)
     {
+        this.gameWorld = gameWorld;
+
         sofia.util.Random rand = new sofia.util.Random();
 
         // Randomizes an enemy type.
@@ -35,6 +38,8 @@ public class Enemy extends Character
         switch (type)
         {
             case ZOMBIE:
+            case HARPY:
+            case RAT:
                 this.setName("Zombie");
                 this.setDescription("A flesh eating undead creature.");
                 this.setMaxHealth(100.0f + getLevel() * 10.0f );
@@ -43,22 +48,60 @@ public class Enemy extends Character
                 this.setDexterity(8.0f + getLevel() * 5.0f );
                 this.setDefense(18.0f + getLevel() * 10.0f );
                 this.setMazeSprite(
-                    new Sprite(R.drawable.zombie_single, 32, 32, 1, 1, gameWorld.getDisplayMetrics().density));
-                break;
-
-            case HARPY:
-                break;
-
-            case RAT:
+                    new Sprite(R.drawable.zombie_single, 32, 32, 1, 1,
+                               gameWorld.getDisplayMetrics().density));
+                this.setBattleSprite(
+                    new Sprite(R.drawable.zombie_battle_sheet, 800, 400, 8, 4,
+                               gameWorld.getDisplayMetrics().density));
+                this.getBattleSprite().setRow(2);
+                Log.v("Enemy", "Zombie created!");
                 break;
         }
+
+        gameWorld.getAllCharacters().add(this);
     }
 
     @Override
     public void update()
     {
-        // TODO Auto-generated method stub
+        int tempFrame = 0;
 
+        if (gameWorld.getBattling())
+        {
+            tempFrame = (int)(battleFrame);
+
+            this.getBattleSprite().setCol(tempFrame);
+
+            battleFrame += 0.2f;
+
+            switch (battleAction)
+            {
+                case IDLE:
+                case MOVING:
+                    if (battleFrame >= 8.0f)
+                    {
+                        battleFrame = 0.0f;
+                    }
+                    break;
+
+                case ATTACKING:
+                    if (battleFrame >= 6.0f)
+                    {
+                        battleFrame = 0.0f;
+                        this.setBattleAction(BattleAction.IDLE);
+                    }
+                    break;
+            }
+        }
+
+    }
+
+
+    @Override
+    public void attack()
+    {
+        this.setBattleAction(BattleAction.MOVING);
+        this.attackMove = gameWorld.getDisplayMetrics().widthPixels / 3.0f;
     }
 
     /**

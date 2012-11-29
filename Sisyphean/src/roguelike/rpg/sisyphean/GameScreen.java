@@ -25,6 +25,8 @@ public class GameScreen extends ShapeScreen
     private GameWorld gameWorld;
     private int floor;
 
+    private LogicThread logicThread;
+
     // ----------------------------------------------------------
     /**
      * Place a description of your method here.
@@ -34,6 +36,11 @@ public class GameScreen extends ShapeScreen
     {
         this.gameWorld = new GameWorld();
         this.getWindowManager().getDefaultDisplay().getMetrics(gameWorld.getDisplayMetrics());
+
+        // Start the logic thread.
+        logicThread = new LogicThread(gameWorld);
+        logicThread.setRunning(true);
+        logicThread.start();
 
         switch (playerClass)
         {
@@ -123,7 +130,7 @@ public class GameScreen extends ShapeScreen
 
     public void onTouchDown(MotionEvent event)
     {
-        presentScreen(BattleScreen.class, gameWorld.getPlayer());
+        presentScreen(BattleScreen.class, gameWorld, new Enemy(1, gameWorld));
 
         // If you click on the exit cell, you move to the next floor
         /*float cellSize = Math.min(getHeight(), getWidth()) / maze.floorSize();
@@ -141,4 +148,14 @@ public class GameScreen extends ShapeScreen
             Toast.makeText(this, "" + maze.fs() + ", " + maze.counter() + ", " + maze.generations + ", " + maze.generated, Toast.LENGTH_LONG).show();
         }*/
     }
+
+    @Override
+    public void finish()
+    {
+        logicThread.setRunning(false);
+
+        super.finish();
+    }
+
+
 }
