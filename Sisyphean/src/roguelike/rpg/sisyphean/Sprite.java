@@ -124,4 +124,22 @@ public class Sprite
                               (currentRow + 1) * frameHeight);
     }
 
+    /**
+     * Returns the current column for testing purposes.
+     * @return currentCol The current column
+     */
+    public int getColumn()
+    {
+        return currentCol;
+    }
+
+    /**
+     * Returns the current row for testing purposes.
+     * @return currentRow The current row
+     */
+    public int getRow()
+    {
+        return currentRow;
+    }
+
 }
