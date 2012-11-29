@@ -26,8 +26,8 @@ public class EnemyTest extends TestCase
         //TODO Ask artur if this will make the enemy a zombie and his level
         //TODO to be level 1.
         Random.setNextInts(0, 1);
-        newEnemy = new Enemy(1);
         GameWorld newGameWorld = new GameWorld();
+        newEnemy = new Enemy(1, newGameWorld);
 
 
         /*

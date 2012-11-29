@@ -30,7 +30,7 @@ public class PlayerTest extends TestCase
        */
 
         Random.setNextInts(0, 1);
-        thatHillAndBoulderCombo = new Enemy(1);
+        thatHillAndBoulderCombo = new Enemy(1, newGameWorld);
 
     }
 
@@ -49,10 +49,14 @@ public class PlayerTest extends TestCase
      */
     public void testWasHit()
     {
+        assertEquals(7.0F, sisyphean.wasHit(thatHillAndBoulderCombo));
+        assertEquals(113.0F, sisyphean.getHealth());
+
         sisyphean.wasHit(thatHillAndBoulderCombo);
-        //no damage done
-        assertEquals(0.0F, sisyphean.wasHit(thatHillAndBoulderCombo));
-        assertEquals(120.0F, sisyphean.getHealth());
+        assertEquals(106.0F, sisyphean.getHealth());
+
+
+
 
         /*
          * now make zombie have higher strength than defense. I would
@@ -62,10 +66,10 @@ public class PlayerTest extends TestCase
          */
         thatHillAndBoulderCombo.setStrength(50);
 
-        sisyphean.wasHit(thatHillAndBoulderCombo);
+
 
         assertEquals(25.0F, sisyphean.wasHit(thatHillAndBoulderCombo));
-        assertEquals(95.0F, sisyphean.getHealth());
+        assertEquals(81.0F, sisyphean.getHealth());
 
     }
 
@@ -88,7 +92,7 @@ public class PlayerTest extends TestCase
         assertEquals(0.0F, sisyphean.getExperience());
 
         sisyphean.setExperience(7);
-        assertEquals(3.0F, sisyphean.getExpToNextLevel());
+        assertEquals(7.0F, sisyphean.getExperience());
         assertEquals(7.0F, sisyphean.getExperience());
     }
 
@@ -99,6 +103,21 @@ public class PlayerTest extends TestCase
     public void testExpTonextLevel()
     {
         assertEquals(10.0F, sisyphean.getExpToNextLevel());
+
+        sisyphean.setExperience(10);
+        assertEquals(2, sisyphean.getLevel());
+
+        sisyphean.setExperience(10);
+        assertEquals(2, sisyphean.getLevel());
+
+        sisyphean.setExperience(20);
+        assertEquals(3, sisyphean.getLevel());
+
+        sisyphean.setExperience(120);
+        assertEquals(5, sisyphean.getLevel());
+
+
+
 
         sisyphean.setExpToNextLevel(5);
         assertEquals(5.0F, sisyphean.getExpToNextLevel());
@@ -111,10 +130,7 @@ public class PlayerTest extends TestCase
      */
     public void testPlayerArmor()
     {
-        assertEquals(2.0F, sisyphean.getArmor());
-
-        sisyphean.setDefense(5);
-        assertEquals(5.0F, sisyphean.getArmor());
+        //TODO
     }
 
     /**
@@ -122,7 +138,7 @@ public class PlayerTest extends TestCase
      */
     public void testPlayerWeapon()
     {
-      assertEquals("Rusty Daggar", sisyphean.getWeapon().getName());
+      assertEquals("Rusty Dagger", sisyphean.getWeapon().getName());
 
       Weapon waterBlade = new Weapon("Waters Edge", "Hard to handle, " +
       		"but will definitely rain on their parade", 30);
