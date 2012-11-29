@@ -11,30 +11,25 @@ import junit.framework.TestCase;
  */
 public class SkillTest extends TestCase
 {
+    private Skill warriorSkill;
+
     /**
      * Instantiates a new skill object.
      */
     public void setUp()
     {
-      //TODO: Create method.
+        warriorSkill = new Skill("Rage", "This skill grants the user extra" +
+      		"damage for the next three turns.", 1.25F, 10);
     }
 
     //Methods.
-
-    /**
-     * Tests the skill constructor.
-     */
-    public void testSkillConstruct()
-    {
-      //TODO: Create method.
-    }
 
     /**
      * Tests the return name of the skill.
      */
     public void testName()
     {
-      //TODO: Create method.
+        assertEquals("Rage", warriorSkill.getName());
     }
 
     /**
@@ -42,7 +37,7 @@ public class SkillTest extends TestCase
      */
     public void testDmgMultiplier()
     {
-      //TODO: Create method.
+        assertEquals(1.25F, warriorSkill.getDmgMultiplier());
     }
 
     /**
@@ -50,7 +45,8 @@ public class SkillTest extends TestCase
      */
     public void testSkillDescription()
     {
-      //TODO: Create method.
+        assertEquals("This skill grants the user extra" +
+            "damage for the next three turns.", warriorSkill.getDescription());
     }
 
     /**
@@ -58,7 +54,7 @@ public class SkillTest extends TestCase
      */
     public void testConsumption()
     {
-      //TODO: Create method.
+        assertEquals(10.0F, warriorSkill.getConsumption());
     }
 
 }
