@@ -6,6 +6,7 @@ import java.util.HashSet;
 /**
 * The class that contains all the pertinent game information.
 * Contains the set of all characters and the current maze.
+* There should only be one game world instance in the whole game.
 *
 * @author Artur
 * @version Nov 5, 2012
@@ -17,6 +18,9 @@ public class GameWorld
     private Maze maze;
 
     private Player player;
+
+    /** Determines if the player is battling or not. */
+    private boolean battling;
 
     private DisplayMetrics displayMetrics;
 
@@ -76,6 +80,24 @@ public class GameWorld
     {
         this.player = player;
         getAllCharacters().add(player);
+    }
+
+    /**
+     * Returns whether the player is in a battle or not.
+     * @return True if the player is battling and false otherwise.
+     */
+    public boolean getBattling()
+    {
+        return battling;
+    }
+
+    /**
+     * Sets whether the player is in a battle or not.
+     * @param battling If the player is battling or not.
+     */
+    public void setBattling(boolean battling)
+    {
+        this.battling = battling;
     }
 
     /**

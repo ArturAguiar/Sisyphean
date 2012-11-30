@@ -1,31 +1,57 @@
 package roguelike.rpg.sisyphean;
 
-import android.util.Log;
 import sofia.app.ShapeScreen;
+import android.widget.TextView;
+import android.widget.Button;
 
 /**
- *  This class handles the battle system.
- *  It is created when the player collides with an enemy and it is destroyed
- *  when the battle ends.
+ *  The battle screen controls the representation of a battle and calls
+ *  animations and effects based on the enemy and the player's actions.
  *
- *  @author TK
- *  @author Artur
- *  @version Nov 17, 2012
+ *  @author Artur, Tk
+ *  @version Nov 29, 2012
  */
 public class BattleScreen extends ShapeScreen
 {
-    //private Button attack, escape;
-    //private TextView healthPoints, manaPoints;
+    private GameWorld gameWorld;
+
+    private Player player;
+
+    private Enemy enemy;
+
+    private Button attack, escape;
+    private TextView healthPoints, manaPoints;
 
     /**
      * Called when the battle starts.
-     * @param player The player's character.
+     *
+     * @param gameWorld The game world reference. Can be used to get the player.
+     * @param enemy The enemy that the player is battling.
      */
-    public void initalize(Player player)
+    public void initialize(GameWorld gameWorld, Enemy enemy)
     {
-        Log.v("BattleScreen", "initialized!");
+        this.gameWorld = gameWorld;
+        this.player = gameWorld.getPlayer();
+        this.enemy = enemy;
+
+
+        gameWorld.setBattling(true);
+
         this.add(player.getBattleSprite().getImageShape());
-        player.getBattleSprite().setPosition(0.0f, 0.0f);
+        player.setInitialBattlePosition(this.getWidth() * 2.0f / 3.0f - player.getBattleSprite().getImageShape().getWidth() / 2.0f);
+        player.getBattleSprite().setPosition(player.getInitialBattlePosition(),
+                                             this.getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
+
+        this.add(enemy.getBattleSprite().getImageShape());
+        enemy.getBattleSprite().setPosition(this.getWidth() / 3.0f - enemy.getBattleSprite().getImageShape().getWidth(),
+                                            this.getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
+    }
+
+    @Override
+    public void finish()
+    {
+        gameWorld.setBattling(false);
+        super.finish();
     }
 
     /**
@@ -33,7 +59,7 @@ public class BattleScreen extends ShapeScreen
      */
     public void attackClicked()
     {
-        // Nothing here yet.
+        player.attack();
     }
 
     /**
@@ -41,7 +67,7 @@ public class BattleScreen extends ShapeScreen
      */
     public void escapeClicked()
     {
-        // Nothing here yet.
+        // To be implemented.
     }
 
 }

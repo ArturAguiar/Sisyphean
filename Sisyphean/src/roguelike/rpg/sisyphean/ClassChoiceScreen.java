@@ -40,7 +40,7 @@ public class ClassChoiceScreen extends Screen
     {
         if (warrior.isChecked() && !(mage.isChecked() || ranger.isChecked()))
         {
-            presentScreen(GameScreen.class, Character.PlayerType.WARRIOR);
+            presentScreen(GameScreen.class, Character.PlayerType.WARRIOR, 1);
             finish();
         }
         else if (mage.isChecked() &&

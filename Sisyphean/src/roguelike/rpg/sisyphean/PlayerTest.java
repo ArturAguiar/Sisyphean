@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import roguelike.rpg.sisyphean.Character.PlayerType;
+import sofia.util.Random;
 import junit.framework.TestCase;
 
 // -------------------------------------------------------------------------
@@ -11,12 +13,25 @@ import junit.framework.TestCase;
  */
 public class PlayerTest extends TestCase
 {
+    private Player sisyphean;
+    private Enemy thatHillAndBoulderCombo;
     /**
      * Instantiates a new player object.
      */
     public void setUp()
     {
-        //TODO: Create method.
+        GameWorld newGameWorld = new GameWorld();
+        newGameWorld.getDisplayMetrics().setToDefaults();
+        sisyphean = new Warrior("Brutus", 0, 0, newGameWorld);
+
+      /*
+       * TODO Ask artur if this will make the enemy a zombie and his level
+       * to be level 1.
+       */
+
+        Random.setNextInts(0, 1);
+        thatHillAndBoulderCombo = new Enemy(1, newGameWorld);
+
     }
 
     //Methods.
@@ -34,7 +49,28 @@ public class PlayerTest extends TestCase
      */
     public void testWasHit()
     {
-      //TODO: Create method.
+        assertEquals(7.0F, sisyphean.wasHit(thatHillAndBoulderCombo));
+        assertEquals(113.0F, sisyphean.getHealth());
+
+        sisyphean.wasHit(thatHillAndBoulderCombo);
+        assertEquals(106.0F, sisyphean.getHealth());
+
+
+
+
+        /*
+         * now make zombie have higher strength than defense. I would
+         * use the level up method, but right now it might be easier
+         * to just set his strength to be greater than the defense of
+         * the warrior.
+         */
+        thatHillAndBoulderCombo.setStrength(50);
+
+
+
+        assertEquals(25.0F, sisyphean.wasHit(thatHillAndBoulderCombo));
+        assertEquals(81.0F, sisyphean.getHealth());
+
     }
 
     /**
@@ -42,7 +78,10 @@ public class PlayerTest extends TestCase
      */
     public void testPlayerType()
     {
-      //TODO: Create method.
+        assertEquals(PlayerType.WARRIOR, sisyphean.getType());
+
+        sisyphean.setType(PlayerType.ARCHER);
+        assertEquals(PlayerType.ARCHER, sisyphean.getType());
     }
 
     /**
@@ -50,7 +89,11 @@ public class PlayerTest extends TestCase
      */
     public void testExperience()
     {
-      //TODO: Create method.
+        assertEquals(0.0F, sisyphean.getExperience());
+
+        sisyphean.addExperience(7);
+        assertEquals(7.0F, sisyphean.getExperience());
+        assertEquals(7.0F, sisyphean.getExperience());
     }
 
     /**
@@ -59,7 +102,27 @@ public class PlayerTest extends TestCase
      */
     public void testExpTonextLevel()
     {
-      //TODO: Create method.
+        assertEquals(10.0F, sisyphean.getExpToNextLevel());
+
+        sisyphean.addExperience(10);
+        assertEquals(2, sisyphean.getLevel());
+
+        sisyphean.addExperience(10);
+        assertEquals(2, sisyphean.getLevel());
+
+        sisyphean.addExperience(20);
+        assertEquals(3, sisyphean.getLevel());
+
+        sisyphean.addExperience(120);
+        assertEquals(5, sisyphean.getLevel());
+
+
+
+
+        sisyphean.setExpToNextLevel(5);
+        assertEquals(5.0F, sisyphean.getExpToNextLevel());
+
+
     }
 
     /**
@@ -67,7 +130,7 @@ public class PlayerTest extends TestCase
      */
     public void testPlayerArmor()
     {
-      //TODO: Create method.
+        //TODO
     }
 
     /**
@@ -75,7 +138,12 @@ public class PlayerTest extends TestCase
      */
     public void testPlayerWeapon()
     {
-      //TODO: Create method.
+      assertEquals("Rusty Dagger", sisyphean.getWeapon().getName());
+
+      Weapon waterBlade = new Weapon("Waters Edge", "Hard to handle, " +
+      		"but will definitely rain on their parade", 30);
+      sisyphean.setWeapon(waterBlade);
+      assertEquals("Waters Edge", sisyphean.getWeapon().getName());
     }
 
     /**

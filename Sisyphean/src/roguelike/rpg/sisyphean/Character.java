@@ -2,7 +2,6 @@ package roguelike.rpg.sisyphean;
 
 import android.graphics.PointF;
 import java.util.HashSet;
-import sofia.graphics.ImageShape;
 
 /**
  *  The abstract class for every character in the game.
@@ -46,17 +45,25 @@ abstract public class Character
     public enum PlayerType { WARRIOR, WIZARD, ARCHER };
     public enum EnemyType { ZOMBIE, HARPY, RAT };
 
+    // The action being taken in battle
+    public enum BattleAction { ATTACKING, MOVING, IDLE };
+    protected BattleAction battleAction = BattleAction.IDLE;
+    protected float battleFrame = 0.0f;
+    protected float attackMove = 0.0f;
+
+    private float initialBattlePosition;
+
     //Skills.
     private HashSet<Skill> skills;
 
 
     // Sprites
-
     /** The sprite to use when not in battle */
     private Sprite mazeSprite;
 
     /** The sprite to use while in battle */
     private Sprite battleSprite;
+
 
 
     /////METHODS----------------------------------------------------------------
@@ -68,6 +75,11 @@ abstract public class Character
      * TODO: can we use Observable to do this?
      */
     abstract public void update();
+
+    /**
+     *
+     */
+    abstract public void attack();
 
 
     // Getters and setters
@@ -103,7 +115,7 @@ abstract public class Character
      * Sets the level of the character.
      * @param level The new level of the character
      */
-    public void setLevel(int level)
+    protected void setLevel(int level)
     {
         this.level = level;
     }
@@ -405,6 +417,18 @@ abstract public class Character
         this.battleSprite = battleSprite;
     }
 
+
+    /**
+     * Changes the action being taken during battle.
+     * @param action The new action being taken.
+     */
+    public void setBattleAction(BattleAction action)
+    {
+        battleFrame = 0.0f;
+        battleAction = action;
+        this.getBattleSprite().setRow(battleAction.ordinal());
+    }
+
     /**
      * Returns this character's position, which is the same as the position of
      * it's sprite.
@@ -426,5 +450,15 @@ abstract public class Character
         {
             this.getMazeSprite().setPosition(x, y);
         }
+    }
+
+    public float getInitialBattlePosition()
+    {
+        return initialBattlePosition;
+    }
+
+    public void setInitialBattlePosition(float initialBattlePosition)
+    {
+        this.initialBattlePosition = initialBattlePosition;
     }
 }

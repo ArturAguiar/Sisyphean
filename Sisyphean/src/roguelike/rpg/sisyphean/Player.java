@@ -1,6 +1,5 @@
 package roguelike.rpg.sisyphean;
 
-
 import android.graphics.PointF;
 
 /**
@@ -13,7 +12,7 @@ abstract public class Player extends Character
 {
     private PlayerType type;
 
-    private float experience;
+    private float experience = 0.0f;
     private float expToNextLevel;
 
     private Weapon weapon;
@@ -27,22 +26,16 @@ abstract public class Player extends Character
 
     private float moveSpeed = 0.5f;
 
-    /** The action being taken in battle */
-    public enum BattleAction { ATTACKING, MOVING, IDLE };
-    private BattleAction battleAction = BattleAction.IDLE;
-
     private PointF moveBy = new PointF();
 
     private float battleFrame = 0.0f;
 
-    private int tempFrame = 0;
-
     // TODO: this should probably go to the Character class.
-    private boolean battleMode = true;
+
 
     /**
-* Method to be called when the player levels up.
-*/
+    * Method to be called when the player levels up.
+    */
     abstract public void levelUp();
 
     @Override
@@ -53,12 +46,14 @@ abstract public class Player extends Character
         // Update the armor location to always be covering the character.
         this.getArmor().getMazeSprite().setPosition(getPosition().x, getPosition().y);
 
+        int tempFrame = 0;
+
         /* The walking movement and animation frame-change in maze mode.
-* On frame 1 the character is standing, on frame 0 and 2 he is walking.
-* Animation goes 1 -> 2 -> 1 -> 0 -> repeat (columns)
-* and the row is determined by the facing direction enum type.
-*/
-        if (walking && !battleMode)
+        * On frame 1 the character is standing, on frame 0 and 2 he is walking.
+        * Animation goes 1 -> 2 -> 1 -> 0 -> repeat (columns)
+        * and the row is determined by the facing direction enum type.
+        */
+        if (walking && !gameWorld.getBattling())
         {
             // Actual walking.
             if (moveBy.y > 0.0f)
@@ -125,9 +120,9 @@ abstract public class Player extends Character
         }
 
         /*
-* The animations in battle mode.
-*/
-        else if (battleMode)
+        * The animations in battle mode.
+        */
+        else if (gameWorld.getBattling())
         {
             tempFrame = (int)(battleFrame);
 
@@ -144,11 +139,33 @@ abstract public class Player extends Character
                     }
                     break;
 
-                default:
+                case MOVING:
+                    if (battleFrame >= 8.0f)
+                    {
+                        battleFrame = 0.0f;
+                    }
+
+                    if (attackMove > 0.0f)
+                    {
+                        this.getBattleSprite().setPosition(this.getBattleSprite().getPosition().x - 5.0f,
+                                                           this.getBattleSprite().getPosition().y);
+                        this.attackMove -= 5.0f;
+                    }
+                    else
+                    {
+                        this.attackMove = 0.0f;
+                        this.setBattleAction(BattleAction.ATTACKING);
+                        this.battleFrame = 0.0f;
+                    }
+                    break;
+
+                case ATTACKING:
                     if (battleFrame >= 8.0f)
                     {
                         battleFrame = 0.0f;
                         this.setBattleAction(BattleAction.IDLE);
+                        this.getBattleSprite().setPosition(this.getInitialBattlePosition(),
+                                                           this.getBattleSprite().getPosition().y);
                     }
                     break;
             }
@@ -156,13 +173,23 @@ abstract public class Player extends Character
 
     }
 
+    @Override
+    public void attack()
+    {
+        if (battleAction == BattleAction.IDLE)
+        {
+            this.setBattleAction(BattleAction.MOVING);
+            attackMove = gameWorld.getDisplayMetrics().widthPixels / 3.0f - 50.0f;
+        }
+    }
+
     /**
-* The method called when the player gets hit by an enemy.
-* The damage returned by this method will be displayed over the enemy when
-* the attack is done.
-* @param enemy The enemy hitting the player.
-* @return The total damage done.
-*/
+    * The method called when the player gets hit by an enemy.
+    * The damage returned by this method will be displayed over the enemy when
+    * the attack is done.
+    * @param enemy The enemy hitting the player.
+    * @return The total damage done.
+    */
     public float wasHit(Enemy enemy)
     {
         // TODO: This is probably not the best way to calculate things...
@@ -189,27 +216,27 @@ abstract public class Player extends Character
      * Sets the player's character type/class.
      * @param type The new type of the player.
      */
-    public void setType(PlayerType type)
+    protected void setType(PlayerType type)
     {
         this.type = type;
     }
 
     /**
-* The experience getter.
-* @return The experience of the player.
-*/
+    * The experience getter.
+    * @return The experience of the player.
+    */
     public float getExperience()
     {
         return experience;
     }
 
     /**
-* The experience setter.
-* @param experience The new experience of the player.
-*/
-    public void setExperience(float experience)
+    * Increases the player's experience by the value given.
+    * @param experience The experience gained by the player.
+    */
+    public void addExperience(float experience)
     {
-        this.experience = experience;
+        this.experience += experience;
 
         if (this.experience >= getExpToNextLevel())
         {
@@ -218,55 +245,55 @@ abstract public class Player extends Character
     }
 
     /**
-* The getter for the experience required to get to the next level.
-* @return The experience required to get to the next level.
-*/
+    * The getter for the experience required to get to the next level.
+    * @return The experience required to get to the next level.
+    */
     public float getExpToNextLevel()
     {
         return expToNextLevel;
     }
 
     /**
-* The setter for the experience required to get to the next level.
-* @param expToNextLevel The new value for the experience required to reach
-* the next level.
-*/
-    public void setExpToNextLevel(float expToNextLevel)
+    * The setter for the experience required to get to the next level.
+    * @param expToNextLevel The new value for the experience required to reach
+    * the next level.
+    */
+    protected void setExpToNextLevel(float expToNextLevel)
     {
         this.expToNextLevel = expToNextLevel;
     }
 
     /**
-* The player's armor getter.
-* @return The player's current armor.
-*/
+    * The player's armor getter.
+    * @return The player's current armor.
+    */
     public Armor getArmor()
     {
         return armor;
     }
 
     /**
-* The player's armor setter.
-* @param armor The new armor for the player to equip.
-*/
+    * The player's armor setter.
+    * @param armor The new armor for the player to equip.
+    */
     public void setArmor(Armor armor)
     {
         this.armor = armor;
     }
 
     /**
-* The player's Weapon getter.
-* @return The player's current weapon.
-*/
+    * The player's Weapon getter.
+    * @return The player's current weapon.
+    */
     public Weapon getWeapon()
     {
         return weapon;
     }
 
     /**
-* The player's weapon setter.
-* @param weapon The new weapon for the player to equip.
-*/
+    * The player's weapon setter.
+    * @param weapon The new weapon for the player to equip.
+    */
     public void setWeapon(Weapon weapon)
     {
         this.weapon = weapon;
@@ -311,17 +338,6 @@ abstract public class Player extends Character
         walking = true;
         this.getMazeSprite().setRow(facing.ordinal());
         this.getArmor().getMazeSprite().setRow(facing.ordinal());
-    }
-
-    /**
-     * Changes the action being taken during battle.
-     * @param action The new action being taken.
-     */
-    public void setBattleAction(BattleAction action)
-    {
-        battleFrame = 0.0f;
-        battleAction = action;
-        this.getBattleSprite().setRow(battleAction.ordinal());
     }
 
 }
