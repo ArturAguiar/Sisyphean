@@ -176,8 +176,11 @@ abstract public class Player extends Character
     @Override
     public void attack()
     {
-        this.setBattleAction(BattleAction.MOVING);
-        attackMove = gameWorld.getDisplayMetrics().widthPixels / 3.0f - 50.0f;
+        if (battleAction == BattleAction.IDLE)
+        {
+            this.setBattleAction(BattleAction.MOVING);
+            attackMove = gameWorld.getDisplayMetrics().widthPixels / 3.0f - 50.0f;
+        }
     }
 
     /**
