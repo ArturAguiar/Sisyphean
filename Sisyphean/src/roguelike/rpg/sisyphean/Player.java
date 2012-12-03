@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import android.util.Log;
+import roguelike.rpg.sisyphean.Character.BattleAction;
 import android.graphics.PointF;
 
 /**
@@ -28,12 +30,12 @@ abstract public class Player extends Character
 
     private PointF moveBy = new PointF();
 
+    private boolean attackCalled = false;
+
     private float battleFrame = 0.0f;
 
     private int currentCellX = 0;
     private int currentCellY = 0;
-
-    // TODO: this should probably go to the Character class.
 
 
     /**
@@ -42,10 +44,8 @@ abstract public class Player extends Character
     abstract public void levelUp();
 
     @Override
-    synchronized public void update()
+    public void update()
     {
-        // TODO: How do we know if we are in battle mode or maze exploration mode?
-
         // Update the armor location to always be covering the character.
         this.getArmor().getMazeSprite().setPosition(getPosition().x, getPosition().y);
 
@@ -157,18 +157,43 @@ abstract public class Player extends Character
                     else
                     {
                         this.attackMove = 0.0f;
-                        this.setBattleAction(BattleAction.ATTACKING);
                         this.battleFrame = 0.0f;
+                        this.setBattleAction(BattleAction.ATTACKING);
                     }
                     break;
 
                 case ATTACKING:
-                    if (battleFrame >= 8.0f)
+                    if (!attackCalled && battleFrame >= 4.0f)
+                    {
+                        attackCalled = true;
+                        // Make a callback to the BattleScreen to let it know that the attack was performed.
+                        if (this.getBattleObserver() != null)
+                            this.getBattleObserver().playerAttackDone();
+                    }
+                    else if (battleFrame >= 8.0f)
                     {
                         battleFrame = 0.0f;
                         this.setBattleAction(BattleAction.IDLE);
                         this.getBattleSprite().setPosition(this.getInitialBattlePosition(),
                                                            this.getBattleSprite().getPosition().y);
+                        attackCalled = false;
+                    }
+
+                    break;
+
+                case HURT:
+                    if (battleFrame >= 6.0f)
+                    {
+                        battleFrame = 0.0f;
+                        this.setBattleAction(BattleAction.IDLE);
+                    }
+                    break;
+
+                case DEAD:
+                    if (battleFrame >= 8.0f)
+                    {
+                        battleFrame = 7.0f;
+                        this.setAlive(false);
                     }
                     break;
             }
@@ -181,8 +206,8 @@ abstract public class Player extends Character
     {
         if (battleAction == BattleAction.IDLE)
         {
-            this.setBattleAction(BattleAction.MOVING);
             attackMove = gameWorld.getDisplayMetrics().widthPixels / 3.0f - 50.0f;
+            this.setBattleAction(BattleAction.MOVING);
         }
     }
 
@@ -197,9 +222,22 @@ abstract public class Player extends Character
     {
         // TODO: This is probably not the best way to calculate things...
         float damageDone = enemy.getStrength() - getDefense();
+
+        Log.v("Player", "Damage received: " + damageDone);
+
+        this.setBattleAction(BattleAction.HURT);
+
         if ( damageDone > 0 )
         {
-            this.setHealth( getHealth() - damageDone );
+            this.setHealth( this.getHealth() - damageDone );
+            Log.v("Player", "Health left: " + this.getHealth());
+
+            if (this.getHealth() <= 0.0f)
+            {
+                this.setBattleAction(BattleAction.DEAD);
+                this.getBattleObserver().playerDied();
+            }
+
             return damageDone;
         }
 
@@ -235,11 +273,11 @@ abstract public class Player extends Character
 
     /**
     * Increases the player's experience by the value given.
-    * @param experience The experience gained by the player.
+    * @param experienceToAdd The experience gained by the player.
     */
-    public void addExperience(float experience)
+    public void addExperience(float experienceToAdd)
     {
-        this.experience += experience;
+        this.experience += experienceToAdd;
 
         if (this.experience >= getExpToNextLevel())
         {
@@ -307,6 +345,7 @@ abstract public class Player extends Character
      * Orders the movement of the character in one of the main
      * cardinal directions.
      * @param direction The direction to move to.
+     * @param amount The amount of pixels to move (should be the cell size).
      */
     public void move(String direction, float amount)
     {

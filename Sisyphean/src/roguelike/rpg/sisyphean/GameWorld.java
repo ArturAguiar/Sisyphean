@@ -24,6 +24,8 @@ public class GameWorld
 
     private DisplayMetrics displayMetrics;
 
+    private boolean gameOver = false;
+
     /**
      * Constructor of the game world.
      * There should only be one instance of this object in the whole game.
@@ -108,6 +110,23 @@ public class GameWorld
     public DisplayMetrics getDisplayMetrics()
     {
         return displayMetrics;
+    }
+
+    /**
+     * Sets the boolean that indicates the end of the game.
+     */
+    public void gameOver()
+    {
+        gameOver = true;
+    }
+
+    /**
+     * Indicates if the game has ended.
+     * @return True if the player was defeated in battle, false otherwise.
+     */
+    public boolean isGameOver()
+    {
+        return gameOver;
     }
 
 }

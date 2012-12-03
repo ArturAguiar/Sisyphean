@@ -144,7 +144,7 @@ public class Sprite
 
     /**
      * Sets the size of the sprite.
-     * @param newSize The new size of the sprite
+     * @param newSize The new size of the sprite.
      */
     public void setSize(float newSize)
     {

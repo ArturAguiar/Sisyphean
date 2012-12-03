@@ -1,5 +1,8 @@
 package roguelike.rpg.sisyphean;
 
+import android.graphics.RectF;
+import sofia.graphics.ImageShape;
+import android.util.Log;
 import sofia.app.ShapeScreen;
 import android.widget.TextView;
 import android.widget.Button;
@@ -16,8 +19,12 @@ public class BattleScreen extends ShapeScreen
     private GameWorld gameWorld;
 
     private Player player;
+    private boolean playerDied = false;
+
+    private boolean wait = false;
 
     private Enemy enemy;
+    private boolean enemyDied = false;
 
     private Button attack, escape;
     private TextView healthPoints, manaPoints;
@@ -32,26 +39,34 @@ public class BattleScreen extends ShapeScreen
     {
         this.gameWorld = gameWorld;
         this.player = gameWorld.getPlayer();
+        this.player.setBattleObserver(this);
+
         this.enemy = enemy;
+        this.enemy.setBattleObserver(this);
 
 
         gameWorld.setBattling(true);
 
-        this.add(player.getBattleSprite().getImageShape());
-        player.setInitialBattlePosition(this.getWidth() * 2.0f / 3.0f - player.getBattleSprite().getImageShape().getWidth() / 2.0f);
-        player.getBattleSprite().setPosition(player.getInitialBattlePosition(),
-                                             this.getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
-
         this.add(enemy.getBattleSprite().getImageShape());
-        enemy.getBattleSprite().setPosition(this.getWidth() / 3.0f - enemy.getBattleSprite().getImageShape().getWidth(),
+        this.enemy.getBattleSprite().setPosition(this.getWidth() / 3.0f - enemy.getBattleSprite().getImageShape().getWidth(),
                                             this.getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
+        this.enemy.setInitialBattlePosition(this.getWidth() / 3.0f - enemy.getBattleSprite().getImageShape().getWidth());
+
+        this.add(player.getBattleSprite().getImageShape());
+        this.player.setInitialBattlePosition(this.getWidth() * 2.0f / 3.0f - player.getBattleSprite().getImageShape().getWidth() / 2.0f);
+        this.player.getBattleSprite().setPosition(player.getInitialBattlePosition(),
+                                             this.getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
     }
 
     @Override
-    public void finish()
+    public void onDestroy()
     {
         gameWorld.setBattling(false);
-        super.finish();
+
+        this.player.setBattleObserver(null);
+        this.enemy.setBattleObserver(null);
+
+        super.onDestroy();
     }
 
     /**
@@ -59,7 +74,11 @@ public class BattleScreen extends ShapeScreen
      */
     public void attackClicked()
     {
-        player.attack();
+        if (!wait)
+        {
+            player.attack();
+            wait = true;
+        }
     }
 
     /**
@@ -68,6 +87,77 @@ public class BattleScreen extends ShapeScreen
     public void escapeClicked()
     {
         // To be implemented.
+    }
+
+    public void playerAttackDone()
+    {
+        enemy.wasHit(player);
+
+        if (!enemyDied)
+        {
+            enemy.getBattleSprite().getImageShape().animate(800).name("enemyActionDelay").play();
+        }
+    }
+
+    public void enemyAttackDone()
+    {
+        player.wasHit(enemy);
+
+        wait = false;
+    }
+
+    public void enemyDied()
+    {
+        enemyDied = true;
+        ImageShape victoryText = new ImageShape(R.drawable.battle_victory, new RectF(0.0f, 0.0f, 279.0f, 59.0f));
+        victoryText.setAlpha(0);
+        this.add(victoryText);
+        victoryText.setPosition(this.getWidth() / 2.0f - 279.0f / 2.0f,
+                                this.getHeight() / 2.0f - 59.0f / 2.0f);
+
+        victoryText.animate(800).delay(1000).alpha(255).play();
+        player.getBattleSprite().getImageShape().animate(5800).name("victory").play();
+        Log.v("BattleScreen", "Enemy died.");
+    }
+
+    public void playerDied()
+    {
+        playerDied = true;
+        ImageShape defeatText = new ImageShape(R.drawable.battle_defeat, new RectF(0.0f, 0.0f, 279.0f, 59.0f));
+        defeatText.setAlpha(0);
+        this.add(defeatText);
+        defeatText.setPosition(this.getWidth() / 2.0f - 279.0f / 2.0f,
+                                this.getHeight() / 2.0f - 59.0f / 2.0f);
+
+        defeatText.animate(800).delay(1000).alpha(255).play();
+        player.getBattleSprite().getImageShape().animate(5800).name("defeat").play();
+        Log.v("BattleScreen", "player died.");
+    }
+
+    public void enemyActionDelayAnimationEnded()
+    {
+        if (!enemyDied)
+        {
+            enemy.attack();
+        }
+    }
+
+    public void victoryAnimationEnded()
+    {
+        this.finish();
+    }
+
+    public void defeatAnimationEnded()
+    {
+        gameWorld.gameOver();
+        this.finish();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        // This is overridden so that the player can't back out of the battle
+        // by pressing the back button.
     }
 
 }

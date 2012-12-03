@@ -46,12 +46,14 @@ abstract public class Character
     public enum EnemyType { ZOMBIE, HARPY, RAT };
 
     // The action being taken in battle
-    public enum BattleAction { ATTACKING, MOVING, IDLE };
+    public enum BattleAction { ATTACKING, MOVING, IDLE, HURT, DEAD };
     protected BattleAction battleAction = BattleAction.IDLE;
     protected float battleFrame = 0.0f;
     protected float attackMove = 0.0f;
 
     private float initialBattlePosition;
+
+    private boolean alive = true;
 
     //Skills.
     private HashSet<Skill> skills;
@@ -63,6 +65,11 @@ abstract public class Character
 
     /** The sprite to use while in battle */
     private Sprite battleSprite;
+
+
+    // Observers
+    private BattleScreen battleObserver;
+    private GameScreen mazeObserver;
 
 
 
@@ -366,7 +373,7 @@ abstract public class Character
 
     /**
      * Returns the skills the character has.
-     * @return ArrayList<Skill> Returns all the skills of the character
+     * @return All the skills of this character.
      */
     public HashSet<Skill> getSkills()
     {
@@ -460,5 +467,35 @@ abstract public class Character
     public void setInitialBattlePosition(float initialBattlePosition)
     {
         this.initialBattlePosition = initialBattlePosition;
+    }
+
+    public BattleScreen getBattleObserver()
+    {
+        return battleObserver;
+    }
+
+    public void setBattleObserver(BattleScreen battleObserver)
+    {
+        this.battleObserver = battleObserver;
+    }
+
+    public GameScreen getMazeObserver()
+    {
+        return mazeObserver;
+    }
+
+    public void setMazeObserver(GameScreen mazeObserver)
+    {
+        this.mazeObserver = mazeObserver;
+    }
+
+    public boolean isAlive()
+    {
+        return alive;
+    }
+
+    public void setAlive(boolean alive)
+    {
+        this.alive = alive;
     }
 }
