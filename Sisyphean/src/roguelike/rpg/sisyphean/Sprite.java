@@ -152,5 +152,4 @@ public class Sprite
             image.getPosition().x, image.getPosition().y,
             image.getPosition().x + newSize, image.getPosition().y + newSize));
     }
-
 }
