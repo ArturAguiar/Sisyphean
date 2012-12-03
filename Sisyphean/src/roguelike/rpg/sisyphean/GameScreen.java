@@ -1,11 +1,9 @@
 package roguelike.rpg.sisyphean;
 
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
+import android.util.Log;
 import android.graphics.RectF;
 import sofia.graphics.Image;
 import android.view.MotionEvent;
-import android.widget.Toast;
 import sofia.graphics.ImageShape;
 import sofia.app.ShapeScreen;
 
@@ -23,7 +21,7 @@ public class GameScreen extends ShapeScreen
 {
     private Maze maze;
     private GameWorld gameWorld;
-    private int floor;
+    private int currentFloor;
 
     private LogicThread logicThread;
 
@@ -31,6 +29,7 @@ public class GameScreen extends ShapeScreen
     /**
      * Place a description of your method here.
      * @param playerClass The class of the player's character.
+     * @param floor The floor of the maze.
      */
     public void initialize(Character.PlayerType playerClass, int floor)
     {
@@ -43,17 +42,20 @@ public class GameScreen extends ShapeScreen
         logicThread.setRunning(true);
         logicThread.start();
 
+        Log.v("GameScreen", "initialized.");
+
         switch (playerClass)
         {
             case WARRIOR:
                 gameWorld.setPlayer(new Warrior("John Doe", 250.0f, 250.0f, gameWorld));
                 break;
+
             default:
                 break;
         }
 
         maze = new Maze(gameWorld, floor);
-        this.floor = floor;
+        this.currentFloor = floor;
 
         float y = getHeight();
         float x = getWidth();
@@ -136,7 +138,6 @@ public class GameScreen extends ShapeScreen
             cellSize * maze.exitRow(),
             cellSize * (maze.exitColumn() + 1),
             cellSize * (maze.exitRow() + 1)));
-
     }
 
     /**
@@ -167,11 +168,40 @@ public class GameScreen extends ShapeScreen
 
 
     @Override
-    public void finish()
+    public void onResume()
     {
+        Log.v("GameScreen", "Resumed.");
+        super.onResume();
+
+        if (gameWorld != null && gameWorld.isGameOver())
+        {
+            Log.v("GameScreen", "Game Over!");
+            ImageShape defeatText = new ImageShape(R.drawable.battle_defeat, new RectF(0.0f, 0.0f, 279.0f, 59.0f));
+            defeatText.setAlpha(0);
+            this.add(defeatText);
+            defeatText.setPosition(this.getWidth() / 2.0f - 279.0f / 2.0f,
+                                   this.getHeight() / 2.0f - 59.0f / 2.0f);
+
+            defeatText.animate(800).delay(1000).alpha(255).play();
+            gameWorld.getPlayer().getMazeSprite().getImageShape().animate(5800).name("gameOver").play();
+        }
+    }
+
+
+    @Override
+    public void onDestroy()
+    {
+        Log.v("GameScreen", "Paused.");
         logicThread.setRunning(false);
 
-        super.finish();
+        super.onDestroy();
+    }
+
+    public void gameOverAnimationEnded()
+    {
+        Log.v("GameScreen", "Game Over animation ended.");
+        presentScreen(MainMenuScreen.class);
+        finish();
     }
 
 

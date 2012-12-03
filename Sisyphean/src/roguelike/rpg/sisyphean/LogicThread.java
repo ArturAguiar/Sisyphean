@@ -50,9 +50,12 @@ public class LogicThread extends Thread
         {
             startTime = System.nanoTime();
 
-            for (Character character : gameWorld.getAllCharacters())
+            synchronized (gameWorld)
             {
-                character.update();
+                for (Character character : gameWorld.getAllCharacters())
+                {
+                    character.update();
+                }
             }
 
             try
@@ -75,5 +78,6 @@ public class LogicThread extends Thread
                 Log.v("LogicThread Exception", e.getMessage());
             }
         }
+        Log.v("LogicThread", "Exited from thread.");
     }
 }

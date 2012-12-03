@@ -142,4 +142,15 @@ public class Sprite
         return currentRow;
     }
 
+    /**
+     * Sets the size of the sprite.
+     * @param newSize The new size of the sprite.
+     */
+    public void setSize(float newSize)
+    {
+        this.getImageShape().setBounds(new RectF(
+            image.getPosition().x, image.getPosition().y,
+            image.getPosition().x + newSize, image.getPosition().y + newSize));
+    }
+
 }
