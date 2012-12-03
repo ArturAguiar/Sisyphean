@@ -26,7 +26,7 @@ public class Cell
     private int y;
 
     private Item item;
-    private Character enemy;
+    private Enemy enemy;
 
     private boolean exit;
 
@@ -150,12 +150,7 @@ public class Cell
     {
         return x;
     }
-/*
-    public void setX(int x)
-    {
-        this.x = x;
-    }
-*/
+
     /**
      * Returns the y coordinate.
      * @return y The y coordinate
@@ -164,12 +159,7 @@ public class Cell
     {
         return y;
     }
-/*
-    public void setY(int y)
-    {
-        this.y = y;
-    }
-*/
+
     /**
      * Returns the item.
      * @return Item The item to be returned
@@ -192,7 +182,7 @@ public class Cell
      * Returns the enemy.
      * @return  The enemy to be returned
      */
-    public Character getEnemy()
+    public Enemy getEnemy()
     {
         return enemy;
     }
@@ -201,7 +191,7 @@ public class Cell
      * Sets the enemy placement.
      * @param enemy The enemy to be set
      */
-    public void setEnemy()
+    public void setEnemy(Enemy enemy)
     {
         this.enemy = enemy;
     }
@@ -223,15 +213,6 @@ public class Cell
      */
     public boolean setExit()
     {
-        /*if (numberOfWalls == 3)
-        {
-            exit = true;
-            return true;
-        }
-        else
-        {
-            return false;
-        }*/
         exit = true;
         return exit;
     }

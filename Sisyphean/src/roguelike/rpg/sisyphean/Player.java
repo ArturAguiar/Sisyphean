@@ -30,6 +30,9 @@ abstract public class Player extends Character
 
     private float battleFrame = 0.0f;
 
+    private int currentCellX = 0;
+    private int currentCellY = 0;
+
     // TODO: this should probably go to the Character class.
 
 
@@ -293,6 +296,7 @@ abstract public class Player extends Character
     /**
     * The player's weapon setter.
     * @param weapon The new weapon for the player to equip.
+    * @param amount The amount by which the player moves
     */
     public void setWeapon(Weapon weapon)
     {
@@ -304,40 +308,76 @@ abstract public class Player extends Character
      * cardinal directions.
      * @param direction The direction to move to.
      */
-    public void move(String direction)
+    public void move(String direction, float amount)
     {
-        //TODO: I need to know the cell size here in order to calculate the movement.
-        if (direction == null)
+        if (!walking)
         {
-            return;
+            if (direction == null)
+            {
+                return;
+            }
+            else if (direction.equals("down"))
+            {
+                moveBy.set(0.0f, amount);
+                facing = Facing.DOWN;
+                currentCellY++;
+            }
+            else if (direction.equals("up"))
+            {
+                moveBy.set(0.0f, -amount);
+                facing = Facing.UP;
+                currentCellY--;
+            }
+            else if (direction.equals("right"))
+            {
+                moveBy.set(amount, 0.0f);
+                facing = Facing.RIGHT;
+                currentCellX++;
+            }
+            else if (direction.equals("left"))
+            {
+                moveBy.set(-amount, 0.0f);
+                facing = Facing.LEFT;
+                currentCellX--;
+            }
+            else
+            {
+                return;
+            }
+            walking = true;
+            this.getMazeSprite().setRow(facing.ordinal());
+            this.getArmor().getMazeSprite().setRow(facing.ordinal());
         }
-        else if (direction.equals("down"))
-        {
-            moveBy.set(0.0f, 30.0f);
-            facing = Facing.DOWN;
-        }
-        else if (direction.equals("up"))
-        {
-            moveBy.set(0.0f, -30.0f);
-            facing = Facing.UP;
-        }
-        else if (direction.equals("right"))
-        {
-            moveBy.set(30.0f, 0.0f);
-            facing = Facing.RIGHT;
-        }
-        else if (direction.equals("left"))
-        {
-            moveBy.set(-30.0f, 0.0f);
-            facing = Facing.LEFT;
-        }
-        else
-        {
-            return;
-        }
-        walking = true;
-        this.getMazeSprite().setRow(facing.ordinal());
-        this.getArmor().getMazeSprite().setRow(facing.ordinal());
     }
 
+    // ----------------------------------------------------------
+    /**
+     * Accessor for the x coordinate of the cell the player is in.
+     * @return currentCellX The x coordinate
+     */
+    public int getCellX()
+    {
+        return currentCellX;
+    }
+
+    // ----------------------------------------------------------
+    /**
+     * Accessor for the y coordinate of the cell the player is in.
+     * @return currentCell The y coordinate
+     */
+    public int getCellY()
+    {
+        return currentCellY;
+    }
+
+    /**
+     * Mutator for the cell the player is in.
+     * @param x The x coordinate of the cell the player is being moved to
+     * @param y The y coordinate of the cell the player is being moved to
+     */
+    public void setCell(int x, int y)
+    {
+        currentCellX = x;
+        currentCellY = y;
+    }
 }

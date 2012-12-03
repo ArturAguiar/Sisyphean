@@ -38,7 +38,7 @@
         android:layout_alignTop="@+id/escape"
         android:text="50/50"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
+
     <sofia.graphics.ShapeView
         android:id="@+id/shapeView"
         android:layout_width="wrap_content"

@@ -1,7 +1,5 @@
 package roguelike.rpg.sisyphean;
 
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
 import android.graphics.RectF;
 import sofia.graphics.Image;
 import android.view.MotionEvent;
@@ -31,6 +29,7 @@ public class GameScreen extends ShapeScreen
     /**
      * Place a description of your method here.
      * @param playerClass The class of the player's character.
+     * @param floor
      */
     public void initialize(Character.PlayerType playerClass, int floor)
     {
@@ -112,15 +111,24 @@ public class GameScreen extends ShapeScreen
                 {
                     add(new ImageShape(leftFrontImage, position));
                 }
+
+                if (maze.getCell(col, row).getEnemy() != null)
+                {
+                    maze.getCell(col, row).getEnemy().setPosition(left + cellSize * 0.1f, top + cellSize * 0.1f);
+                    maze.getCell(col, row).getEnemy().getMazeSprite().setSize(cellSize * 0.8f);
+                    add(maze.getCell(col, row).getEnemy().getMazeSprite().getImageShape());
+                }
             }
 
         }
 
-        add(new ImageShape("ic_launcher",
-            cellSize * maze.startColumn(),
-            cellSize * maze.startRow(),
-            cellSize * (maze.startColumn() + 1),
-            cellSize * (maze.startRow() + 1)));
+        gameWorld.getPlayer().setPosition(
+            cellSize * maze.startColumn() + cellSize * 0.1f,
+            cellSize * maze.startRow() + cellSize * 0.1f);
+        gameWorld.getPlayer().setCell(maze.startColumn(), maze.startRow());
+        gameWorld.getPlayer().getMazeSprite().setSize(cellSize * 0.8f);
+        add(gameWorld.getPlayer().getMazeSprite().getImageShape());
+
         if (maze.getCell(maze.exitColumn(), maze.exitRow()).getWalls()[3]
             && !maze.getCell(maze.exitColumn(), maze.exitRow()).getWalls()[1])
         {
@@ -146,10 +154,10 @@ public class GameScreen extends ShapeScreen
      */
     public void onTouchDown(MotionEvent event)
     {
-        presentScreen(BattleScreen.class, gameWorld, new Enemy(1, gameWorld));
+        //presentScreen(BattleScreen.class, gameWorld, new Enemy(1, gameWorld));
 
         // If you click on the exit cell, you move to the next floor
-        /*float cellSize = Math.min(getHeight(), getWidth()) / maze.floorSize();
+        float cellSize = Math.min(getHeight(), getWidth()) / maze.floorSize();
         if (event.getX() > cellSize * maze.exitColumn() &&
             event.getX() < cellSize * (maze.exitColumn() + 1) &&
             event.getY() > cellSize * maze.exitRow() &&
@@ -162,9 +170,84 @@ public class GameScreen extends ShapeScreen
         {
             // Pops up a toast with information for testing purposes
             //Toast.makeText(this, "" + maze.fs() + ", " + maze.counter() + ", " + maze.generations + ", " + maze.generated, Toast.LENGTH_LONG).show();
-        }*/
+        }
     }
 
+    // ----------------------------------------------------------
+    /**
+     * Move the player down.
+     */
+    public void downClicked()
+    {
+        int x = gameWorld.getPlayer().getCellX();
+        int y = gameWorld.getPlayer().getCellY();
+        if (!maze.getCell(x, y).getWalls()[2])
+        {
+            gameWorld.getPlayer().move("down", Math.min(getHeight(), getWidth()) / maze.floorSize());
+        }
+        else if (y + 1 < maze.floorSize() &&
+            maze.getCell(x, y + 1).getEnemy() != null)
+        {
+            presentScreen(BattleScreen.class, gameWorld, maze.getCell(x, y + 1).getEnemy());
+        }
+    }
+
+    // ----------------------------------------------------------
+    /**
+     * Move the player up.
+     */
+    public void upClicked()
+    {
+        int x = gameWorld.getPlayer().getCellX();
+        int y = gameWorld.getPlayer().getCellY();
+        if (!maze.getCell(x, y).getWalls()[0])
+        {
+            gameWorld.getPlayer().move("up", Math.min(getHeight(), getWidth()) / maze.floorSize());
+        }
+        else if (y - 1 >= 0 &&
+            maze.getCell(x, y - 1).getEnemy() != null)
+        {
+            presentScreen(BattleScreen.class, gameWorld, maze.getCell(x, y - 1).getEnemy());
+        }
+    }
+
+    // ----------------------------------------------------------
+    /**
+     * Move the player right.
+     */
+    public void rightClicked()
+    {
+        int x = gameWorld.getPlayer().getCellX();
+        int y = gameWorld.getPlayer().getCellY();
+        if (!maze.getCell(x, y).getWalls()[1])
+        {
+            gameWorld.getPlayer().move("right", Math.min(getHeight(), getWidth()) / maze.floorSize());
+        }
+        else if (x + 1 < maze.floorSize() &&
+            maze.getCell(x + 1, y).getEnemy() != null)
+        {
+            presentScreen(BattleScreen.class, gameWorld, maze.getCell(x + 1, y).getEnemy());
+        }
+    }
+
+    // ----------------------------------------------------------
+    /**
+     * Move the player left.
+     */
+    public void leftClicked()
+    {
+        int x = gameWorld.getPlayer().getCellX();
+        int y = gameWorld.getPlayer().getCellY();
+        if (!maze.getCell(x, y).getWalls()[3])
+        {
+            gameWorld.getPlayer().move("left", Math.min(getHeight(), getWidth()) / maze.floorSize());
+        }
+        else if (x - 1 >= 0 &&
+            maze.getCell(x - 1, y).getEnemy() != null)
+        {
+            presentScreen(BattleScreen.class, gameWorld, maze.getCell(x - 1, y).getEnemy());
+        }
+    }
 
     @Override
     public void finish()
