@@ -183,13 +183,17 @@ public class GameScreen extends ShapeScreen
         int y = gameWorld.getPlayer().getCellY();
         if (!maze.getCell(x, y).getWalls()[2])
         {
-            gameWorld.getPlayer().move("down", Math.min(getHeight(), getWidth()) / maze.floorSize());
+            if (y + 1 < maze.floorSize() &&
+                maze.getCell(x, y + 1).getEnemy() != null)
+            {
+                presentScreen(BattleScreen.class, gameWorld, maze.getCell(x, y + 1).getEnemy());
+            }
+            else
+            {
+                gameWorld.getPlayer().move("down", Math.min(getHeight(), getWidth()) / maze.floorSize());
+            }
         }
-        else if (y + 1 < maze.floorSize() &&
-            maze.getCell(x, y + 1).getEnemy() != null)
-        {
-            presentScreen(BattleScreen.class, gameWorld, maze.getCell(x, y + 1).getEnemy());
-        }
+
     }
 
     // ----------------------------------------------------------
@@ -202,12 +206,15 @@ public class GameScreen extends ShapeScreen
         int y = gameWorld.getPlayer().getCellY();
         if (!maze.getCell(x, y).getWalls()[0])
         {
-            gameWorld.getPlayer().move("up", Math.min(getHeight(), getWidth()) / maze.floorSize());
-        }
-        else if (y - 1 >= 0 &&
-            maze.getCell(x, y - 1).getEnemy() != null)
-        {
-            presentScreen(BattleScreen.class, gameWorld, maze.getCell(x, y - 1).getEnemy());
+            if (y - 1 >= 0 &&
+                maze.getCell(x, y - 1).getEnemy() != null)
+            {
+                presentScreen(BattleScreen.class, gameWorld, maze.getCell(x, y - 1).getEnemy());
+            }
+            else
+            {
+                gameWorld.getPlayer().move("up", Math.min(getHeight(), getWidth()) / maze.floorSize());
+            }
         }
     }
 
@@ -221,13 +228,17 @@ public class GameScreen extends ShapeScreen
         int y = gameWorld.getPlayer().getCellY();
         if (!maze.getCell(x, y).getWalls()[1])
         {
-            gameWorld.getPlayer().move("right", Math.min(getHeight(), getWidth()) / maze.floorSize());
+            if (x + 1 < maze.floorSize() &&
+                maze.getCell(x + 1, y).getEnemy() != null)
+            {
+                presentScreen(BattleScreen.class, gameWorld, maze.getCell(x + 1, y).getEnemy());
+            }
+            else
+            {
+                gameWorld.getPlayer().move("right", Math.min(getHeight(), getWidth()) / maze.floorSize());
+            }
         }
-        else if (x + 1 < maze.floorSize() &&
-            maze.getCell(x + 1, y).getEnemy() != null)
-        {
-            presentScreen(BattleScreen.class, gameWorld, maze.getCell(x + 1, y).getEnemy());
-        }
+
     }
 
     // ----------------------------------------------------------
@@ -240,12 +251,15 @@ public class GameScreen extends ShapeScreen
         int y = gameWorld.getPlayer().getCellY();
         if (!maze.getCell(x, y).getWalls()[3])
         {
-            gameWorld.getPlayer().move("left", Math.min(getHeight(), getWidth()) / maze.floorSize());
-        }
-        else if (x - 1 >= 0 &&
-            maze.getCell(x - 1, y).getEnemy() != null)
-        {
-            presentScreen(BattleScreen.class, gameWorld, maze.getCell(x - 1, y).getEnemy());
+            if (x - 1 >= 0 &&
+                maze.getCell(x - 1, y).getEnemy() != null)
+            {
+                presentScreen(BattleScreen.class, gameWorld, maze.getCell(x - 1, y).getEnemy());
+            }
+            else
+            {
+                gameWorld.getPlayer().move("left", Math.min(getHeight(), getWidth()) / maze.floorSize());
+            }
         }
     }
 
