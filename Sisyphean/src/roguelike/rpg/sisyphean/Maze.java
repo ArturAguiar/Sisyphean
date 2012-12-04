@@ -78,23 +78,6 @@ public class Maze
         rand = new Random();
 
         generate();
-        //If generation was messed up, reset the cells and generate again until
-        //it gets it right...
-        /*while(counter < (floorSize ^ 2 - 10))
-        {
-            for (Cell[] column : grid)
-            {
-                for (Cell cell : column)
-                {
-                    for (int i = 0; i < cell.getWalls().length; i++)
-                    {
-                        cell.placeWall(i);
-                    }
-                }
-            }
-            generate();
-            generations++;
-        }*/
     }
 
 
@@ -376,42 +359,52 @@ public class Maze
         return startX;
     }
 
-
+    /**
+     * Randomly places enemies on empty cells based on the floor level.
+     */
     private void spawnEnemies()
     {
-        // TODO: Randomly place enemies on empty cells based on floor level
+        // TODO: Determine how may enemies per floor. Right now is just floorsize
+        int enemies = 0;
+        while (enemies < floorSize)
+        {
+            //Get a random cell for the enemy to spawn in
+            Cell cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
+            //If that cell is either of the start or exit cells, pick a new cell until it's not
+            while ((cell.x() == startX && cell.y() == startY)
+                || (cell.x() == exitX && cell.y() == exitY))
+            {
+                cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
+            }
+            //Store the enemy in the cell
+            cell.setEnemy(new Enemy(floor, gameWorld));
+            enemies++;
+        }
     }
 
-
+    /**
+     * Randomly places items on empty cells
+     */
     private void placeItems()
     {
-        // TODO: Randomly place items on empty cells
+        // TODO: Determine how may items per floor. Right now is just floorsize/2
+        // TODO: Implement a constructor for Item
+        /*int items = 0;
+        while (items < floorSize / 2)
+        {
+            //Get a random cell for the item to be placed in
+            Cell cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
+            //If that cell is either of the start or exit cells, pick a new cell until it's not
+            while ((cell.x() == startX || cell.y() == startY)
+                && (cell.x() == exitX || cell.y() == exitY))
+            {
+                cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
+            }
+            //Store the item in the cell
+            cell.setItem(new Item());
+            items++;
+        }*/
     }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Accessor for the x coordinate of the starting cell.
-     *
-     * @return int The x coordinate
-     */
-    public int startX()
-    {
-        return startX;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Accessor for the y coordinate of the starting cell.
-     *
-     * @return int The y coordinate
-     */
-    public int startY()
-    {
-        return startY;
-    }
-
 
     // ----------------------------------------------------------
     /**
