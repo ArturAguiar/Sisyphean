@@ -121,6 +121,7 @@ public class GameScreen extends ShapeScreen
 
         }
 
+        // Draw player to maze
         gameWorld.getPlayer().setPosition(
             cellSize * maze.startColumn() + cellSize * 0.1f,
             cellSize * maze.startRow() + cellSize * 0.1f);
@@ -128,21 +129,18 @@ public class GameScreen extends ShapeScreen
         gameWorld.getPlayer().getMazeSprite().setSize(cellSize * 0.8f);
         add(gameWorld.getPlayer().getMazeSprite().getImageShape());
 
-        if (maze.getCell(maze.exitColumn(), maze.exitRow()).getWalls()[3]
-            && !maze.getCell(maze.exitColumn(), maze.exitRow()).getWalls()[1])
-        {
-            // Flip the image somehow...
-            add(new ImageShape("stairs",
-                cellSize * (maze.exitColumn() + 1),
-                cellSize * maze.exitRow(),
-                cellSize * maze.exitColumn(),
-                cellSize * (maze.exitRow() + 1)));
-        }
+        // Draw stairs
         add(new ImageShape("stairs",
             cellSize * maze.exitColumn(),
             cellSize * maze.exitRow(),
             cellSize * (maze.exitColumn() + 1),
             cellSize * (maze.exitRow() + 1)));
+
+        // Test drawing items
+        add(new ImageShape("health_potion", cellSize * 3, cellSize * 3, cellSize * 4, cellSize * 4));
+        add(new ImageShape("mana_potion", cellSize * 2, cellSize * 3, cellSize * 3, cellSize * 4));
+        add(new ImageShape("sword", cellSize * 1, cellSize * 3, cellSize * 2, cellSize * 4));
+        add(new ImageShape("chestplate", cellSize * 0, cellSize * 3, cellSize * 1, cellSize * 4));
     }
 
     /**

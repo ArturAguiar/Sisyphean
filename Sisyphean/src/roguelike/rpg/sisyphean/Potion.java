@@ -43,7 +43,7 @@ public class Potion extends Item
      * of the player's stat, or the full stat.
      * @return boolean Whether the potion fully restores a player's stat
      */
-    public boolean fullRestore()
+    public static boolean fullRestore()
     {
         Random rand = new Random();
         return rand.nextInt(100) == 0;

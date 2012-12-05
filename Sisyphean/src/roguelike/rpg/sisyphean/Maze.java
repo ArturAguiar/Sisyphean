@@ -54,7 +54,6 @@ public class Maze
         }
         else
         {
-            // TODO: Determine size proportionality (10log(floor + 10)?)
             floorSize = (int)(10 * Math.log(floor + 11) - 14);
             grid = new Cell[floorSize][floorSize];
             this.floor = floor;

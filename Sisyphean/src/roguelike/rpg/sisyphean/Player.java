@@ -461,14 +461,30 @@ abstract public class Player extends Character
             case HEALTH:
                 if (healthPotions > 0)
                 {
-                    setHealth(getHealth() + getMaxHealth() * 0.25f);
+                    if (Potion.fullRestore())
+                    {
+                        setHealth(getMaxHealth());
+                    }
+                    else
+                    {
+                        setHealth(getHealth() + getMaxHealth() * 0.25f);
+                    }
+                    healthPotions--;
                 }
                 break;
 
             case MANA:
                 if (healthPotions > 0)
                 {
-                    setHealth(getHealth() + getMaxHealth() * 0.25f);
+                    if (Potion.fullRestore())
+                    {
+                        setMana(getMaxMana());
+                    }
+                    else
+                    {
+                        setMana(getMana() + getMaxMana() * 0.25f);
+                    }
+                    manaPotions--;
                 }
                 break;
         }
