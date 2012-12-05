@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import sofia.graphics.ShapeView;
+import android.graphics.PointF;
 import android.util.Log;
 import android.graphics.RectF;
 import sofia.graphics.Image;
@@ -14,11 +16,13 @@ import sofia.app.ShapeScreen;
  *  choose a hero and enemies will spawn. There are Health and Mana points
  *  which will be represented by rectangles at the bottom of the screen.
  *
- *  @author Tk
+ *  @author Tk, Artur, Petey
  *  @version Nov 9, 2012
  */
 public class GameScreen extends ShapeScreen
 {
+    private ShapeView shapeView;
+
     private Maze maze;
     private GameWorld gameWorld;
     private int currentFloor;
@@ -29,11 +33,7 @@ public class GameScreen extends ShapeScreen
     /**
      * Place a description of your method here.
      * @param playerClass The class of the player's character.
-<<<<<<< HEAD
      * @param floor The floor of the maze.
-=======
-     * @param floor
->>>>>>> refs/remotes/origin/master
      */
     public void initialize(Character.PlayerType playerClass, int floor)
     {
@@ -61,8 +61,8 @@ public class GameScreen extends ShapeScreen
         maze = new Maze(gameWorld, floor);
         this.currentFloor = floor;
 
-        float y = getHeight();
-        float x = getWidth();
+        float y = shapeView.getHeight();
+        float x = shapeView.getWidth();
         float size = Math.min(y, x);
         float cellSize = size / maze.floorSize();
         float bottom = cellSize;
@@ -78,6 +78,8 @@ public class GameScreen extends ShapeScreen
         Image leftImage = new Image(R.drawable.left);
         Image leftFrontImage = new Image(R.drawable.left_front);
 
+        shapeView.setAutoRepaint(false);
+
         for ( int row = 0; row < maze.floorSize(); row++)
         {
             left = 0;
@@ -92,38 +94,38 @@ public class GameScreen extends ShapeScreen
 
                 position.set(left, top, right, bottom);
 
-                add(new ImageShape(groundImage, position));
+                shapeView.add(new ImageShape(groundImage, position));
                 /*if (maze.roomCells().contains(maze.getCell(col, row)))
                 {
-                    add(new ImageShape(new Image("ic_action_search"), position));
+                    shapeView.add(new ImageShape(new Image("ic_action_search"), position));
                 }*/
 
                 if (maze.getCell(col, row).getWalls()[0]) //top wall
                 {
-                    add(new ImageShape(backImage, position));
+                    shapeView.add(new ImageShape(backImage, position));
                 }
                 if (maze.getCell(col, row).getWalls()[1]) //right wall
                 {
-                    add(new ImageShape(rightImage, position));
+                    shapeView.add(new ImageShape(rightImage, position));
                 }
                 else if (row > 0 && maze.getCell(col, row - 1).getWalls()[1])
                 {
-                    add(new ImageShape(rightFrontImage, position));
+                    shapeView.add(new ImageShape(rightFrontImage, position));
                 }
                 if (maze.getCell(col, row).getWalls()[3]) //left wall
                 {
-                    add(new ImageShape(leftImage, position));
+                    shapeView.add(new ImageShape(leftImage, position));
                 }
                 else if (row > 0 && maze.getCell(col, row - 1).getWalls()[3])
                 {
-                    add(new ImageShape(leftFrontImage, position));
+                    shapeView.add(new ImageShape(leftFrontImage, position));
                 }
 
                 if (maze.getCell(col, row).getEnemy() != null)
                 {
                     maze.getCell(col, row).getEnemy().setPosition(left + cellSize * 0.1f, top + cellSize * 0.1f);
                     maze.getCell(col, row).getEnemy().getMazeSprite().setSize(cellSize * 0.8f);
-                    add(maze.getCell(col, row).getEnemy().getMazeSprite().getImageShape());
+                    shapeView.add(maze.getCell(col, row).getEnemy().getMazeSprite().getImageShape());
                 }
             }
 
@@ -134,23 +136,19 @@ public class GameScreen extends ShapeScreen
             cellSize * maze.startRow() + cellSize * 0.1f);
         gameWorld.getPlayer().setCell(maze.startColumn(), maze.startRow());
         gameWorld.getPlayer().getMazeSprite().setSize(cellSize * 0.8f);
-        add(gameWorld.getPlayer().getMazeSprite().getImageShape());
+        shapeView.add(gameWorld.getPlayer().getMazeSprite().getImageShape());
+        gameWorld.getPlayer().getMazeSprite().getImageShape().setZIndex(10);
 
-        if (maze.getCell(maze.exitColumn(), maze.exitRow()).getWalls()[3]
-            && !maze.getCell(maze.exitColumn(), maze.exitRow()).getWalls()[1])
-        {
-            // Flip the image somehow...
-            add(new ImageShape("stairs",
-                cellSize * (maze.exitColumn() + 1),
-                cellSize * maze.exitRow(),
-                cellSize * maze.exitColumn(),
-                cellSize * (maze.exitRow() + 1)));
-        }
-        add(new ImageShape("stairs",
+        shapeView.add(new ImageShape("stairs",
             cellSize * maze.exitColumn(),
             cellSize * maze.exitRow(),
             cellSize * (maze.exitColumn() + 1),
             cellSize * (maze.exitRow() + 1)));
+
+        shapeView.setAutoRepaint(true);
+        shapeView.repaint();
+
+        Log.v("GameScreen", "Maze fully created.");
     }
 
     /**
@@ -163,7 +161,7 @@ public class GameScreen extends ShapeScreen
         //presentScreen(BattleScreen.class, gameWorld, new Enemy(1, gameWorld));
 
         // If you click on the exit cell, you move to the next floor
-        float cellSize = Math.min(getHeight(), getWidth()) / maze.floorSize();
+        float cellSize = Math.min(shapeView.getHeight(), shapeView.getWidth()) / maze.floorSize();
         if (event.getX() > cellSize * maze.exitColumn() &&
             event.getX() < cellSize * (maze.exitColumn() + 1) &&
             event.getY() > cellSize * maze.exitRow() &&
@@ -187,17 +185,10 @@ public class GameScreen extends ShapeScreen
     {
         int x = gameWorld.getPlayer().getCellX();
         int y = gameWorld.getPlayer().getCellY();
-        if (!maze.getCell(x, y).getWalls()[2])
+
+        if (!maze.getCell(x, y).getWalls()[2] && y + 1 < maze.floorSize() && !checkForEnemyIn(x, y + 1))
         {
-            if (y + 1 < maze.floorSize() &&
-                maze.getCell(x, y + 1).getEnemy() != null)
-            {
-                presentScreen(BattleScreen.class, gameWorld, maze.getCell(x, y + 1).getEnemy());
-            }
-            else
-            {
-                gameWorld.getPlayer().move("down", Math.min(getHeight(), getWidth()) / maze.floorSize());
-            }
+            gameWorld.getPlayer().move("down", Math.min(shapeView.getHeight(), shapeView.getWidth()) / maze.floorSize());
         }
 
     }
@@ -210,17 +201,10 @@ public class GameScreen extends ShapeScreen
     {
         int x = gameWorld.getPlayer().getCellX();
         int y = gameWorld.getPlayer().getCellY();
-        if (!maze.getCell(x, y).getWalls()[0])
+
+        if (!maze.getCell(x, y).getWalls()[0] && y - 1 >= 0 && !checkForEnemyIn(x, y - 1))
         {
-            if (y - 1 >= 0 &&
-                maze.getCell(x, y - 1).getEnemy() != null)
-            {
-                presentScreen(BattleScreen.class, gameWorld, maze.getCell(x, y - 1).getEnemy());
-            }
-            else
-            {
-                gameWorld.getPlayer().move("up", Math.min(getHeight(), getWidth()) / maze.floorSize());
-            }
+            gameWorld.getPlayer().move("up", Math.min(shapeView.getHeight(), shapeView.getWidth()) / maze.floorSize());
         }
     }
 
@@ -232,19 +216,11 @@ public class GameScreen extends ShapeScreen
     {
         int x = gameWorld.getPlayer().getCellX();
         int y = gameWorld.getPlayer().getCellY();
-        if (!maze.getCell(x, y).getWalls()[1])
-        {
-            if (x + 1 < maze.floorSize() &&
-                maze.getCell(x + 1, y).getEnemy() != null)
-            {
-                presentScreen(BattleScreen.class, gameWorld, maze.getCell(x + 1, y).getEnemy());
-            }
-            else
-            {
-                gameWorld.getPlayer().move("right", Math.min(getHeight(), getWidth()) / maze.floorSize());
-            }
-        }
 
+        if (!maze.getCell(x, y).getWalls()[1] && x + 1 < maze.floorSize() && !checkForEnemyIn(x + 1, y))
+        {
+            gameWorld.getPlayer().move("right", Math.min(shapeView.getHeight(), shapeView.getWidth()) / maze.floorSize());
+        }
     }
 
     // ----------------------------------------------------------
@@ -255,55 +231,83 @@ public class GameScreen extends ShapeScreen
     {
         int x = gameWorld.getPlayer().getCellX();
         int y = gameWorld.getPlayer().getCellY();
-        if (!maze.getCell(x, y).getWalls()[3])
+
+        if (!maze.getCell(x, y).getWalls()[3] && x - 1 >= 0 && !checkForEnemyIn(x - 1, y))
         {
-            if (x - 1 >= 0 &&
-                maze.getCell(x - 1, y).getEnemy() != null)
-            {
-                presentScreen(BattleScreen.class, gameWorld, maze.getCell(x - 1, y).getEnemy());
-            }
-            else
-            {
-                gameWorld.getPlayer().move("left", Math.min(getHeight(), getWidth()) / maze.floorSize());
-            }
+            gameWorld.getPlayer().move("left", Math.min(shapeView.getHeight(), shapeView.getWidth()) / maze.floorSize());
         }
+    }
+
+    /**
+     * Checks for the existence of an enemy in the given cell coordinate.
+     * If there is an enemy, initiate a battle with it.
+     * @param x The x coordinate of the cell to check.
+     * @param y the y coordinate of the cell to check.
+     * @return True if an enemy was found and a battle was started, false otherwise.
+     */
+    public boolean checkForEnemyIn(int x, int y)
+    {
+        Enemy myEnemy = maze.getCell(x, y).getEnemy();
+        if (myEnemy != null &&
+            myEnemy.isAlive())
+        {
+            presentScreen(BattleScreen.class, gameWorld, myEnemy);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Removes the enemy's maze sprite and adds a pile of bones instead to
+     * indicate that it is dead.
+     * @param enemy The enemy that was killed.
+     */
+    public void killEnemy(Enemy enemy)
+    {
+        PointF spritePos = enemy.getMazeSprite().getPosition();
+        shapeView.remove(enemy.getMazeSprite().getImageShape());
+
+        enemy.setMazeSprite(
+            new Sprite(R.drawable.bones, 32, 32, 1, 1,
+                       gameWorld.getDisplayMetrics().density));
+
+        enemy.getMazeSprite().setSize(Math.min(shapeView.getHeight(), shapeView.getWidth()) / maze.floorSize() * 0.8f);
+        shapeView.add(enemy.getMazeSprite().getImageShape());
+        enemy.getMazeSprite().setPosition(spritePos.x, spritePos.y);
     }
 
     @Override
     public void onResume()
     {
         Log.v("GameScreen", "Resumed.");
-        super.onResume();
 
-        if (gameWorld != null && gameWorld.isGameOver())
+        if (gameWorld != null)
         {
-            Log.v("GameScreen", "Game Over!");
-            ImageShape defeatText = new ImageShape(R.drawable.battle_defeat, new RectF(0.0f, 0.0f, 279.0f, 59.0f));
-            defeatText.setAlpha(0);
-            this.add(defeatText);
-            defeatText.setPosition(this.getWidth() / 2.0f - 279.0f / 2.0f,
-                                   this.getHeight() / 2.0f - 59.0f / 2.0f);
-
-            defeatText.animate(800).delay(1000).alpha(255).play();
-            gameWorld.getPlayer().getMazeSprite().getImageShape().animate(5800).name("gameOver").play();
+            if (gameWorld.isGameOver())
+            {
+                presentScreen(MainMenuScreen.class);
+                finish();
+            }
+            else if (gameWorld.getEnemyKilled() != null)
+            {
+                this.killEnemy(gameWorld.getEnemyKilled());
+            }
         }
+
+        super.onResume();
     }
 
 
     @Override
     public void onDestroy()
     {
-        Log.v("GameScreen", "Paused.");
+        Log.v("GameScreen", "Destroyed.");
+        shapeView.clear();
         logicThread.setRunning(false);
 
         super.onDestroy();
-    }
-
-    public void gameOverAnimationEnded()
-    {
-        Log.v("GameScreen", "Game Over animation ended.");
-        presentScreen(MainMenuScreen.class);
-        finish();
     }
 
 

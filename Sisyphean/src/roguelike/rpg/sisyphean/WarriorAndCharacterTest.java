@@ -105,6 +105,7 @@ public class WarriorAndCharacterTest extends TestCase
     /**
      * Tests the max stamina (getter and setter) methods.
      */
+    /*
     public void testMaxStamina()
     {
         assertEquals(120.0f, newChar.getMaxStamina());
@@ -117,10 +118,12 @@ public class WarriorAndCharacterTest extends TestCase
 
         assertEquals(50.0f, newChar.getStamina());
     }
+    */
 
     /**
      * Tests the current stamina (getter and setter) methods.
      */
+    /*
     public void testCurrentStamina()
     {
         newChar.setMaxStamina(100);
@@ -129,6 +132,7 @@ public class WarriorAndCharacterTest extends TestCase
         newChar.setStamina(150);
         assertEquals(100.0f, newChar.getStamina());
     }
+    */
 
     /**
      * Tests the strength (getter and setter) methods.
@@ -174,6 +178,7 @@ public class WarriorAndCharacterTest extends TestCase
     /**
      * Tests the skills set of the warrior.
      */
+    /*
     public void testGetSkills()
     {
         assertEquals(0, newChar.getSkills().size());
@@ -184,6 +189,7 @@ public class WarriorAndCharacterTest extends TestCase
         assertEquals(1, newChar.getSkills().size());
 
     }
+    */
 
     /**
      * Tests the mazeSprite of the warrior.

@@ -26,6 +26,8 @@ public class GameWorld
 
     private boolean gameOver = false;
 
+    private Enemy enemyKilled;
+
     /**
      * Constructor of the game world.
      * There should only be one instance of this object in the whole game.
@@ -127,6 +129,16 @@ public class GameWorld
     public boolean isGameOver()
     {
         return gameOver;
+    }
+
+    public Enemy getEnemyKilled()
+    {
+        return enemyKilled;
+    }
+
+    public void setEnemyKilled(Enemy enemyKilled)
+    {
+        this.enemyKilled = enemyKilled;
     }
 
 }

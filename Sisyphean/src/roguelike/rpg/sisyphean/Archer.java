@@ -31,7 +31,7 @@ public class Archer
 
         this.setMaxHealth(120.0f);
         this.setMaxMana(100.0f);
-        this.setMaxStamina(120.0f);
+        //this.setMaxStamina(120.0f);
 
         // I swapped the strength and intelligence skill number.
         // Change them if you need to!
@@ -86,7 +86,7 @@ public class Archer
      // I changed the stats so that it would make sense for a wizard class.
         // Increase statuses.
         this.setMaxHealth(getMaxHealth() + 11.0f);
-        this.setMaxStamina(getMaxStamina() + 12.0f);
+        //this.setMaxStamina(getMaxStamina() + 12.0f);
         this.setMaxMana(getMaxMana() + 13.0f);
         this.setStrength(getStrength() + 8.0f);
         this.setDefense(getDefense() + 12.0f);
@@ -98,6 +98,7 @@ public class Archer
         this.setExpToNextLevel(getExpToNextLevel() * 2.5f);
 
         // Update skills.
+        /*
         switch (getLevel())
         {
             case 3:
@@ -116,6 +117,7 @@ public class Archer
                     28.0f));
                 break;
         }
+        */
 
         // Check if the player leveled up again.
         if ( getExperience() >= getExpToNextLevel() )

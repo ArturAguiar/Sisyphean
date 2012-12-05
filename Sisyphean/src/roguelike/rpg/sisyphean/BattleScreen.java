@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import sofia.graphics.Color;
+import sofia.graphics.TextShape;
 import android.graphics.RectF;
 import sofia.graphics.ImageShape;
 import android.util.Log;
@@ -38,12 +40,12 @@ public class BattleScreen extends ShapeScreen
     public void initialize(GameWorld gameWorld, Enemy enemy)
     {
         this.gameWorld = gameWorld;
+        this.gameWorld.setEnemyKilled(null);
         this.player = gameWorld.getPlayer();
         this.player.setBattleObserver(this);
 
         this.enemy = enemy;
         this.enemy.setBattleObserver(this);
-
 
         gameWorld.setBattling(true);
 
@@ -91,7 +93,35 @@ public class BattleScreen extends ShapeScreen
 
     public void playerAttackDone()
     {
-        enemy.wasHit(player);
+        this.createDamageText((int)enemy.wasHit(player), enemy.getBattleSprite().getPosition().x + 30.0f, enemy.getBattleSprite().getPosition().y - 10.0f);
+
+        if (!enemyDied)
+        {
+            enemy.getBattleSprite().getImageShape().animate(800).name("enemyActionDelay").play();
+        }
+    }
+
+    public void playerCastingDone()
+    {
+        Magic casted = null;
+        // TODO: get this magic from the selection.
+        for (Magic magic : player.getMagics())
+        {
+            casted = magic;
+        }
+
+        if (casted != null && casted.heals())
+        {
+            float healAmount = casted.getTotalEffect(player);
+            player.setHealth(player.getHealth() + healAmount);
+
+            this.createHealingText(healAmount, player.getBattleSprite().getPosition().x + 60.0f, player.getBattleSprite().getPosition().y - 10.0f);
+        }
+        else
+        {
+            // TODO: pass the magic to the wasHit method.
+            this.createDamageText((int)enemy.wasHit(player), enemy.getBattleSprite().getPosition().x + 30.0f, enemy.getBattleSprite().getPosition().y - 10.0f);
+        }
 
         if (!enemyDied)
         {
@@ -101,7 +131,7 @@ public class BattleScreen extends ShapeScreen
 
     public void enemyAttackDone()
     {
-        player.wasHit(enemy);
+        this.createDamageText((int)player.wasHit(enemy), player.getBattleSprite().getPosition().x + 60.0f, player.getBattleSprite().getPosition().y - 10.0f);
 
         wait = false;
     }
@@ -118,6 +148,9 @@ public class BattleScreen extends ShapeScreen
         victoryText.animate(800).delay(1000).alpha(255).play();
         player.getBattleSprite().getImageShape().animate(5800).name("victory").play();
         Log.v("BattleScreen", "Enemy died.");
+
+        gameWorld.setEnemyKilled(enemy);
+        player.addExperience(enemy.getExperienceGiven());
     }
 
     public void playerDied()
@@ -150,6 +183,7 @@ public class BattleScreen extends ShapeScreen
     public void defeatAnimationEnded()
     {
         gameWorld.gameOver();
+
         this.finish();
     }
 
@@ -158,6 +192,30 @@ public class BattleScreen extends ShapeScreen
     {
         // This is overridden so that the player can't back out of the battle
         // by pressing the back button.
+    }
+
+    private void createDamageText(int damage, float x, float y)
+    {
+        TextShape damageText = new TextShape("" + damage, x, y);
+
+        damageText.setColor(Color.red);
+        damageText.setTypefaceAndSize("*-bold-10");
+
+        this.add(damageText);
+
+        damageText.animate(800).moveBy(0.0f, -30.0f).alpha(0).removeWhenComplete().play();
+    }
+
+    private void createHealingText(float healAmount, float x, float y)
+    {
+        TextShape damageText = new TextShape("" + healAmount, x, y);
+
+        damageText.setColor(Color.green);
+        damageText.setTypefaceAndSize("*-bold-10");
+
+        this.add(damageText);
+
+        damageText.animate(800).moveBy(0.0f, -30.0f).alpha(0).removeWhenComplete().play();
     }
 
 }

@@ -30,7 +30,7 @@ public class Warrior extends Player
 
         this.setMaxHealth(120.0f);
         this.setMaxMana(100.0f);
-        this.setMaxStamina(120.0f);
+        //this.setMaxStamina(120.0f);
 
         this.setStrength(30.0f);
         this.setDefense(25.0f);
@@ -45,7 +45,7 @@ public class Warrior extends Player
         this.getMazeSprite().setCol(1);
 
         // The sprite in battle mode.
-        this.setBattleSprite(new Sprite(R.drawable.crusader_sprite_sheet, 1440, 630, 8, 5, gameWorld.getDisplayMetrics().density));
+        this.setBattleSprite(new Sprite(R.drawable.crusader_sprite_sheet, 1440, 780, 8, 6, gameWorld.getDisplayMetrics().density));
         this.getBattleSprite().setRow(2);
 
 
@@ -53,7 +53,7 @@ public class Warrior extends Player
         this.setPosition(x, y);
 
 
-        // Initial equipment
+        // Initial equipment.
         this.setArmor(new Armor(
             "Prisoner Garments",
             "Rusty handcuffs and dark pants.%nHardly any protection.",
@@ -68,6 +68,12 @@ public class Warrior extends Player
             "If tetanus killed quickly, this would actually be half-decent.",
             6.0f));
         this.getWeapon().addBonusDamage("ZOMBIE", 2.0f);
+
+        // Initial magics.
+        getMagics().add(new Magic(
+            "Constrict",
+            "Constricts the enemy causing at least 30 damage.",
+            30.0f, 25.0f, false));
     }
 
     @Override
@@ -75,7 +81,7 @@ public class Warrior extends Player
     {
         // Increase statuses.
         this.setMaxHealth(getMaxHealth() + 13.0f);
-        this.setMaxStamina(getMaxStamina() + 12.0f);
+        //this.setMaxStamina(getMaxStamina() + 12.0f);
         this.setMaxMana(getMaxMana() + 8.0f);
         this.setStrength(getStrength() + 13.0f);
         this.setDefense(getDefense() + 12.0f);
@@ -86,9 +92,11 @@ public class Warrior extends Player
         this.setLevel(getLevel() + 1);
         this.setExpToNextLevel(getExpToNextLevel() * 2.5f);
 
+        /*
         // Update skills.
         switch (getLevel())
         {
+
             case 3:
                 getSkills().add(new Skill(
                     "Charged Slash",
@@ -104,6 +112,17 @@ public class Warrior extends Player
                     2.0f,
                     28.0f));
                 break;
+        }
+         */
+
+        //Update magic.
+        switch (getLevel())
+        {
+            case 3:
+                getMagics().add(new Magic(
+                    "Minor Heal",
+                    "Heals the warrior for at least 60HP.",
+                    60.0f, 20.0f, true));
         }
 
         // Check if the player leveled up again.
