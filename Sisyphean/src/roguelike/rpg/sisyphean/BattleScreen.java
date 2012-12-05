@@ -1,5 +1,8 @@
 package roguelike.rpg.sisyphean;
 
+import sofia.graphics.Color;
+import sofia.graphics.RectangleShape;
+import sofia.graphics.ShapeView;
 import android.graphics.RectF;
 import sofia.graphics.ImageShape;
 import android.util.Log;
@@ -28,6 +31,8 @@ public class BattleScreen extends ShapeScreen
 
     private Button attack, escape;
     private TextView healthPoints, manaPoints;
+    private ShapeView shapeView1, shapeView2;
+    private RectangleShape healthRect, manaRect;
 
     /**
      * Called when the battle starts.
@@ -56,6 +61,17 @@ public class BattleScreen extends ShapeScreen
         this.player.setInitialBattlePosition(this.getWidth() * 2.0f / 3.0f - player.getBattleSprite().getImageShape().getWidth() / 2.0f);
         this.player.getBattleSprite().setPosition(player.getInitialBattlePosition(),
                                              this.getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
+
+        float health = player.getHealth();
+        float mana = player.getMana();
+        healthRect = new RectangleShape(0, 0, shapeView2.getWidth(),
+            shapeView2.getHeight());
+        healthRect.setColor(Color.green);
+        shapeView2.add(healthRect);
+        manaRect = new RectangleShape(0, shapeView2.getHeight() - 10,
+            shapeView2.getWidth(), shapeView2.getHeight());
+        manaRect.setColor(Color.blue);
+        shapeView1.add(manaRect);
     }
 
     @Override
@@ -87,6 +103,22 @@ public class BattleScreen extends ShapeScreen
     public void escapeClicked()
     {
         // To be implemented.
+        // present(GameScreen.class);
+    }
+
+    // ----------------------------------------------------------
+    /**
+     * Called when the magic button is clicked and attacks the enemy with magic.
+     */
+    public void magicClicked()
+    {
+        // Make other buttons appear
+
+        // for (Magic magic : this.getMagics())
+            // if magic.getName.equals("String of magic clicked")
+                // clicked = magic;
+                // break;
+        // player.castMagic(magic);
     }
 
     public void playerAttackDone()
