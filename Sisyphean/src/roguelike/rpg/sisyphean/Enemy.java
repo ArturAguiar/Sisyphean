@@ -39,13 +39,11 @@ public class Enemy extends Character
         type = EnemyType.values()[ rand.nextInt(EnemyType.values().length) ];
 
         //this.setLevel(rand.nextInt(floor * 10 - 9, floor * 10 + 1));
-        this.setLevel(2);
+        this.setLevel(4);
 
         switch (type)
         {
             case ZOMBIE:
-            case HARPY:
-            case RAT:
                 this.setName("Zombie");
                 this.setDescription("A flesh eating undead creature.");
                 this.experienceGiven = 5.0f + getLevel() * 4.5f;
@@ -58,10 +56,30 @@ public class Enemy extends Character
                     new Sprite(R.drawable.zombie_single, 32, 32, 1, 1,
                                gameWorld.getDisplayMetrics().density));
                 this.setBattleSprite(
-                    new Sprite(R.drawable.zombie_battle_sheet, 800, 400, 8, 4,
+                    new Sprite(R.drawable.zombie_battle_sheet, 800, 500, 8, 5,
                                gameWorld.getDisplayMetrics().density));
                 this.getBattleSprite().setRow(2);
                 Log.v("Enemy", "Zombie level " + this.getLevel() + " created!");
+                break;
+
+            case RAT:
+            case SKELETON:
+                this.setName("Skeleton");
+                this.setDescription("A scary skinny white thingy.");
+                this.experienceGiven = 5.0f + getLevel() * 4.5f;
+                this.setMaxHealth(20.0f + getLevel() * 2.2f );
+                //this.setMaxStamina(25.0f);
+                this.setStrength(20.0f + getLevel() * 12.0f );
+                this.setDexterity(8.0f + getLevel() * 5.0f );
+                this.setDefense(10.0f + getLevel() * 2.0f );
+                this.setMazeSprite(
+                    new Sprite(R.drawable.skeleton_single, 32, 32, 1, 1,
+                               gameWorld.getDisplayMetrics().density));
+                this.setBattleSprite(
+                    new Sprite(R.drawable.skeleton_battle_sheet, 800, 500, 8, 5,
+                               gameWorld.getDisplayMetrics().density));
+                this.getBattleSprite().setRow(2);
+                Log.v("Enemy", "Skeleton level " + this.getLevel() + " created!");
                 break;
         }
 
@@ -116,14 +134,14 @@ public class Enemy extends Character
                     break;
 
                 case ATTACKING:
-                    if (!attackCalled && battleFrame >= 3.0f)
+                    if (!attackCalled && battleFrame >= 4.0f)
                     {
                         attackCalled = true;
                         // Make a callback to the BattleScreen to let it know that the attack was performed.
                         if (this.getBattleObserver() != null)
                             this.getBattleObserver().enemyAttackDone();
                     }
-                    else if (battleFrame >= 6.0f)
+                    else if (battleFrame >= 8.0f)
                     {
                         battleFrame = 0.0f;
                         this.setBattleAction(BattleAction.IDLE);

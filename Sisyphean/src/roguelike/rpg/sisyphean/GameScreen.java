@@ -147,8 +147,6 @@ public class GameScreen extends ShapeScreen
 
         }
 
-        shapeView.add(gameWorld.getPlayer().getMazeSprite().getImageShape());
-        gameWorld.getPlayer().getMazeSprite().getImageShape().setZIndex(10);
 
         shapeView.add(new ImageShape("stairs",
             cellSize * maze.exitColumn(),
@@ -156,6 +154,10 @@ public class GameScreen extends ShapeScreen
             cellSize * (maze.exitColumn() + 1),
             cellSize * (maze.exitRow() + 1)));
 
+        shapeView.add(gameWorld.getPlayer().getMazeSprite().getImageShape());
+        gameWorld.getPlayer().getMazeSprite().getImageShape().setZIndex(2);
+
+        // Re-enable repaint and repaint the view.
         shapeView.setAutoRepaint(true);
         shapeView.repaint();
     }
