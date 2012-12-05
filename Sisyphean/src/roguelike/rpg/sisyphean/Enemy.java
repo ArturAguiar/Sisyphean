@@ -16,6 +16,8 @@ public class Enemy extends Character
 {
     private EnemyType type;
 
+    private float experienceGiven;
+
     private String description;
 
     private boolean attackCalled = false;
@@ -36,7 +38,8 @@ public class Enemy extends Character
         // Randomizes an enemy type.
         type = EnemyType.values()[ rand.nextInt(EnemyType.values().length) ];
 
-        this.setLevel(rand.nextInt(floor * 10 - 9, floor * 10 + 1));
+        //this.setLevel(rand.nextInt(floor * 10 - 9, floor * 10 + 1));
+        this.setLevel(2);
 
         switch (type)
         {
@@ -45,8 +48,9 @@ public class Enemy extends Character
             case RAT:
                 this.setName("Zombie");
                 this.setDescription("A flesh eating undead creature.");
+                this.experienceGiven = 5.0f + getLevel() * 4.5f;
                 this.setMaxHealth(20.0f + getLevel() * 2.2f );
-                this.setMaxStamina(25.0f);
+                //this.setMaxStamina(25.0f);
                 this.setStrength(20.0f + getLevel() * 12.0f );
                 this.setDexterity(8.0f + getLevel() * 5.0f );
                 this.setDefense(10.0f + getLevel() * 2.0f );
@@ -112,7 +116,7 @@ public class Enemy extends Character
                     break;
 
                 case ATTACKING:
-                    if (!attackCalled  && battleFrame >= 3.0f)
+                    if (!attackCalled && battleFrame >= 3.0f)
                     {
                         attackCalled = true;
                         // Make a callback to the BattleScreen to let it know that the attack was performed.
@@ -153,8 +157,8 @@ public class Enemy extends Character
     @Override
     public void attack()
     {
-        this.setBattleAction(BattleAction.MOVING);
         this.attackMove = gameWorld.getDisplayMetrics().widthPixels / 3.0f;
+        this.setBattleAction(BattleAction.MOVING);
     }
 
     /**
@@ -186,12 +190,20 @@ public class Enemy extends Character
             {
                 this.setBattleAction(BattleAction.DEAD);
                 this.getBattleObserver().enemyDied();
+                this.setMazeSprite(new Sprite(
+                    R.drawable.bones, 32, 32, 1, 1,
+                    gameWorld.getDisplayMetrics().density));
             }
 
             return damageDone;
         }
 
         return 0.0f;
+    }
+
+    public float getExperienceGiven()
+    {
+        return experienceGiven;
     }
 
     // ----------------------------------------------------------

@@ -29,7 +29,7 @@ public class Wizard
 
         this.setMaxHealth(120.0f);
         this.setMaxMana(100.0f);
-        this.setMaxStamina(120.0f);
+        //this.setMaxStamina(120.0f);
 
         // I swapped the strength and intelligence skill number.
         // Change them if you need to!
@@ -61,14 +61,16 @@ public class Wizard
             2.0f,
             new Sprite(R.drawable.prisoner_garments,
                        96, 128, 3, 4,
-                       gameWorld.getDisplayMetrics().density)));
-        this.getArmor().getMazeSprite().setPosition(x, y);
+                       gameWorld.getDisplayMetrics().density),
+                       gameWorld));
+        this.getArmor().getMazeIcon().setPosition(x, y);
         // Anyway to change to a staff or rod??
         // -tk
         this.setWeapon(new Weapon(
             "Rusty Dagger",
             "If tetanus killed quickly, this would actually be half-decent.",
-            6.0f));
+            6.0f,
+            gameWorld));
         this.getWeapon().addBonusDamage("ZOMBIE", 2.0f);
     }
 
@@ -78,7 +80,7 @@ public class Wizard
         // I changed the stats so that it would make sense for a wizard class.
         // Increase statuses.
         this.setMaxHealth(getMaxHealth() + 13.0f);
-        this.setMaxStamina(getMaxStamina() + 12.0f);
+        //this.setMaxStamina(getMaxStamina() + 12.0f);
         this.setMaxMana(getMaxMana() + 13.0f);
         this.setStrength(getStrength() + 8.0f);
         this.setDefense(getDefense() + 12.0f);
@@ -90,6 +92,7 @@ public class Wizard
         this.setExpToNextLevel(getExpToNextLevel() * 2.5f);
 
         // Update skills.
+        /*
         switch (getLevel())
         {
             case 3:
@@ -108,6 +111,7 @@ public class Wizard
                     28.0f));
                 break;
         }
+        */
 
         // Check if the player leveled up again.
         if ( getExperience() >= getExpToNextLevel() )

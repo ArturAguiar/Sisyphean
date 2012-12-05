@@ -21,13 +21,17 @@ public class Weapon extends Item
      * @param name The name of this weapon
      * @param description The description of this weapon.
      * @param damage The damage bonus given by this weapon.
+     * @param gameWorld The Game World
      */
-    public Weapon(String name, String description, float damage)
+    public Weapon(String name, String description, float damage, GameWorld gameWorld)
     {
         this.setName(name);
         this.setDescription(description);
         this.damage = damage;
         this.bonusDamage = new HashMap<String, Float>();
+
+        setMazeIcon(new Sprite(R.drawable.sword, 70, 70, 1, 1,
+            gameWorld.getDisplayMetrics().density));
     }
 
     /**

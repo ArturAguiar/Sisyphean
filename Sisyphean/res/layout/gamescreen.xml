@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/down"
             android:layout_toLeftOf="@+id/down"
-            android:text="l" />
+            android:text="&lt;" />
 
         <Button
             android:id="@+id/right"

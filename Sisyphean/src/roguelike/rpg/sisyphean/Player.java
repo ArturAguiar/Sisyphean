@@ -1,7 +1,6 @@
 package roguelike.rpg.sisyphean;
 
 import android.util.Log;
-import roguelike.rpg.sisyphean.Character.BattleAction;
 import android.graphics.PointF;
 
 /**
@@ -32,8 +31,6 @@ abstract public class Player extends Character
 
     private boolean attackCalled = false;
 
-    private float battleFrame = 0.0f;
-
     private int currentCellX = 0;
     private int currentCellY = 0;
 
@@ -49,7 +46,7 @@ abstract public class Player extends Character
     public void update()
     {
         // Update the armor location to always be covering the character.
-        this.getArmor().getMazeSprite().setPosition(getPosition().x, getPosition().y);
+        this.getArmor().getMazeIcon().setPosition(getPosition().x, getPosition().y);
 
         int tempFrame = 0;
 
@@ -67,6 +64,7 @@ abstract public class Player extends Character
                 moveBy.set(moveBy.x, moveBy.y - moveSpeed);
                 if (moveBy.y < 0.0f)
                 {
+                    this.getMazeSprite().move(0.0f, moveBy.y);
                     moveBy.set(moveBy.x, 0.0f);
                 }
             }
@@ -76,6 +74,7 @@ abstract public class Player extends Character
                 moveBy.set(moveBy.x, moveBy.y + moveSpeed);
                 if (moveBy.y > 0.0f)
                 {
+                    this.getMazeSprite().move(0.0f, moveBy.y);
                     moveBy.set(moveBy.x, 0.0f);
                 }
             }
@@ -85,6 +84,7 @@ abstract public class Player extends Character
                 moveBy.set(moveBy.x - moveSpeed, moveBy.y);
                 if (moveBy.x < 0.0f)
                 {
+                    this.getMazeSprite().move(moveBy.x, 0.0f);
                     moveBy.set(0.0f, moveBy.y);
                 }
             }
@@ -94,6 +94,7 @@ abstract public class Player extends Character
                 moveBy.set(moveBy.x + moveSpeed, moveBy.y);
                 if (moveBy.x > 0.0f)
                 {
+                    this.getMazeSprite().move(moveBy.x, 0.0f);
                     moveBy.set(0.0f, moveBy.y);
                 }
             }
@@ -114,7 +115,7 @@ abstract public class Player extends Character
             }
 
             this.getMazeSprite().setCol(tempFrame);
-            this.getArmor().getMazeSprite().setCol(tempFrame);
+            this.getArmor().getMazeIcon().setCol(tempFrame);
 
             walkFrame += 0.25f;
 
@@ -198,6 +199,22 @@ abstract public class Player extends Character
                         this.setAlive(false);
                     }
                     break;
+
+                case CASTING:
+                    if (!attackCalled && battleFrame >= 4.0f)
+                    {
+                        attackCalled = true;
+                        // Make a callback to the BattleScreen to let it know that the attack was performed.
+                        if (this.getBattleObserver() != null)
+                            this.getBattleObserver().playerCastingDone();
+                    }
+                    else if (battleFrame >= 8.0f)
+                    {
+                        battleFrame = 0.0f;
+                        this.setBattleAction(BattleAction.IDLE);
+                        attackCalled = false;
+                    }
+                    break;
             }
         }
 
@@ -213,6 +230,14 @@ abstract public class Player extends Character
         }
     }
 
+    public void castMagic()
+    {
+        if (battleAction == BattleAction.IDLE)
+        {
+            this.setBattleAction(BattleAction.CASTING);
+        }
+    }
+
     /**
     * The method called when the player gets hit by an enemy.
     * The damage returned by this method will be displayed over the enemy when
@@ -223,7 +248,7 @@ abstract public class Player extends Character
     public float wasHit(Enemy enemy)
     {
         // TODO: This is probably not the best way to calculate things...
-        float damageDone = enemy.getStrength() - getDefense();
+        float damageDone = enemy.getStrength() - getDefense() - this.getArmor().getDefense();
 
         Log.v("Player", "Damage received: " + damageDone);
 
@@ -336,7 +361,6 @@ abstract public class Player extends Character
     /**
     * The player's weapon setter.
     * @param weapon The new weapon for the player to equip.
-    * @param amount The amount by which the player moves
     */
     public void setWeapon(Weapon weapon)
     {
@@ -387,7 +411,7 @@ abstract public class Player extends Character
             }
             walking = true;
             this.getMazeSprite().setRow(facing.ordinal());
-            this.getArmor().getMazeSprite().setRow(facing.ordinal());
+            this.getArmor().getMazeIcon().setRow(facing.ordinal());
         }
     }
 

@@ -15,12 +15,14 @@ public class PlayerTest extends TestCase
 {
     private Player sisyphean;
     private Enemy thatHillAndBoulderCombo;
+    private GameWorld newGameWorld;
+
     /**
      * Instantiates a new player object.
      */
     public void setUp()
     {
-        GameWorld newGameWorld = new GameWorld();
+        newGameWorld = new GameWorld();
         newGameWorld.getDisplayMetrics().setToDefaults();
         sisyphean = new Warrior("Brutus", 0, 0, newGameWorld);
 
@@ -141,7 +143,7 @@ public class PlayerTest extends TestCase
       assertEquals("Rusty Dagger", sisyphean.getWeapon().getName());
 
       Weapon waterBlade = new Weapon("Waters Edge", "Hard to handle, " +
-      		"but will definitely rain on their parade", 30);
+      		"but will definitely rain on their parade", 30, newGameWorld);
       sisyphean.setWeapon(waterBlade);
       assertEquals("Waters Edge", sisyphean.getWeapon().getName());
     }

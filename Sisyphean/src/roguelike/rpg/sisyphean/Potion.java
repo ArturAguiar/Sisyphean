@@ -22,10 +22,21 @@ public class Potion extends Item
     /**
      * Create a new Potion object.
      * @param potionType The type of potion being created
+     * @param gameWorld The GameWorld
      */
-    public Potion(PotionType potionType)
+    public Potion(PotionType potionType, GameWorld gameWorld)
     {
         type = potionType;
+        if (potionType == PotionType.HEALTH)
+        {
+            setMazeIcon(new Sprite(R.drawable.health_potion, 70, 70, 1, 1,
+                gameWorld.getDisplayMetrics().density));
+        }
+        else
+        {
+            setMazeIcon(new Sprite(R.drawable.mana_potion, 70, 70, 1, 1,
+                gameWorld.getDisplayMetrics().density));
+        }
     }
 
     /**
