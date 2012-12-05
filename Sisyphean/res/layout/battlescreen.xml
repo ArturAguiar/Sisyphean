@@ -5,47 +5,63 @@
 
     <Button
         android:id="@+id/escape"
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="24dp"
         android:text="Escape" />
 
     <Button
-        android:id="@+id/attack"
+        android:id="@+id/magic"
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/escape"
-        android:layout_alignRight="@+id/escape"
-        android:text="Attack" />
+        android:layout_alignParentLeft="true"
+        android:text="Magic" />
 
-    <TextView
-        android:id="@+id/healthPoints"
+    <Button
+        android:id="@+id/attack"
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/attack"
-        android:layout_alignBottom="@+id/attack"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:text="100/100"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_above="@+id/magic"
+        android:layout_alignParentLeft="true"
+        android:text="Attack" />
 
     <TextView
         android:id="@+id/manaPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/healthPoints"
-        android:layout_alignTop="@+id/escape"
+        android:layout_above="@+id/escape"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
         android:text="50/50"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
+
+    <TextView
+        android:id="@+id/healthPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/magic"
+        android:layout_alignRight="@+id/manaPoints"
+        android:text="100/100"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
     <sofia.graphics.ShapeView
-        android:id="@+id/shapeView"
+        android:id="@+id/shapeView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/attack"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" />
+
+    <sofia.graphics.ShapeView
+        android:id="@+id/shapeView2"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:layout_alignBottom="@+id/manaPoints"
+        android:layout_toLeftOf="@+id/healthPoints" />
 
 </RelativeLayout>

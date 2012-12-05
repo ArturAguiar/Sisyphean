@@ -1,6 +1,5 @@
 package roguelike.rpg.sisyphean;
 
-import java.util.ArrayList;
 import sofia.util.Random;
 
 // -------------------------------------------------------------------------
@@ -29,12 +28,10 @@ public class Maze
 
     private Random    rand;
 
-    public int generations;
-    public boolean generated;
+    private int generations;
+    private boolean generated;
 
     private int counter;
-    private ArrayList<Cell> roomCells;
-
 
     // ----------------------------------------------------------
     /**
@@ -58,7 +55,7 @@ public class Maze
         else
         {
             // TODO: Determine size proportionality (10log(floor + 10)?)
-            floorSize = (int)(10 * Math.log10(floor + 10));
+            floorSize = (int)(10 * Math.log(floor + 11) - 14);
             grid = new Cell[floorSize][floorSize];
             this.floor = floor;
         }
@@ -71,7 +68,6 @@ public class Maze
         }
 
         counter = 0;
-        roomCells = new ArrayList<Cell>();
 
         generations = 0;
         generated = false;
@@ -208,16 +204,6 @@ public class Maze
     {
         return counter;
     }
-
-    public int fs()
-    {
-        return ((floorSize * floorSize) * 9 / 10);
-    }
-
-    public ArrayList<Cell> roomCells()
-    {
-        return roomCells;
-    }
 */
 
     /**
@@ -268,7 +254,6 @@ public class Maze
      */
     private void patch()
     {
-        //patched = 0;
         for (Cell[] column : grid)
         {
             for (Cell cell : column)
@@ -314,7 +299,6 @@ public class Maze
      */
     private void openRooms()
     {
-        //TODO: Should the number of patched cells be taken into account?
         // Create floorSize - 1 rooms
         for (int i = 0; i < (floorSize - 9); i++)
         {
@@ -325,7 +309,6 @@ public class Maze
                 if(cell != null)
                 {
                     destroyWalls(cell);
-                    roomCells.add(cell);
                 }
             }
         }
@@ -388,7 +371,6 @@ public class Maze
     private void placeItems()
     {
         // TODO: Determine how may items per floor. Right now is just floorsize/2
-        // TODO: Implement a constructor for Item
         /*int items = 0;
         while (items < floorSize / 2)
         {

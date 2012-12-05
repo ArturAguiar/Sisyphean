@@ -167,13 +167,14 @@ public class GameScreen extends ShapeScreen
             event.getY() > cellSize * maze.exitRow() &&
             event.getY() < cellSize * (maze.exitRow() + 1))
         {
+            this.clear();
             presentScreen(GameScreen.class, Character.PlayerType.WARRIOR, ++currentFloor);
             finish();
         }
         else
         {
             // Pops up a toast with information for testing purposes
-            //Toast.makeText(this, "" + maze.fs() + ", " + maze.counter() + ", " + maze.generations + ", " + maze.generated, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, maze.counter(), Toast.LENGTH_LONG).show();
         }
     }
 
