@@ -54,7 +54,6 @@ public class Maze
         }
         else
         {
-            // TODO: Determine size proportionality (10log(floor + 10)?)
             floorSize = (int)(10 * Math.log(floor + 11) - 14);
             grid = new Cell[floorSize][floorSize];
             this.floor = floor;
@@ -371,21 +370,31 @@ public class Maze
     private void placeItems()
     {
         // TODO: Determine how may items per floor. Right now is just floorsize/2
-        /*int items = 0;
+        int items = 0;
         while (items < floorSize / 2)
         {
             //Get a random cell for the item to be placed in
             Cell cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
             //If that cell is either of the start or exit cells, pick a new cell until it's not
-            while ((cell.x() == startX || cell.y() == startY)
-                && (cell.x() == exitX || cell.y() == exitY))
+            while ((cell.x() == startX && cell.y() == startY)
+                || (cell.x() == exitX && cell.y() == exitY)
+                || cell.getEnemy() != null)
             {
                 cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
             }
             //Store the item in the cell
-            cell.setItem(new Item());
+            cell.setItem(new Potion(PotionType.MANA, gameWorld)); //Use Willie's stuff to determin what type of item gets made
             items++;
-        }*/
+        }
+
+        // Testing for creating & drawing items
+        /*grid[0][0].setItem(new Potion(PotionType.HEALTH, gameWorld));
+        grid[0][1].setItem(new Potion(PotionType.MANA, gameWorld));
+        grid[0][2].setItem(new Weapon("Doombringer", "The ultimate foe-slaying force!", 2.0f, gameWorld));
+        grid[0][3].setItem(new Armor("Iron Abs",
+            "A chestplate that shows off your muscles!",
+            2.0f,
+            new Sprite(R.drawable.chestplate, 70, 70, 1, 1, gameWorld.getDisplayMetrics().density), gameWorld));*/
     }
 
     // ----------------------------------------------------------

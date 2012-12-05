@@ -16,33 +16,6 @@
         <requestFocus />
     </EditText>
 
-    <CheckBox
-        android:id="@+id/ranger"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/name"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="33dp"
-        android:text="Ranger" />
-
-    <CheckBox
-        android:id="@+id/warrior"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/ranger"
-        android:layout_alignLeft="@+id/ranger"
-        android:layout_marginBottom="29dp"
-        android:text="Warrior" />
-
-    <CheckBox
-        android:id="@+id/mage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/warrior"
-        android:layout_alignLeft="@+id/warrior"
-        android:layout_marginBottom="18dp"
-        android:text="Mage" />
-
     <Button
         android:id="@+id/submit"
         android:layout_width="wrap_content"
@@ -51,5 +24,29 @@
         android:layout_marginLeft="51dp"
         android:layout_toRightOf="@+id/name"
         android:text="Submit" />
+
+    <CheckBox
+        android:id="@+id/archer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/name"
+        android:layout_centerVertical="true"
+        android:text="Archer" />
+
+    <CheckBox
+        android:id="@+id/warrior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/archer"
+        android:layout_below="@+id/archer"
+        android:text="Warrior" />
+
+    <CheckBox
+        android:id="@+id/wizard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/archer"
+        android:layout_below="@+id/warrior"
+        android:text="Wizard" />
 
 </RelativeLayout>

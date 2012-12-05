@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import android.graphics.PointF;
+
 /**
  *  The Item abstract superclass.
  *  An item can be a: weapon, armor, potion...
@@ -11,6 +13,7 @@ abstract public class Item
 {
     private String name;
     private String description;
+    private Sprite mazeIcon;
 
 
     /**
@@ -49,5 +52,44 @@ abstract public class Item
         this.description = description;
     }
 
+    /**
+     * Returns an image of the sprite.
+     * @return ImageShape The image of the sprite
+     */
+    public Sprite getMazeIcon()
+    {
+        return mazeIcon;
+    }
 
+    /**
+     * Sets the image of the sprite.
+     * @param mazeSprite Sets the maze sprite image
+     */
+    public void setMazeIcon(Sprite mazeSprite)
+    {
+        this.mazeIcon = mazeSprite;
+    }
+
+    /**
+     * Returns this character's position, which is the same as the position of
+     * it's sprite.
+     * @return The character's position.
+     */
+    public PointF getPosition()
+    {
+        return getMazeIcon().getPosition();
+    }
+
+    /**
+     * Changes the characters position by changing its sprite position.
+     * @param x The x coordinate of the new position.
+     * @param y The y coordinate of the new position.
+     */
+    public void setPosition(float x, float y)
+    {
+        if (getMazeIcon() != null)
+        {
+            this.getMazeIcon().setPosition(x, y);
+        }
+    }
 }

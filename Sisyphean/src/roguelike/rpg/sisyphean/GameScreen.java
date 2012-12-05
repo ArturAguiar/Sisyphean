@@ -49,7 +49,11 @@ public class GameScreen extends ShapeScreen
             case WARRIOR:
                 gameWorld.setPlayer(new Warrior("John Doe", 250.0f, 250.0f, gameWorld));
                 break;
-
+            case WIZARD:
+                gameWorld.setPlayer(new Wizard("John Doe", 250.0f, 250.0f, gameWorld));
+                break;
+            case ARCHER:
+                gameWorld.setPlayer(new Archer("John Doe", 250.0f, 250.0f, gameWorld));
             default:
                 break;
         }
@@ -86,14 +90,12 @@ public class GameScreen extends ShapeScreen
         float left = 0;
 
         // Load all images only once instead of inside the loop.
-        Image groundImage = new Image(R.drawable.ground);
-        Image backImage = new Image(R.drawable.back);
-        Image rightImage = new Image(R.drawable.right);
-        Image rightFrontImage = new Image(R.drawable.right_front);
-        Image leftImage = new Image(R.drawable.left);
-        Image leftFrontImage = new Image(R.drawable.left_front);
-        Image bones = new Image(R.drawable.bones);
-
+        Image groundImage = new Image("ground");
+        Image backImage = new Image("back");
+        Image rightImage = new Image("right");
+        Image rightFrontImage = new Image("right_front");
+        Image leftImage = new Image("left");
+        Image leftFrontImage = new Image("left_front");
         shapeView.setAutoRepaint(false);
 
         for ( int row = 0; row < maze.floorSize(); row++)
@@ -111,10 +113,6 @@ public class GameScreen extends ShapeScreen
                 position.set(left, top, right, bottom);
 
                 shapeView.add(new ImageShape(groundImage, position));
-                /*if (maze.roomCells().contains(maze.getCell(col, row)))
-                {
-                    shapeView.add(new ImageShape(new Image("ic_action_search"), position));
-                }*/
 
                 if (maze.getCell(col, row).getWalls()[0]) //top wall
                 {
@@ -143,17 +141,25 @@ public class GameScreen extends ShapeScreen
                     maze.getCell(col, row).getEnemy().getMazeSprite().setSize(cellSize * 0.8f);
                     shapeView.add(maze.getCell(col, row).getEnemy().getMazeSprite().getImageShape());
                 }
+
+                if (maze.getCell(col, row).getItem() != null)
+                {
+                    maze.getCell(col, row).getItem().setPosition(left + cellSize * 0.2f, top + cellSize * 0.3f);
+                    maze.getCell(col, row).getItem().getMazeIcon().setSize(cellSize * 0.8f);
+                    shapeView.add(maze.getCell(col, row).getItem().getMazeIcon().getImageShape());
+                }
             }
 
         }
 
-
+        // Draw stairs
         shapeView.add(new ImageShape("stairs",
             cellSize * maze.exitColumn(),
             cellSize * maze.exitRow(),
             cellSize * (maze.exitColumn() + 1),
             cellSize * (maze.exitRow() + 1)));
 
+        // Add the player.
         shapeView.add(gameWorld.getPlayer().getMazeSprite().getImageShape());
         gameWorld.getPlayer().getMazeSprite().getImageShape().setZIndex(2);
 

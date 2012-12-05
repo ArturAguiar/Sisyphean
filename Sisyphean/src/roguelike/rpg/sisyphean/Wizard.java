@@ -61,14 +61,16 @@ public class Wizard
             2.0f,
             new Sprite(R.drawable.prisoner_garments,
                        96, 128, 3, 4,
-                       gameWorld.getDisplayMetrics().density)));
-        this.getArmor().getMazeSprite().setPosition(x, y);
+                       gameWorld.getDisplayMetrics().density),
+                       gameWorld));
+        this.getArmor().getMazeIcon().setPosition(x, y);
         // Anyway to change to a staff or rod??
         // -tk
         this.setWeapon(new Weapon(
             "Rusty Dagger",
             "If tetanus killed quickly, this would actually be half-decent.",
-            6.0f));
+            6.0f,
+            gameWorld));
         this.getWeapon().addBonusDamage("ZOMBIE", 2.0f);
     }
 

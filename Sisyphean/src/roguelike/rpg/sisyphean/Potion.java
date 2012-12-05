@@ -22,10 +22,21 @@ public class Potion extends Item
     /**
      * Create a new Potion object.
      * @param potionType The type of potion being created
+     * @param gameWorld The GameWorld
      */
-    public Potion(PotionType potionType)
+    public Potion(PotionType potionType, GameWorld gameWorld)
     {
         type = potionType;
+        if (potionType == PotionType.HEALTH)
+        {
+            setMazeIcon(new Sprite(R.drawable.health_potion, 70, 70, 1, 1,
+                gameWorld.getDisplayMetrics().density));
+        }
+        else
+        {
+            setMazeIcon(new Sprite(R.drawable.mana_potion, 70, 70, 1, 1,
+                gameWorld.getDisplayMetrics().density));
+        }
     }
 
     /**
@@ -43,7 +54,7 @@ public class Potion extends Item
      * of the player's stat, or the full stat.
      * @return boolean Whether the potion fully restores a player's stat
      */
-    public boolean fullRestore()
+    public static boolean fullRestore()
     {
         Random rand = new Random();
         return rand.nextInt(100) == 0;

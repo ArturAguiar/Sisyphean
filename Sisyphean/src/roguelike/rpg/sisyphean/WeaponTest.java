@@ -13,15 +13,17 @@ import junit.framework.TestCase;
 public class WeaponTest extends TestCase
 {
     private Weapon silverSword;
+    private GameWorld gameWorld;
 
     /**
      * Instantiates a new weapon object.
      */
     public void setUp()
     {
+        gameWorld = new GameWorld();
         silverSword = new Weapon("Wicked sword of Magror", "This sword " +
       		    "raises the chance of fearing the target for one attack turn",
-      		    45);
+      		    45, gameWorld);
     }
 
     //Methods.

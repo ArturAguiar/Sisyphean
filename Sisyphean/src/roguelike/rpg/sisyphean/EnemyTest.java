@@ -39,7 +39,8 @@ public class EnemyTest extends TestCase
         /*
          * Weapon for sisyphean to use during battle against enemy in this case
          */
-        darkSword = new Weapon("Bumblebee", "Stings the opponent", 30);
+        darkSword = new Weapon("Bumblebee", "Stings the opponent", 30,
+            newGameWorld);
         darkSword.addBonusDamage(EnemyType.ZOMBIE.toString(), 15.0F);
     }
 

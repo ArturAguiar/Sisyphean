@@ -26,14 +26,18 @@ public class Armor extends Item
      * @param description The description of this armor.
      * @param defense The defense bonus given by this armor.
      * @param mazeSprite The sprite displayed when not in battle mode.
+     * @param gameWorld The GameWorld
      */
-    public Armor(String name, String description, float defense, Sprite mazeSprite)
+    public Armor(String name, String description, float defense, Sprite mazeSprite, GameWorld gameWorld)
     {
         this.setName(name);
         this.setDescription(description);
         this.defense = defense;
         this.mazeSprite = mazeSprite;
         this.mazeSprite.setCol(1);
+
+        setMazeIcon(new Sprite(R.drawable.chestplate, 70, 70, 1, 1,
+            gameWorld.getDisplayMetrics().density));
     }
 
     /**

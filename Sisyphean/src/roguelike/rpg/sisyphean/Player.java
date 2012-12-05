@@ -46,7 +46,7 @@ abstract public class Player extends Character
     public void update()
     {
         // Update the armor location to always be covering the character.
-        this.getArmor().getMazeSprite().setPosition(getPosition().x, getPosition().y);
+        this.getArmor().getMazeIcon().setPosition(getPosition().x, getPosition().y);
 
         int tempFrame = 0;
 
@@ -115,7 +115,7 @@ abstract public class Player extends Character
             }
 
             this.getMazeSprite().setCol(tempFrame);
-            this.getArmor().getMazeSprite().setCol(tempFrame);
+            this.getArmor().getMazeIcon().setCol(tempFrame);
 
             walkFrame += 0.25f;
 
@@ -411,7 +411,7 @@ abstract public class Player extends Character
             }
             walking = true;
             this.getMazeSprite().setRow(facing.ordinal());
-            this.getArmor().getMazeSprite().setRow(facing.ordinal());
+            this.getArmor().getMazeIcon().setRow(facing.ordinal());
         }
     }
 
@@ -485,14 +485,30 @@ abstract public class Player extends Character
             case HEALTH:
                 if (healthPotions > 0)
                 {
-                    setHealth(getHealth() + getMaxHealth() * 0.25f);
+                    if (Potion.fullRestore())
+                    {
+                        setHealth(getMaxHealth());
+                    }
+                    else
+                    {
+                        setHealth(getHealth() + getMaxHealth() * 0.25f);
+                    }
+                    healthPotions--;
                 }
                 break;
 
             case MANA:
                 if (healthPotions > 0)
                 {
-                    setHealth(getHealth() + getMaxHealth() * 0.25f);
+                    if (Potion.fullRestore())
+                    {
+                        setMana(getMaxMana());
+                    }
+                    else
+                    {
+                        setMana(getMana() + getMaxMana() * 0.25f);
+                    }
+                    manaPotions--;
                 }
                 break;
         }
