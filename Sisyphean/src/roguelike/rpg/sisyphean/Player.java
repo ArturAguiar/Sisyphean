@@ -26,7 +26,7 @@ abstract public class Player extends Character
     private float walkFrame = 1.0f;
     private boolean walking = false;
 
-    private float moveSpeed = 0.5f;
+    private float moveSpeed = 1.5f;
 
     private PointF moveBy = new PointF();
 
@@ -37,6 +37,8 @@ abstract public class Player extends Character
     private int currentCellX = 0;
     private int currentCellY = 0;
 
+    private int healthPotions = 0;
+    private int manaPotions = 0;
 
     /**
     * Method to be called when the player levels up.
@@ -114,7 +116,7 @@ abstract public class Player extends Character
             this.getMazeSprite().setCol(tempFrame);
             this.getArmor().getMazeSprite().setCol(tempFrame);
 
-            walkFrame += 0.1f;
+            walkFrame += 0.25f;
 
             if (walkFrame >= 4.0f)
             {
@@ -418,5 +420,57 @@ abstract public class Player extends Character
     {
         currentCellX = x;
         currentCellY = y;
+    }
+
+    /**
+     * Accessor for the walking boolean
+     * @return boolean Whether the player is walking
+     */
+    public boolean isWalking()
+    {
+        return walking;
+    }
+
+    /**
+     * Accessor for the number of health potions.
+     * @return int The number of potions
+     */
+    public int getHealthPotions()
+    {
+        return healthPotions;
+    }
+
+    /**
+     * Accessor for the number of mana potions.
+     * @return int The number of potions
+     */
+    public int getManaPotions()
+    {
+        return manaPotions;
+    }
+
+    // ----------------------------------------------------------
+    /**
+     * Tells the player to consume a potion .
+     * @param potion
+     */
+    public void consumePotion(PotionType potion)
+    {
+        switch (potion)
+        {
+            case HEALTH:
+                if (healthPotions > 0)
+                {
+                    setHealth(getHealth() + getMaxHealth() * 0.25f);
+                }
+                break;
+
+            case MANA:
+                if (healthPotions > 0)
+                {
+                    setHealth(getHealth() + getMaxHealth() * 0.25f);
+                }
+                break;
+        }
     }
 }

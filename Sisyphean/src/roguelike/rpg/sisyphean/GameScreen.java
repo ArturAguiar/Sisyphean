@@ -29,11 +29,7 @@ public class GameScreen extends ShapeScreen
     /**
      * Place a description of your method here.
      * @param playerClass The class of the player's character.
-<<<<<<< HEAD
      * @param floor The floor of the maze.
-=======
-     * @param floor
->>>>>>> refs/remotes/origin/master
      */
     public void initialize(Character.PlayerType playerClass, int floor)
     {
@@ -93,10 +89,6 @@ public class GameScreen extends ShapeScreen
                 position.set(left, top, right, bottom);
 
                 add(new ImageShape(groundImage, position));
-                /*if (maze.roomCells().contains(maze.getCell(col, row)))
-                {
-                    add(new ImageShape(new Image("ic_action_search"), position));
-                }*/
 
                 if (maze.getCell(col, row).getWalls()[0]) //top wall
                 {
@@ -169,13 +161,14 @@ public class GameScreen extends ShapeScreen
             event.getY() > cellSize * maze.exitRow() &&
             event.getY() < cellSize * (maze.exitRow() + 1))
         {
+            this.clear();
             presentScreen(GameScreen.class, Character.PlayerType.WARRIOR, ++currentFloor);
             finish();
         }
         else
         {
             // Pops up a toast with information for testing purposes
-            //Toast.makeText(this, "" + maze.fs() + ", " + maze.counter() + ", " + maze.generations + ", " + maze.generated, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, maze.counter(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -187,7 +180,8 @@ public class GameScreen extends ShapeScreen
     {
         int x = gameWorld.getPlayer().getCellX();
         int y = gameWorld.getPlayer().getCellY();
-        if (!maze.getCell(x, y).getWalls()[2])
+        if (!gameWorld.getPlayer().isWalking() &&
+            !maze.getCell(x, y).getWalls()[2])
         {
             if (y + 1 < maze.floorSize() &&
                 maze.getCell(x, y + 1).getEnemy() != null)
@@ -210,7 +204,8 @@ public class GameScreen extends ShapeScreen
     {
         int x = gameWorld.getPlayer().getCellX();
         int y = gameWorld.getPlayer().getCellY();
-        if (!maze.getCell(x, y).getWalls()[0])
+        if (!gameWorld.getPlayer().isWalking() &&
+            !maze.getCell(x, y).getWalls()[0])
         {
             if (y - 1 >= 0 &&
                 maze.getCell(x, y - 1).getEnemy() != null)
@@ -232,7 +227,8 @@ public class GameScreen extends ShapeScreen
     {
         int x = gameWorld.getPlayer().getCellX();
         int y = gameWorld.getPlayer().getCellY();
-        if (!maze.getCell(x, y).getWalls()[1])
+        if (!gameWorld.getPlayer().isWalking() &&
+            !maze.getCell(x, y).getWalls()[1])
         {
             if (x + 1 < maze.floorSize() &&
                 maze.getCell(x + 1, y).getEnemy() != null)
@@ -255,7 +251,8 @@ public class GameScreen extends ShapeScreen
     {
         int x = gameWorld.getPlayer().getCellX();
         int y = gameWorld.getPlayer().getCellY();
-        if (!maze.getCell(x, y).getWalls()[3])
+        if (!gameWorld.getPlayer().isWalking() &&
+            !maze.getCell(x, y).getWalls()[3])
         {
             if (x - 1 >= 0 &&
                 maze.getCell(x - 1, y).getEnemy() != null)
