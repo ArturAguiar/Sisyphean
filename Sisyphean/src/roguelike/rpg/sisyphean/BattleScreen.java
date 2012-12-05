@@ -223,6 +223,7 @@ public class BattleScreen extends ShapeScreen
 
     public void victoryAnimationEnded()
     {
+        presentScreen(GameScreen.class, gameWorld, enemy);
         this.finish();
     }
 
@@ -230,6 +231,10 @@ public class BattleScreen extends ShapeScreen
     {
         gameWorld.gameOver();
 
+        // Stop the logic thread.
+        gameWorld.getLogicThread().setRunning(false);
+
+        presentScreen(MainMenuScreen.class);
         this.finish();
     }
 
@@ -251,8 +256,6 @@ public class BattleScreen extends ShapeScreen
             healthRect.setBounds(newBounds);
             String healthString = player.getHealth() + "/" + player.getMaxHealth();
             //healthPoints.setText(healthString);
-
-
         }
     }
 
@@ -268,6 +271,7 @@ public class BattleScreen extends ShapeScreen
             //manaPoints.setText(manaString);
         }
     }
+
     private void createDamageText(int damage, float x, float y)
     {
         TextShape damageText = new TextShape("" + damage, x, y);

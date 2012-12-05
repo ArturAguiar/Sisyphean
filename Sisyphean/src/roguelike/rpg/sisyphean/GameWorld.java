@@ -28,6 +28,8 @@ public class GameWorld
 
     private Enemy enemyKilled;
 
+    private LogicThread logicThread;
+
     /**
      * Constructor of the game world.
      * There should only be one instance of this object in the whole game.
@@ -139,6 +141,16 @@ public class GameWorld
     public void setEnemyKilled(Enemy enemyKilled)
     {
         this.enemyKilled = enemyKilled;
+    }
+
+    public LogicThread getLogicThread()
+    {
+        return logicThread;
+    }
+
+    public void setLogicThread(LogicThread logicThread)
+    {
+        this.logicThread = logicThread;
     }
 
 }

@@ -421,6 +421,15 @@ public class Maze
         return floorSize;
     }
 
+    /**
+     * Returns the floor of the maze.
+     * @return The floor of this maze.
+     */
+    public int getFloor()
+    {
+        return floor;
+    }
+
 
     // -------------------------------------------------------------------------
     /**

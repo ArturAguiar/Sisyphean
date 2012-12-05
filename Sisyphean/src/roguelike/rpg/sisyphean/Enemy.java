@@ -190,6 +190,9 @@ public class Enemy extends Character
             {
                 this.setBattleAction(BattleAction.DEAD);
                 this.getBattleObserver().enemyDied();
+                this.setMazeSprite(new Sprite(
+                    R.drawable.bones, 32, 32, 1, 1,
+                    gameWorld.getDisplayMetrics().density));
             }
 
             return damageDone;
