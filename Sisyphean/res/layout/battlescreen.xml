@@ -47,9 +47,9 @@
         android:layout_alignRight="@+id/manaPoints"
         android:text="100/100"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
+
     <sofia.graphics.ShapeView
-        android:id="@+id/shapeView1"
+        android:id="@+id/shapeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/attack"

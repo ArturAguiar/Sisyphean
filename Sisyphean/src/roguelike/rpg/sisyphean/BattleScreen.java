@@ -1,5 +1,6 @@
 package roguelike.rpg.sisyphean;
 
+import sofia.app.Screen;
 import sofia.graphics.Color;
 import sofia.graphics.RectangleShape;
 import sofia.graphics.ShapeView;
@@ -52,26 +53,37 @@ public class BattleScreen extends ShapeScreen
 
         gameWorld.setBattling(true);
 
-        this.add(enemy.getBattleSprite().getImageShape());
-        this.enemy.getBattleSprite().setPosition(this.getWidth() / 3.0f - enemy.getBattleSprite().getImageShape().getWidth(),
-                                            this.getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
-        this.enemy.setInitialBattlePosition(this.getWidth() / 3.0f - enemy.getBattleSprite().getImageShape().getWidth());
+        add(enemy.getBattleSprite().getImageShape());
+        this.enemy.getBattleSprite().setPosition(getWidth() / 3.0f - enemy.getBattleSprite().getImageShape().getWidth(),
+                                            getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
+        this.enemy.setInitialBattlePosition(getWidth() / 3.0f - enemy.getBattleSprite().getImageShape().getWidth());
 
-        this.add(player.getBattleSprite().getImageShape());
-        this.player.setInitialBattlePosition(this.getWidth() * 2.0f / 3.0f - player.getBattleSprite().getImageShape().getWidth() / 2.0f);
+        add(player.getBattleSprite().getImageShape());
+        this.player.setInitialBattlePosition(getWidth() * 2.0f / 3.0f - player.getBattleSprite().getImageShape().getWidth() / 2.0f);
         this.player.getBattleSprite().setPosition(player.getInitialBattlePosition(),
-                                             this.getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
+                                             getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
 
         float health = player.getHealth();
         float mana = player.getMana();
         healthRect = new RectangleShape(0, 0, shapeView2.getWidth(),
-            shapeView2.getHeight());
+            shapeView2.getHeight()/3);
         healthRect.setColor(Color.green);
+        healthRect.setFilled(true);
+        healthRect.setFillColor(Color.green);
         shapeView2.add(healthRect);
-        manaRect = new RectangleShape(0, shapeView2.getHeight() - 10,
+        float top = (shapeView2.getHeight() / 3) * 2;
+        manaRect = new RectangleShape(0, top,
             shapeView2.getWidth(), shapeView2.getHeight());
         manaRect.setColor(Color.blue);
-        shapeView1.add(manaRect);
+        manaRect.setFilled(true);
+        manaRect.setFillColor(Color.blue);
+        shapeView2.add(manaRect);
+
+        String healthString = player.getHealth() + "/" + player.getMaxHealth();
+        healthPoints.setText(healthString);
+
+        String manaString = player.getMana() + "/" + player.getMaxMana();
+        manaPoints.setText(manaString);
     }
 
     @Override
@@ -119,6 +131,7 @@ public class BattleScreen extends ShapeScreen
                 // clicked = magic;
                 // break;
         // player.castMagic(magic);
+        // manaDecrease();
     }
 
     public void playerAttackDone()
@@ -134,7 +147,7 @@ public class BattleScreen extends ShapeScreen
     public void enemyAttackDone()
     {
         player.wasHit(enemy);
-
+        healthDecrease();
         wait = false;
     }
 
@@ -143,9 +156,9 @@ public class BattleScreen extends ShapeScreen
         enemyDied = true;
         ImageShape victoryText = new ImageShape(R.drawable.battle_victory, new RectF(0.0f, 0.0f, 279.0f, 59.0f));
         victoryText.setAlpha(0);
-        this.add(victoryText);
-        victoryText.setPosition(this.getWidth() / 2.0f - 279.0f / 2.0f,
-                                this.getHeight() / 2.0f - 59.0f / 2.0f);
+        add(victoryText);
+        victoryText.setPosition(getWidth() / 2.0f - 279.0f / 2.0f,
+                               getHeight() / 2.0f - 59.0f / 2.0f);
 
         victoryText.animate(800).delay(1000).alpha(255).play();
         player.getBattleSprite().getImageShape().animate(5800).name("victory").play();
@@ -157,9 +170,9 @@ public class BattleScreen extends ShapeScreen
         playerDied = true;
         ImageShape defeatText = new ImageShape(R.drawable.battle_defeat, new RectF(0.0f, 0.0f, 279.0f, 59.0f));
         defeatText.setAlpha(0);
-        this.add(defeatText);
-        defeatText.setPosition(this.getWidth() / 2.0f - 279.0f / 2.0f,
-                                this.getHeight() / 2.0f - 59.0f / 2.0f);
+        add(defeatText);
+        defeatText.setPosition(getWidth() / 2.0f - 279.0f / 2.0f,
+                                getHeight() / 2.0f - 59.0f / 2.0f);
 
         defeatText.animate(800).delay(1000).alpha(255).play();
         player.getBattleSprite().getImageShape().animate(5800).name("defeat").play();
@@ -190,6 +203,34 @@ public class BattleScreen extends ShapeScreen
     {
         // This is overridden so that the player can't back out of the battle
         // by pressing the back button.
+    }
+
+    public void healthDecrease()
+    {
+        if (player.getHealth() != player.getMaxHealth())
+        {
+            float currentHealthRatio = player.getHealth() / player.getMaxHealth();
+            float newRight = currentHealthRatio * shapeView2.getWidth();
+            RectF newBounds = new RectF(0, 0, newRight, shapeView2.getHeight());
+            healthRect.setBounds(newBounds);
+            String healthString = player.getHealth() + "/" + player.getMaxHealth();
+            //healthPoints.setText(healthString);
+
+
+        }
+    }
+
+    public void manaDecrease()
+    {
+        if (player.getMana() != player.getMaxMana())
+        {
+            float currentManaRatio = player.getMana() / player.getMaxMana();
+            float newRight = currentManaRatio * shapeView2.getWidth();
+            RectF newBounds = new RectF(0, 0, newRight, shapeView2.getHeight());
+            manaRect.setBounds(newBounds);
+            String manaString = player.getMana() + "/" + player.getMaxMana();
+            //manaPoints.setText(manaString);
+        }
     }
 
 }
