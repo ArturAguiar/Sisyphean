@@ -49,7 +49,11 @@ public class GameScreen extends ShapeScreen
             case WARRIOR:
                 gameWorld.setPlayer(new Warrior("John Doe", 250.0f, 250.0f, gameWorld));
                 break;
-
+            case WIZARD:
+                gameWorld.setPlayer(new Wizard("John Doe", 250.0f, 250.0f, gameWorld));
+                break;
+            case ARCHER:
+                gameWorld.setPlayer(new Archer("John Doe", 250.0f, 250.0f, gameWorld));
             default:
                 break;
         }

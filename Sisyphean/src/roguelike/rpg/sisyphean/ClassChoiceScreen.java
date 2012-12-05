@@ -19,7 +19,7 @@ import sofia.app.Screen;
  */
 public class ClassChoiceScreen extends Screen
 {
-    private CheckBox mage, warrior, ranger;
+    private CheckBox wizard, warrior, archer;
     private EditText name;
     private Button submit;
 
@@ -38,21 +38,24 @@ public class ClassChoiceScreen extends Screen
      */
     public void submitClicked()
     {
-        if (warrior.isChecked() && !(mage.isChecked() || ranger.isChecked()))
+        if (warrior.isChecked() && !(wizard.isChecked() || archer.isChecked()))
         {
+
             presentScreen(GameScreen.class, Character.PlayerType.WARRIOR, 1);
             finish();
         }
-        else if (mage.isChecked() &&
-            !(warrior.isChecked() || ranger.isChecked()))
+        else if (wizard.isChecked() &&
+            !(warrior.isChecked() || archer.isChecked()))
         {
-            // TODO
-            // Make mage class and create a mage player.
+
+            presentScreen(GameScreen.class, Character.PlayerType.WIZARD, 1);
+            finish();
         }
         else
         {
-            // TODO
-            // Make ranger class and create a ranger player.
+
+            presentScreen(GameScreen.class, Character.PlayerType.ARCHER, 1);
+            finish();
         }
     }
 

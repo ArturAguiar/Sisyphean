@@ -80,11 +80,8 @@ public class BattleScreen extends ShapeScreen
         manaRect.setFillColor(Color.blue);
         shapeView2.add(manaRect);
 
-        String healthString = player.getHealth() + "/" + player.getMaxHealth();
-        healthPoints.setText(healthString);
+        updateHP();
 
-        String manaString = player.getMana() + "/" + player.getMaxMana();
-        manaPoints.setText(manaString);
     }
 
     @Override
@@ -116,7 +113,7 @@ public class BattleScreen extends ShapeScreen
     public void escapeClicked()
     {
         // To be implemented.
-        // present(GameScreen.class);
+        presentScreen(GameScreen.class, gameWorld);
     }
 
     // ----------------------------------------------------------
@@ -246,19 +243,30 @@ public class BattleScreen extends ShapeScreen
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * This decreases the health bar when the player is hit and has taken damage.
+     */
     public void healthDecrease()
     {
         if (player.getHealth() != player.getMaxHealth())
         {
             float currentHealthRatio = player.getHealth() / player.getMaxHealth();
             float newRight = currentHealthRatio * shapeView2.getWidth();
-            RectF newBounds = new RectF(0, 0, newRight, shapeView2.getHeight());
+            if ( newRight < 0 )
+            {
+                newRight = 0;
+            }
+            RectF newBounds = new RectF(0, 0, newRight,
+                shapeView2.getHeight() / 3);
             healthRect.setBounds(newBounds);
-            String healthString = player.getHealth() + "/" + player.getMaxHealth();
-            //healthPoints.setText(healthString);
+            updateHP();
         }
     }
 
+    /**
+     * This decreases the mana bar when the player casts magic.
+     */
     public void manaDecrease()
     {
         if (player.getMana() != player.getMaxMana())
@@ -267,8 +275,7 @@ public class BattleScreen extends ShapeScreen
             float newRight = currentManaRatio * shapeView2.getWidth();
             RectF newBounds = new RectF(0, 0, newRight, shapeView2.getHeight());
             manaRect.setBounds(newBounds);
-            String manaString = player.getMana() + "/" + player.getMaxMana();
-            //manaPoints.setText(manaString);
+            updateMP();
         }
     }
 
@@ -294,6 +301,29 @@ public class BattleScreen extends ShapeScreen
         this.add(damageText);
 
         damageText.animate(800).moveBy(0.0f, -30.0f).alpha(0).removeWhenComplete().play();
+    }
+
+    /**
+     * This method changes the health textview to let the user know what their
+     * current health points are.
+     */
+    private void updateHP()
+    {
+        int currentHealth = (int) (player.getHealth());
+        int maxHealth = (int) (player.getMaxHealth());
+        String healthString = currentHealth + "/" + maxHealth;
+        healthPoints.setText(healthString);
+    }
+    /**
+     * This method changes the mana textview to let the user know what their
+     * current mana points are.
+     */
+    private void updateMP()
+    {
+        int currentMana = (int) (player.getMana());
+        int maxMana = (int) (player.getMaxMana());
+        String manaString = currentMana + "/" + maxMana;
+        manaPoints.setText(manaString);
     }
 
 }
