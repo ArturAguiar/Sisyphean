@@ -260,7 +260,7 @@ public class BattleScreen extends ShapeScreen
             RectF newBounds = new RectF(0, 0, newRight,
                 shapeView2.getHeight() / 3);
             healthRect.setBounds(newBounds);
-            updateHP();
+            //updateHP();
         }
     }
 
