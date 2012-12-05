@@ -30,12 +30,12 @@ abstract public class Character
     private float mana;
 
     // Stamina
-    private float stamina;
+    //private float stamina;
 
     // Statuses
     private float maxHealth;
     private float maxMana;
-    private float maxStamina;
+    //private float maxStamina;
     private float strength;
     private float defense;
     private float dexterity;
@@ -46,7 +46,7 @@ abstract public class Character
     public enum EnemyType { ZOMBIE, HARPY, RAT };
 
     // The action being taken in battle
-    public enum BattleAction { ATTACKING, MOVING, IDLE, HURT, DEAD };
+    public enum BattleAction { ATTACKING, MOVING, IDLE, HURT, DEAD, CASTING };
     protected BattleAction battleAction = BattleAction.IDLE;
     protected float battleFrame = 0.0f;
     protected float attackMove = 0.0f;
@@ -56,7 +56,10 @@ abstract public class Character
     private boolean alive = true;
 
     //Skills.
-    private HashSet<Skill> skills;
+    //private HashSet<Skill> skills;
+
+    //Magics.
+    private HashSet<Magic> magics;
 
 
     // Sprites
@@ -69,7 +72,6 @@ abstract public class Character
 
     // Observers
     private BattleScreen battleObserver;
-    private GameScreen mazeObserver;
 
 
 
@@ -79,7 +81,6 @@ abstract public class Character
 
     /**
      * The method called to run any update logic on this character.
-     * TODO: can we use Observable to do this?
      */
     abstract public void update();
 
@@ -246,15 +247,18 @@ abstract public class Character
      * Retrieves the max stamina of the character.
      * @return float The stamina value of the character
      */
+    /*
     public float getMaxStamina()
     {
         return maxStamina;
     }
+    */
 
     /**
      * Sets the max stamina of the character.
      * @param maxStamina The new max stamina of the character
      */
+    /*
     public void setMaxStamina(float maxStamina)
     {
         float percentage;
@@ -273,20 +277,24 @@ abstract public class Character
         // Update the stamina to continue as the same percentage of the max.
         setStamina( getMaxStamina() * percentage );
     }
+    */
 
     /**
      * Retrieves the current stamina of the character.
      * @return float The current stamina of the character
      */
+    /*
     public float getStamina()
     {
         return stamina;
     }
+    */
 
     /**
      * Sets the current stamina of the character.
      * @param stamina The new current stamina
      */
+    /*
     public void setStamina(float stamina)
     {
         if ( stamina > getMaxStamina() )
@@ -298,6 +306,7 @@ abstract public class Character
             this.stamina = stamina;
         }
     }
+    */
 
     /**
      * Returns the current strength of the character.
@@ -375,6 +384,7 @@ abstract public class Character
      * Returns the skills the character has.
      * @return All the skills of this character.
      */
+    /*
     public HashSet<Skill> getSkills()
     {
         if (skills == null)
@@ -383,6 +393,21 @@ abstract public class Character
         }
 
         return skills;
+    }
+    */
+
+    /**
+     * Returns the magics the character has.
+     * @return All the magics of this character.
+     */
+    public HashSet<Magic> getMagics()
+    {
+        if (magics == null)
+        {
+            magics = new HashSet<Magic>();
+        }
+
+        return magics;
     }
 
     /**
@@ -477,16 +502,6 @@ abstract public class Character
     public void setBattleObserver(BattleScreen battleObserver)
     {
         this.battleObserver = battleObserver;
-    }
-
-    public GameScreen getMazeObserver()
-    {
-        return mazeObserver;
-    }
-
-    public void setMazeObserver(GameScreen mazeObserver)
-    {
-        this.mazeObserver = mazeObserver;
     }
 
     public boolean isAlive()
