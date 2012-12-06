@@ -13,12 +13,6 @@ public class Armor extends Item
 {
     private float defense;
 
-    /**
-     * The image displayed on the character when he is wearing this armor
-     * outside of battle mode.
-     */
-    private Sprite mazeSprite;
-
 
     /**
      * The armor constructor. Initializes all immutable fields.
@@ -28,13 +22,11 @@ public class Armor extends Item
      * @param mazeSprite The sprite displayed when not in battle mode.
      * @param gameWorld The GameWorld
      */
-    public Armor(String name, String description, float defense, Sprite mazeSprite, GameWorld gameWorld)
+    public Armor(String name, String description, float defense, GameWorld gameWorld)
     {
         this.setName(name);
         this.setDescription(description);
         this.defense = defense;
-        this.mazeSprite = mazeSprite;
-        this.mazeSprite.setCol(1);
 
         setMazeIcon(new Sprite(R.drawable.chestplate, 70, 70, 1, 1,
             gameWorld.getDisplayMetrics().density));
@@ -47,14 +39,5 @@ public class Armor extends Item
     public float getDefense()
     {
         return defense;
-    }
-
-    /**
-     * The maze sprite getter.
-     * @return The maze sprite of this armor.
-     */
-    public Sprite getMazeSprite()
-    {
-        return mazeSprite;
     }
 }
