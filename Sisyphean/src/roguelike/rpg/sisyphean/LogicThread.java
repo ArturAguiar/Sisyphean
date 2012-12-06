@@ -14,6 +14,8 @@ public class LogicThread extends Thread
 {
     private GameWorld gameWorld;
 
+    private GameScreen gameScreen;
+
     private boolean run;
 
     private long startTime;
@@ -43,6 +45,11 @@ public class LogicThread extends Thread
         run = newRun;
     }
 
+    public void setGameScreen(GameScreen gameScreen)
+    {
+        this.gameScreen = gameScreen;
+    }
+
     @Override
     public void run()
     {
@@ -56,6 +63,9 @@ public class LogicThread extends Thread
                 {
                     character.update();
                 }
+
+                if (gameScreen != null)
+                    gameScreen.update();
             }
 
             try

@@ -409,7 +409,8 @@ public class Maze
      */
     public Cell getCell(int x, int y)
     {
-        if (x < grid.length && y < grid[0].length)
+        if (x < grid.length && y < grid[0].length &&
+            x >= 0 && y >= 0)
         {
             return grid[x][y];
         }

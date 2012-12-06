@@ -38,12 +38,12 @@ public class Enemy extends Character
         // Randomizes an enemy type.
         type = EnemyType.values()[ rand.nextInt(EnemyType.values().length) ];
 
-        //this.setLevel(rand.nextInt(floor * 10 - 9, floor * 10 + 1));
-        this.setLevel(4);
+        this.setLevel(rand.nextInt(floor * 10 - 9, floor * 10 + 1));
 
         switch (type)
         {
             case ZOMBIE:
+            case RAT:
                 this.setName("Zombie");
                 this.setDescription("A flesh eating undead creature.");
                 this.experienceGiven = 5.0f + getLevel() * 4.5f;
@@ -62,7 +62,6 @@ public class Enemy extends Character
                 Log.v("Enemy", "Zombie level " + this.getLevel() + " created!");
                 break;
 
-            case RAT:
             case SKELETON:
                 this.setName("Skeleton");
                 this.setDescription("A scary skinny white thingy.");

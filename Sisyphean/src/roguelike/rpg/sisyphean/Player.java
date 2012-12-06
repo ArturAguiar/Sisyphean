@@ -19,7 +19,7 @@ abstract public class Player extends Character
     private Weapon weapon;
     private Armor armor;
 
-    private enum Facing { DOWN, LEFT, RIGHT, UP };
+    public enum Facing { DOWN, LEFT, RIGHT, UP };
     private Facing facing = Facing.DOWN;
 
     private float walkFrame = 1.0f;
@@ -58,6 +58,7 @@ abstract public class Player extends Character
         if (walking && !gameWorld.getBattling())
         {
             // Actual walking.
+            /*
             if (moveBy.y > 0.0f)
             {
                 this.getMazeSprite().move(0.0f, moveSpeed);
@@ -105,6 +106,7 @@ abstract public class Player extends Character
                 walking = false;
                 walkFrame = 1.0f;
             }
+            */
 
             // Walking animation.
             tempFrame = (int)(walkFrame);
@@ -115,20 +117,25 @@ abstract public class Player extends Character
             }
 
             this.getMazeSprite().setCol(tempFrame);
-            this.getArmor().getMazeIcon().setCol(tempFrame);
+            //this.getArmor().getMazeIcon().setCol(tempFrame);
 
-            walkFrame += 0.25f;
+            walkFrame += 0.75f;
 
             if (walkFrame >= 4.0f)
             {
                 walkFrame = 0;
             }
         }
+        else
+        {
+            walkFrame = 1.0f;
+            this.getMazeSprite().setCol(1);
+        }
 
         /*
         * The animations in battle mode.
         */
-        else if (gameWorld.getBattling())
+        if (gameWorld.getBattling())
         {
             tempFrame = (int)(battleFrame);
 
@@ -289,6 +296,11 @@ abstract public class Player extends Character
         this.type = type;
     }
 
+    public void setFacing(Facing direction)
+    {
+        this.facing = direction;
+    }
+
     /**
     * The experience getter.
     * @return The experience of the player.
@@ -447,8 +459,8 @@ abstract public class Player extends Character
     }
 
     /**
-     * Accessor for the walking boolean
-     * @return boolean Whether the player is walking
+     * Accessor for the walking boolean.
+     * @return boolean Whether the player is walking.
      */
     public boolean isWalking()
     {
@@ -512,5 +524,46 @@ abstract public class Player extends Character
                 }
                 break;
         }
+    }
+
+    public void startMoving(String direction)
+    {
+        if (direction == null)
+        {
+            return;
+        }
+        else if (direction.equals("down"))
+        {
+            facing = Facing.DOWN;
+            currentCellY++;
+        }
+        else if (direction.equals("up"))
+        {
+            facing = Facing.UP;
+            currentCellY--;
+        }
+        else if (direction.equals("right"))
+        {
+            facing = Facing.RIGHT;
+            currentCellX++;
+        }
+        else if (direction.equals("left"))
+        {
+            facing = Facing.LEFT;
+            currentCellX--;
+        }
+        else
+        {
+            return;
+        }
+        walking = true;
+        this.getMazeSprite().setRow(facing.ordinal());
+        this.getArmor().getMazeIcon().setRow(facing.ordinal());
+    }
+
+    public void stopMoving()
+    {
+        walking = false;
+        walkFrame = 1.0f;
     }
 }
