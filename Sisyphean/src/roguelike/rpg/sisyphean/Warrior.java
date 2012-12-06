@@ -56,12 +56,8 @@ public class Warrior extends Player
         // Initial equipment.
         this.setArmor(new Armor(
             "Prisoner Garments",
-            "Rusty handcuffs and dark pants.%nHardly any protection.",
-            2.0f,
-            new Sprite(R.drawable.prisoner_garments,
-                       96, 128, 3, 4,
-                       gameWorld.getDisplayMetrics().density),
-                       gameWorld));
+            "Rusty handcuffs and dark pants. Hardly any protection.",
+            2.0f, gameWorld));
         this.getArmor().getMazeIcon().setPosition(x, y);
 
         this.setWeapon(new Weapon(

@@ -13,21 +13,23 @@ import java.util.ArrayList;
  */
 public class ItemCreator
 {
+    private GameWorld gameWorld;
 
-    private ArrayList<Weapon> newWeapon;
-    private ArrayList<Armor> newArmor;
+    private ArrayList<Weapon> weapons;
+    private ArrayList<Armor> armors;
     private sofia.util.Random rand = new sofia.util.Random();
-
 
 
     /**
      * Instantiates the map and populates it with the desired weapons and armor.
+     * @param gameWorld The game world reference.
      */
-    public ItemCreator()
+    public ItemCreator(GameWorld gameWorld)
     {
+        this.gameWorld = gameWorld;
 
-        newWeapon =  new ArrayList<Weapon>();
-        newArmor = new ArrayList<Armor>();
+        weapons =  new ArrayList<Weapon>();
+        armors = new ArrayList<Armor>();
 
 
         /*
@@ -48,11 +50,11 @@ public class ItemCreator
 
         if (itemType == 0)
         {
-            return newWeapon.get(rand.nextInt(newWeapon.size()));
+            return weapons.get(rand.nextInt(weapons.size()));
         }
         else if (itemType == 1)
         {
-            return newArmor.get(rand.nextInt(newArmor.size()));
+            return armors.get(rand.nextInt(armors.size()));
         }
         else
         {
@@ -80,21 +82,21 @@ public class ItemCreator
 
 
         //Adds the weapons to the database.
-        newWeapon.add(new Weapon("Dull Sword",
-            "This sword is a decent beginners weapon.", 4.0F, null));
-        newWeapon.add(new Weapon("Agro-Bal Wand",
+        weapons.add(new Weapon("Dull Sword",
+            "This sword is a decent beginners weapon.", 4.0F, gameWorld));
+        weapons.add(new Weapon("Agro-Bal Wand",
             "Beginner wand of ArchMage Agro-Bal. Powerful early game",
-            7.0F, null));
-        newWeapon.add(new Weapon("Conjuring Staff of Mal",
-            "Powerful staff of evil mage Mal", 15.0F, null));
-        newWeapon.add(new Weapon("Broadsword of Light",
-            "Epic sword of Magmus Ponderosa", 18.0F, null));
+            7.0F, gameWorld));
+        weapons.add(new Weapon("Conjuring Staff of Mal",
+            "Powerful staff of evil mage Mal", 15.0F, gameWorld));
+        weapons.add(new Weapon("Broadsword of Light",
+            "Epic sword of Magmus Ponderosa", 18.0F, gameWorld));
 
         //Adds the armor to the database.
-        newArmor.add(new Armor("Chestpiece of Brogma",
-            "Chestpiece of demon Brogma.", 12.0F, null, null));
-        newArmor.add(new Armor("Bracers of the Holy",
-            "Armor for those of grand decent", 15.0F, null, null));
+        armors.add(new Armor("Chestpiece of Brogma",
+            "Chestpiece of demon Brogma.", 12.0F, gameWorld));
+        armors.add(new Armor("Bracers of the Holy",
+            "Armor for those of grand decent", 15.0F, gameWorld));
     }
 
 

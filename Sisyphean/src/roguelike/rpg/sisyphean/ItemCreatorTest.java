@@ -20,7 +20,7 @@ public class ItemCreatorTest extends TestCase
      */
     public void setUp()
     {
-        newItem = new ItemCreator();
+        newItem = new ItemCreator(new GameWorld());
     }
 
     /**

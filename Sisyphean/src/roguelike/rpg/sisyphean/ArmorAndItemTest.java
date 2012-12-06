@@ -21,7 +21,7 @@ public class ArmorAndItemTest extends TestCase
 
        leatherBoots = new Armor("Boots of blinding speed", "Boots grant" +
        		"more stamina for the character and a decrease in deppreciation" +
-       		"of stamina.", 15.0F, null, new GameWorld());
+       		"of stamina.", 15.0F, new GameWorld());
     }
 
     //Methods
