@@ -31,7 +31,7 @@ public class BattleScreen extends ShapeScreen
 
     private Button attack, escape;
     private TextView healthPoints, manaPoints;
-    private ShapeView shapeView1, shapeView2;
+    private ShapeView shapeView, shapeView2;
     private RectangleShape healthRect, manaRect;
 
     /**
@@ -52,12 +52,15 @@ public class BattleScreen extends ShapeScreen
 
         gameWorld.setBattling(true);
 
-        add(enemy.getBattleSprite().getImageShape());
+        shapeView.setAutoRepaint(false);
+        shapeView2.setAutoRepaint(false);
+
+        shapeView.add(enemy.getBattleSprite().getImageShape());
         this.enemy.getBattleSprite().setPosition(getWidth() / 3.0f - enemy.getBattleSprite().getImageShape().getWidth(),
                                             getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
         this.enemy.setInitialBattlePosition(getWidth() / 3.0f - enemy.getBattleSprite().getImageShape().getWidth());
 
-        add(player.getBattleSprite().getImageShape());
+        shapeView.add(player.getBattleSprite().getImageShape());
         this.player.setInitialBattlePosition(getWidth() * 2.0f / 3.0f - player.getBattleSprite().getImageShape().getWidth() / 2.0f);
         this.player.getBattleSprite().setPosition(player.getInitialBattlePosition(),
                                              getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
@@ -78,6 +81,11 @@ public class BattleScreen extends ShapeScreen
 
         this.updateHP();
         this.updateMP();
+
+        shapeView.setAutoRepaint(true);
+        shapeView2.setAutoRepaint(true);
+        shapeView.repaint();
+        shapeView2.repaint();
     }
 
     @Override
@@ -337,7 +345,7 @@ public class BattleScreen extends ShapeScreen
 
     }
     /**
-     * This method changes the mana text view and bar  to let the user know
+     * This method changes the mana text view and bar to let the user know
      * what their current mana points are.
      */
     private void updateMP()
@@ -360,6 +368,8 @@ public class BattleScreen extends ShapeScreen
                 }
             }
         });
+
+        Log.v("BattleScreen", "Mana = " + gameWorld.getPlayer().getMana());
     }
 
 }

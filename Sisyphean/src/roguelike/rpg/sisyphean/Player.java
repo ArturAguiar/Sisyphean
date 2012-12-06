@@ -119,7 +119,7 @@ abstract public class Player extends Character
             this.getMazeSprite().setCol(tempFrame);
             //this.getArmor().getMazeIcon().setCol(tempFrame);
 
-            walkFrame += 0.75f;
+            walkFrame += 0.5f;
 
             if (walkFrame >= 4.0f)
             {

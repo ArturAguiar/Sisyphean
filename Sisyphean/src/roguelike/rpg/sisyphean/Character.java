@@ -179,6 +179,10 @@ abstract public class Character
         {
             this.health = getMaxHealth();
         }
+        else if (health < 0)
+        {
+            this.health = 0.0f;
+        }
         else
         {
             this.health = health;
@@ -236,6 +240,10 @@ abstract public class Character
         if ( mana > getMaxMana() )
         {
             this.mana = getMaxMana();
+        }
+        else if (mana < 0.0f)
+        {
+            this.mana = 0.0f;
         }
         else
         {
