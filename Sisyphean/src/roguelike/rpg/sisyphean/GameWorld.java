@@ -30,6 +30,8 @@ public class GameWorld
 
     private LogicThread logicThread;
 
+    private ItemCreator itemCreator;
+
     /**
      * Constructor of the game world.
      * There should only be one instance of this object in the whole game.
@@ -38,6 +40,8 @@ public class GameWorld
     {
         allCharacters = new HashSet<Character>();
         displayMetrics = new DisplayMetrics();
+
+        itemCreator = new ItemCreator(this);
     }
 
     /**
@@ -151,6 +155,11 @@ public class GameWorld
     public void setLogicThread(LogicThread logicThread)
     {
         this.logicThread = logicThread;
+    }
+
+    public ItemCreator getItemCreator()
+    {
+        return itemCreator;
     }
 
 }
