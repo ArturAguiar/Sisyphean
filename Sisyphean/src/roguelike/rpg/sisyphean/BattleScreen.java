@@ -43,7 +43,6 @@ public class BattleScreen extends ShapeScreen
     public void initialize(GameWorld myGameWorld, Enemy myEnemy)
     {
         this.gameWorld = myGameWorld;
-        this.gameWorld.setEnemyKilled(null);
         this.player = gameWorld.getPlayer();
         this.player.setBattleObserver(this);
 
@@ -181,8 +180,6 @@ public class BattleScreen extends ShapeScreen
 
     public void enemyAttackDone()
     {
-
-        player.wasHit(enemy);
         this.createDamageText((int)player.wasHit(enemy), player.getBattleSprite().getPosition().x + 60.0f, player.getBattleSprite().getPosition().y - 10.0f);
         wait = false;
 
@@ -202,7 +199,6 @@ public class BattleScreen extends ShapeScreen
         player.getBattleSprite().getImageShape().animate(5800).name("victory").play();
         Log.v("BattleScreen", "Enemy died.");
 
-        gameWorld.setEnemyKilled(enemy);
         player.addExperience(enemy.getExperienceGiven());
     }
 
