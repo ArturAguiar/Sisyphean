@@ -1,5 +1,6 @@
 package roguelike.rpg.sisyphean;
 
+import android.widget.TextView;
 import sofia.graphics.TextShape;
 import sofia.graphics.Color;
 import sofia.graphics.RectangleShape;
@@ -29,7 +30,8 @@ public class GameScreen extends ShapeScreen
 
     private GameWorld gameWorld;
 
-
+    private TextView level, strength, defense, dexterity, armor,
+        weapon, intelligence;
     // Maze images
     private Image groundImage;
     private Image backImage;
@@ -94,6 +96,22 @@ public class GameScreen extends ShapeScreen
         gameWorld.getPlayer().setCell(gameWorld.getMaze().startColumn(), gameWorld.getMaze().startRow());
 
         this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
+
+        Player thePlayer = gameWorld.getPlayer();
+        String weaponString = thePlayer.getWeapon().getName();
+        weapon.setText(weaponString);
+        String armorString = thePlayer.getArmor().getName();
+        armor.setText(armorString);
+        String currentLevel = thePlayer.getLevel() + "";
+        String currentStr = (int) (thePlayer.getStrength()) + "";
+        String currentDef = (int)(thePlayer.getDefense()) + "";
+        String currentDex = (int)(thePlayer.getDexterity()) + "";
+        String currentIntel = (int)(thePlayer.getIntelligence()) + "";
+        level.setText("Level: " + currentLevel);
+        strength.setText("Strength: " + currentStr);
+        defense.setText("Defense: " + currentDef);
+        dexterity.setText("Dexterity: " + currentDex);
+        intelligence.setText("Intelligence: " + currentIntel);
     }
 
     /**

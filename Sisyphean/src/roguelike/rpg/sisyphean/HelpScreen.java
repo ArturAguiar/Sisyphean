@@ -32,7 +32,7 @@ public class HelpScreen extends Screen
      */
     public void gameClicked()
     {
-        presentScreen(GameScreen.class);
+        presentScreen(ClassChoiceScreen.class);
         finish();
     }
 

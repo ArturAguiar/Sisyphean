@@ -8,22 +8,21 @@
         android:layout_height="match_parent" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/inventory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="14dp"
             android:layout_marginTop="16dp"
             android:text="Inventory"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/weapon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView1"
-            android:layout_below="@+id/textView1"
+            android:layout_alignLeft="@+id/inventory"
+            android:layout_below="@+id/inventory"
             android:text="Current Weapon" />
 
         <TextView
@@ -97,18 +96,59 @@
             android:id="@+id/tableRow9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/strength"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/defense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
         </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/dexterity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+        </TableRow>
+
+        <TextView
+            android:id="@+id/intelligence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
     </TableLayout>
 </LinearLayout>
