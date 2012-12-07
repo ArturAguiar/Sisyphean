@@ -9,7 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Escape" />
+        android:background="@android:color/black"
+        android:text="Escape"
+        android:textColor="@android:color/white"
+        android:textSize="25dp" />
 
     <Button
         android:id="@+id/magic"
@@ -18,7 +21,10 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/escape"
         android:layout_alignParentLeft="true"
-        android:text="Magic" />
+        android:background="@android:color/black"
+        android:text="Magic"
+        android:textColor="@android:color/white"
+        android:textSize="25dp" />
 
     <Button
         android:id="@+id/attack"
@@ -27,7 +33,10 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/magic"
         android:layout_alignParentLeft="true"
-        android:text="Attack" />
+        android:background="@android:color/black"
+        android:text="Attack"
+        android:textColor="@android:color/white"
+        android:textSize="25dp" />
 
     <TextView
         android:id="@+id/manaPoints"
@@ -47,7 +56,7 @@
         android:layout_alignRight="@+id/manaPoints"
         android:text="100/100"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
+
     <sofia.graphics.ShapeView
         android:id="@+id/shapeView"
         android:layout_width="wrap_content"
@@ -63,6 +72,31 @@
         android:layout_height="55dp"
         android:layout_alignBottom="@+id/manaPoints"
         android:layout_toLeftOf="@+id/healthPoints" />
->>>>>>> refs/remotes/origin/master
+
+    <Button
+        android:id="@+id/heal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/manaPoints"
+        android:layout_alignBottom="@+id/manaPoints"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/escape"
+        android:textSize="20dp"
+        android:textColor="@android:color/white"
+        android:background="@android:color/black"
+        android:text="Heal"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/damage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/manaPoints"
+        android:layout_alignLeft="@+id/heal"
+        android:background="@android:color/black"
+        android:text="Damage"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
+        android:visibility="invisible" />
 
 </RelativeLayout>

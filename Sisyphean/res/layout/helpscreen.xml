@@ -9,18 +9,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="35dp"
-        android:text="Word of Instruction"
+        android:textSize="20dp"
+        android:text="You&apos;re stuck in an endless maze. To move there are directional buttons on the left-hand of the screen: Up, Down, Left, and Right. You will encounter many enemies within the maze. Once you encounter one and enter its territory the attack screen will be presented. You will have three options: Attack, Magic, Flee. Attacking is an action where your character will swing their weapon at the enemy. Magic will cause magic to be casted either of the Healing type or the Damage type. Pressing Flee will let you escape the current battle. Click &apos;To Game&apos; to proceed with your journey."
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
         android:id="@+id/game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="22dp"
-        android:layout_toRightOf="@+id/textView1"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView1"
+        android:layout_marginRight="28dp"
         android:text="To Game" />
 
 </RelativeLayout>

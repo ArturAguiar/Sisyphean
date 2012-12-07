@@ -29,7 +29,7 @@ public class BattleScreen extends ShapeScreen
     private Enemy enemy;
     private boolean enemyDied = false;
 
-    private Button attack, escape;
+    private Button attack, escape, magic, heal, damage;
     private TextView healthPoints, manaPoints;
     private ShapeView shapeView, shapeView2;
     private RectangleShape healthRect, manaRect;
@@ -129,7 +129,8 @@ public class BattleScreen extends ShapeScreen
     public void magicClicked()
     {
         // Make other buttons appear
-
+        heal.setVisibility(0);
+        damage.setVisibility(0);
         // for (Magic magic : this.getMagics())
             // if magic.getName.equals("String of magic clicked")
                 // clicked = magic;
@@ -337,9 +338,18 @@ public class BattleScreen extends ShapeScreen
                 {
                     newRight = 0;
                 }
-                RectF newBounds = new RectF(0, 0, newRight,
-                    shapeView2.getHeight() / 3);
-                healthRect.setBounds(newBounds);
+                if (currentHealth == 0)
+                {
+                    healthRect.setColor(Color.black);
+                    healthRect.setFillColor(Color.black);
+
+                }
+                else
+                {
+                    RectF newBounds = new RectF(0, 0, newRight,
+                        shapeView2.getHeight() / 3);
+                    healthRect.setBounds(newBounds);
+                }
            }
        });
 
