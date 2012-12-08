@@ -43,9 +43,6 @@ abstract public class Player extends Character
     @Override
     public void update()
     {
-        // Update the armor location to always be covering the character.
-        this.getArmor().getMazeIcon().setPosition(getPosition().x, getPosition().y);
-
         int tempFrame = 0;
 
         /* The walking movement and animation frame-change in maze mode.
@@ -115,7 +112,6 @@ abstract public class Player extends Character
             }
 
             this.getMazeSprite().setCol(tempFrame);
-            //this.getArmor().getMazeIcon().setCol(tempFrame);
 
             walkFrame += 0.5f;
 
@@ -420,7 +416,6 @@ abstract public class Player extends Character
             }
             walking = true;
             this.getMazeSprite().setRow(facing.ordinal());
-            this.getArmor().getMazeIcon().setRow(facing.ordinal());
         }
     }
 
@@ -583,7 +578,6 @@ abstract public class Player extends Character
 
         walking = true;
         this.getMazeSprite().setRow(facing.ordinal());
-        this.getArmor().getMazeIcon().setRow(facing.ordinal());
     }
 
     /**

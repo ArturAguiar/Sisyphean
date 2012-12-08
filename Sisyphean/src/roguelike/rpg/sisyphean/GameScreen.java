@@ -337,11 +337,14 @@ public class GameScreen extends ShapeScreen
 
         if (cell.getItem() != null)
         {
-            cell.getItem().setPosition(left, top);
-            cell.getItem().getMazeIcon().setSize(cellSize);
+            cell.getItem().getMazeIcon().setBounds(new RectF(
+                0.0f,
+                0.0f,
+                cellSize * 0.6f,
+                cellSize * 0.6f));
+            cell.getItem().setPosition(left + cellSize * 0.2f, top + cellSize * 0.2f);
 
-            shapeView.add(cell.getItem().getMazeIcon().getImageShape());
-            Log.v("GameScreen", "Item in (" + cell.x() + ", " + cell.y() + ")");
+            shapeView.add(cell.getItem().getMazeIcon());
         }
     }
 

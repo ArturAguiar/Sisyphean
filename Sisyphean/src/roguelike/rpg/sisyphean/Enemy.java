@@ -51,7 +51,7 @@ public class Enemy extends Character
                 this.setDexterity(8.0f + getLevel() * 5.0f );
                 this.setDefense(10.0f + getLevel() * 2.0f );
                 this.setMazeSprite(
-                    new Sprite(R.drawable.ic_launcher, 32, 32, 1, 1,
+                    new Sprite(R.drawable.orc_single, 32, 32, 1, 1,
                                gameWorld.getDisplayMetrics().density));
                 this.setBattleSprite(
                     new Sprite(R.drawable.orc_sheet, 1040, 700, 8, 5,

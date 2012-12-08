@@ -1,5 +1,6 @@
 package roguelike.rpg.sisyphean;
 
+import sofia.graphics.ImageShape;
 import android.graphics.PointF;
 
 /**
@@ -13,7 +14,7 @@ abstract public class Item
 {
     private String name;
     private String description;
-    private Sprite mazeIcon;
+    private ImageShape mazeIcon;
 
 
     /**
@@ -56,7 +57,7 @@ abstract public class Item
      * Returns an image of the sprite.
      * @return ImageShape The image of the sprite
      */
-    public Sprite getMazeIcon()
+    public ImageShape getMazeIcon()
     {
         return mazeIcon;
     }
@@ -65,7 +66,7 @@ abstract public class Item
      * Sets the image of the sprite.
      * @param mazeSprite Sets the maze sprite image
      */
-    public void setMazeIcon(Sprite mazeSprite)
+    public void setMazeIcon(ImageShape mazeSprite)
     {
         this.mazeIcon = mazeSprite;
     }

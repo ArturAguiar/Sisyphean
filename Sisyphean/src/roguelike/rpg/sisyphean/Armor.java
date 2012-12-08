@@ -1,5 +1,6 @@
 package roguelike.rpg.sisyphean;
 
+import android.graphics.RectF;
 import sofia.graphics.ImageShape;
 
 /**
@@ -28,8 +29,7 @@ public class Armor extends Item
         this.setDescription(description);
         this.defense = defense;
 
-        setMazeIcon(new Sprite(R.drawable.chestplate, 70, 70, 1, 1,
-            gameWorld.getDisplayMetrics().density));
+        setMazeIcon(new ImageShape(R.drawable.chestplate, new RectF(0.0f, 0.0f, 70.0f, 70.0f)));
     }
 
     /**
