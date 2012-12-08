@@ -75,7 +75,7 @@ public class Enemy extends Character
                     new Sprite(R.drawable.skeleton_single, 32, 32, 1, 1,
                                gameWorld.getDisplayMetrics().density));
                 this.setBattleSprite(
-                    new Sprite(R.drawable.skeleton_battle_sheet, 800, 500, 8, 5,
+                    new Sprite(R.drawable.skeleton_sheet, 1040, 650, 8, 5,
                                gameWorld.getDisplayMetrics().density));
                 this.getBattleSprite().setRow(2);
                 Log.v("Enemy", "Skeleton level " + this.getLevel() + " created!");

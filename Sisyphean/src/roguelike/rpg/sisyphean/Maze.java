@@ -33,6 +33,8 @@ public class Maze
 
     private int counter;
 
+    public String[] itemlist= new String[5];
+
     // ----------------------------------------------------------
     /**
      * Create a new Maze object, the size of which is proportional to the floor.
@@ -365,7 +367,7 @@ public class Maze
     }
 
     /**
-     * Randomly places items on empty cells
+     * Randomly places items on empty cells (this does not include enemy drops)
      */
     private void placeItems()
     {
@@ -382,19 +384,14 @@ public class Maze
             {
                 cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
             }
-            //Store the item in the cell
-            cell.setItem(new Potion(PotionType.MANA, gameWorld)); //Use Willie's stuff to determin what type of item gets made
+            //Store a generated item in the cell
+            cell.setItem(gameWorld.getItemCreator().selectItem());
+
+            itemlist[items] = cell.getItem().getName() + ", (" + cell.x() + ", " + cell.y() + " )";
+
             items++;
         }
 
-        // Testing for creating & drawing items
-        /*grid[0][0].setItem(new Potion(PotionType.HEALTH, gameWorld));
-        grid[0][1].setItem(new Potion(PotionType.MANA, gameWorld));
-        grid[0][2].setItem(new Weapon("Doombringer", "The ultimate foe-slaying force!", 2.0f, gameWorld));
-        grid[0][3].setItem(new Armor("Iron Abs",
-            "A chestplate that shows off your muscles!",
-            2.0f,
-            new Sprite(R.drawable.chestplate, 70, 70, 1, 1, gameWorld.getDisplayMetrics().density), gameWorld));*/
     }
 
     // ----------------------------------------------------------

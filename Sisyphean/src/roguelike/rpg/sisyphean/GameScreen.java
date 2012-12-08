@@ -1,5 +1,6 @@
 package roguelike.rpg.sisyphean;
 
+import android.widget.Toast;
 import android.widget.TextView;
 import sofia.graphics.TextShape;
 import sofia.graphics.Color;
@@ -31,7 +32,7 @@ public class GameScreen extends ShapeScreen
     private GameWorld gameWorld;
 
     private TextView level, strength, defense, dexterity, armor,
-        weapon, intelligence;
+        weapon, intelligence, healthp, manap;
     // Maze images
     private Image groundImage;
     private Image backImage;
@@ -94,6 +95,7 @@ public class GameScreen extends ShapeScreen
         gameWorld.getPlayer().getMazeSprite().setSize(cellSize * 0.8f);
         gameWorld.getPlayer().setPosition(2.1f * cellSize, 2.1f * cellSize);
         gameWorld.getPlayer().setCell(gameWorld.getMaze().startColumn(), gameWorld.getMaze().startRow());
+        Log.v("Starting Position", "(" + gameWorld.getMaze().startColumn() + ", " + gameWorld.getMaze().startRow() + ")");
 
         this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
 
@@ -124,6 +126,24 @@ public class GameScreen extends ShapeScreen
     {
         this.gameWorld = myGameWorld;
         gameWorld.getLogicThread().setGameScreen(this);
+
+        Player thePlayer = gameWorld.getPlayer();
+        String weaponString = thePlayer.getWeapon().getName();
+        weapon.setText(weaponString);
+        String armorString = thePlayer.getArmor().getName();
+        armor.setText(armorString);
+        String currentLevel = thePlayer.getLevel() + "";
+        String currentStr = (int) (thePlayer.getStrength()) + "";
+        String currentDef = (int)(thePlayer.getDefense()) + "";
+        String currentDex = (int)(thePlayer.getDexterity()) + "";
+        String currentIntel = (int)(thePlayer.getIntelligence()) + "";
+        level.setText("Level: " + currentLevel);
+        strength.setText("Strength: " + currentStr);
+        defense.setText("Defense: " + currentDef);
+        dexterity.setText("Dexterity: " + currentDex);
+        intelligence.setText("Intelligence: " + currentIntel);
+        healthp.setText("Health Potions: " + thePlayer.getHealthPotions());
+        manap.setText("Mana Potions: " + thePlayer.getManaPotions());
 
         this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
     }
@@ -314,9 +334,9 @@ public class GameScreen extends ShapeScreen
         if (cell.getItem() != null)
         {
             cell.getItem().getMazeIcon().setSize(cellSize * 0.8f);
-            Log.v("GameScreen", "Potion size = " + cellSize * 0.8f);
+            Log.v("GameScreen", cell.getItem().getClass() + " size = " + cellSize * 0.8f);
             cell.getItem().setPosition(left + cellSize * 0.2f, top + cellSize * 0.3f);
-            Log.v("GameScreen", "Potion position = (" + (cellSize * 0.2f) + ", " + (cellSize * 0.3f) + ")");
+            Log.v("GameScreen", cell.getItem().getClass() + " position = (" + (cellSize * 0.2f) + ", " + (cellSize * 0.3f) + ")");
 
             shapeView.add(cell.getItem().getMazeIcon().getImageShape());
         }
@@ -343,7 +363,10 @@ public class GameScreen extends ShapeScreen
         else
         {
             // Pops up a toast with information for testing purposes
-            //Toast.makeText(this, gameWorld.getMaze().counter(), Toast.LENGTH_LONG).show();
+            for (String name : gameWorld.getMaze().itemlist)
+            {
+                Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -369,6 +392,7 @@ public class GameScreen extends ShapeScreen
             this.move("down");
         }
 
+        checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
     }
 
     // ----------------------------------------------------------
@@ -392,6 +416,8 @@ public class GameScreen extends ShapeScreen
             shapeView.repaint();
             this.move("up");
         }
+
+        checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
     }
 
     // ----------------------------------------------------------
@@ -415,7 +441,7 @@ public class GameScreen extends ShapeScreen
             this.move("right");
         }
 
-
+        checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
     }
 
     // ----------------------------------------------------------
@@ -438,6 +464,8 @@ public class GameScreen extends ShapeScreen
             shapeView.repaint();
             this.move("left");
         }
+
+        checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
     }
 
     /**
@@ -462,6 +490,66 @@ public class GameScreen extends ShapeScreen
         }
 
         return false;
+    }
+
+    /**
+     * Checks for the existence of an item in the given cell coordinate.
+     * If there is a potion, pick it up.
+     * Make a choice pop-up for weapons and armor.
+     * @param x The x coordinate of the cell to check.
+     * @param y the y coordinate of the cell to check.
+     */
+    public void checkForItem(int x, int y)
+    {
+        if (gameWorld.getMaze().getCell(x, y).getItem() != null)
+        {
+            Item item = gameWorld.getMaze().getCell(x, y).getItem();
+            if (item instanceof Potion)
+            {
+                gameWorld.getPlayer().pickUpPotion(((Potion)item).getType());
+                gameWorld.getMaze().getCell(x, y).setItem(null);
+                healthp.setText("Health Potions: " + gameWorld.getPlayer().getHealthPotions());
+                manap.setText("Mana Potions: " + gameWorld.getPlayer().getManaPotions());
+                //TODO: Remove the item from the screen.
+                //It goes away after a battle or shifting the screen, but not immediately.
+                //shapeView.repaint();?
+            }
+            else
+            {
+                //Make pop up
+            }
+        }
+    }
+
+    /**
+     * Consume a health potion.
+     */
+    public void healthbuttonClicked()
+    {
+        if (gameWorld.getPlayer().getHealth() < gameWorld.getPlayer().getMaxHealth())
+        {
+            gameWorld.getPlayer().consumePotion(PotionType.HEALTH);
+            healthp.setText("Health Potions: " + gameWorld.getPlayer().getHealthPotions());
+        }
+        gameWorld.getPlayer().consumePotion(PotionType.HEALTH);
+        healthp.setText("Health Potions: " + gameWorld.getPlayer().getHealthPotions());
+        Log.v("Health Potions", gameWorld.getPlayer().getHealthPotions() + " potions");
+    }
+
+    /**
+     * Consume a mana potion.
+     */
+    public void manabuttonClicked()
+    {
+        /*if (gameWorld.getPlayer().getMana() < gameWorld.getPlayer().getMaxMana())
+        {
+            gameWorld.getPlayer().consumePotion(PotionType.MANA);
+            manap.setText("Mana Potions: " + gameWorld.getPlayer().getManaPotions());
+        }*/
+        gameWorld.getPlayer().consumePotion(PotionType.MANA);
+        manap.setText("Mana Potions: " + gameWorld.getPlayer().getManaPotions());
+
+        Log.v("Mana Potions", gameWorld.getPlayer().getManaPotions() + " potions");
     }
 
 

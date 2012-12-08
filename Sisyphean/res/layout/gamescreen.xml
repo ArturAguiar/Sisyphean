@@ -32,7 +32,9 @@
             android:layout_alignLeft="@+id/weapon"
             android:layout_below="@+id/weapon"
             android:text="Current Armor" />
-
+        
+        
+        
         <Button
             android:id="@+id/down"
             android:layout_width="wrap_content"
@@ -144,11 +146,70 @@
 
         </TableRow>
 
-        <TextView
-            android:id="@+id/intelligence"
+        <TableRow
+            android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/intelligence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        
+	        <TextView
+	            android:id="@+id/healthp"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Health Potions: 0" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        
+	        <TextView
+	            android:id="@+id/manap"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Mana Potions: 0" />
+        
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        
+            <Button
+                android:id="@+id/healthbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Health" />
+        
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        
+            <Button
+                android:id="@+id/manabutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mana" />
+        
+        </TableRow>
 
     </TableLayout>
 </LinearLayout>

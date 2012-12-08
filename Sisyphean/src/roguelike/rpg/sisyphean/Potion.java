@@ -31,11 +31,15 @@ public class Potion extends Item
         {
             setMazeIcon(new Sprite(R.drawable.health_potion, 70, 70, 1, 1,
                 gameWorld.getDisplayMetrics().density));
+            setName("Health Potion");
+            setDescription("A hot elixir that rejuvenates your body. It restores a fourth of your health");
         }
         else
         {
             setMazeIcon(new Sprite(R.drawable.mana_potion, 70, 70, 1, 1,
                 gameWorld.getDisplayMetrics().density));
+            setName("Mana Potion");
+            setDescription("A chilled concoction makes you feel more powerful. It restores a fourth of your mana");
         }
     }
 

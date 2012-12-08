@@ -487,8 +487,31 @@ abstract public class Player extends Character
 
     // ----------------------------------------------------------
     /**
-     * Tells the player to consume a potion .
-     * @param potion
+     * Allows the player to pick up a potion.
+     * @param potion The type of potion
+     */
+    public void pickUpPotion(PotionType potion)
+    {
+        switch (potion)
+        {
+            case HEALTH:
+            {
+                healthPotions++;
+            }
+                break;
+
+            case MANA:
+            {
+                manaPotions++;
+            }
+                break;
+        }
+    }
+
+    // ----------------------------------------------------------
+    /**
+     * Tells the player to consume a potion.
+     * @param potion The type of potion
      */
     public void consumePotion(PotionType potion)
     {
