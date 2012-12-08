@@ -530,7 +530,7 @@ abstract public class Player extends Character
                 break;
 
             case MANA:
-                if (healthPotions > 0)
+                if (manaPotions > 0)
                 {
                     if (Potion.fullRestore())
                     {

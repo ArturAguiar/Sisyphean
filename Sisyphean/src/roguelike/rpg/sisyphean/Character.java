@@ -41,8 +41,6 @@ abstract public class Character
     private float dexterity;
     private float intelligence;
 
-    // Types
-
     /** The different player types/classes available. */
     public enum PlayerType
     {
