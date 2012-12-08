@@ -354,9 +354,11 @@ public class Maze
         {
             //Get a random cell for the enemy to spawn in
             Cell cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
-            //If that cell is either of the start or exit cells, pick a new cell until it's not
+            //If that cell is either of the start or exit cells, or already has
+            //an enemy in it, pick a new cell until it's not
             while ((cell.x() == startX && cell.y() == startY)
-                || (cell.x() == exitX && cell.y() == exitY))
+                || (cell.x() == exitX && cell.y() == exitY) ||
+                cell.getEnemy() != null)
             {
                 cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
             }
@@ -377,10 +379,12 @@ public class Maze
         {
             //Get a random cell for the item to be placed in
             Cell cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
-            //If that cell is either of the start or exit cells, pick a new cell until it's not
+            //If that cell is either of the start or exit cells,
+            //or if there is an enemy or item already there, pick a new cell
+            //until a valid empty one is found
             while ((cell.x() == startX && cell.y() == startY)
                 || (cell.x() == exitX && cell.y() == exitY)
-                || cell.getEnemy() != null)
+                || cell.getEnemy() != null || cell.getItem() != null)
             {
                 cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
             }
