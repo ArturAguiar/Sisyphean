@@ -114,6 +114,8 @@ public class GameScreen extends ShapeScreen
         defense.setText("Defense: " + currentDef);
         dexterity.setText("Dexterity: " + currentDex);
         intelligence.setText("Intelligence: " + currentIntel);
+        healthp.setText("Health Potions: " + thePlayer.getHealthPotions());
+        manap.setText("Mana Potions: " + thePlayer.getManaPotions());
     }
 
     /**
@@ -531,8 +533,7 @@ public class GameScreen extends ShapeScreen
             gameWorld.getPlayer().consumePotion(PotionType.HEALTH);
             healthp.setText("Health Potions: " + gameWorld.getPlayer().getHealthPotions());
         }
-        gameWorld.getPlayer().consumePotion(PotionType.HEALTH);
-        healthp.setText("Health Potions: " + gameWorld.getPlayer().getHealthPotions());
+
         Log.v("Health Potions", gameWorld.getPlayer().getHealthPotions() + " potions");
     }
 
@@ -541,13 +542,11 @@ public class GameScreen extends ShapeScreen
      */
     public void manabuttonClicked()
     {
-        /*if (gameWorld.getPlayer().getMana() < gameWorld.getPlayer().getMaxMana())
+        if (gameWorld.getPlayer().getMana() < gameWorld.getPlayer().getMaxMana())
         {
             gameWorld.getPlayer().consumePotion(PotionType.MANA);
             manap.setText("Mana Potions: " + gameWorld.getPlayer().getManaPotions());
-        }*/
-        gameWorld.getPlayer().consumePotion(PotionType.MANA);
-        manap.setText("Mana Potions: " + gameWorld.getPlayer().getManaPotions());
+        }
 
         Log.v("Mana Potions", gameWorld.getPlayer().getManaPotions() + " potions");
     }

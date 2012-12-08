@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/inventory"
             android:layout_below="@+id/inventory"
-            android:text="Current Weapon" />
+            android:text="" />
 
         <TextView
             android:id="@+id/armor"
@@ -31,10 +31,52 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/weapon"
             android:layout_below="@+id/weapon"
-            android:text="Current Armor" />
+            android:text="" />
+
+        <ImageButton
+            android:id="@+id/healthbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/armor"
+            android:background="@drawable/health_potion" />
+    
+        <TextView
+            android:id="@+id/healthp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignLeft="@+id/weapon"
+            android:layout_below="@+id/healthbutton"
+            android:text="" />
+    
+        <ImageButton
+            android:id="@+id/manabutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/healthp"
+            android:background="@drawable/mana_potion" />
+    
+        <TextView
+            android:id="@+id/manap"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignLeft="@+id/weapon"
+            android:layout_below="@+id/manabutton"
+            android:text="" />
         
-        
-        
+
+    </RelativeLayout>
+
+    <sofia.graphics.ShapeView
+        android:id="@+id/shapeView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="4.71" />
+
+
+    <RelativeLayout
+        android:layout_width="83dp"
+        android:layout_height="wrap_content" >
+
         <Button
             android:id="@+id/down"
             android:layout_width="wrap_content"
@@ -68,17 +110,11 @@
             android:layout_centerHorizontal="true"
             android:text="^" />
 
-    </RelativeLayout>
 
-    <sofia.graphics.ShapeView
-        android:id="@+id/shapeView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="4.71" />
 
     <TableLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content" >
 
         <TableRow
             android:id="@+id/tableRow8"
@@ -90,7 +126,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Current Stats"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:layout_marginTop="16dp" />
 
         </TableRow>
 
@@ -103,7 +140,7 @@
                 android:id="@+id/level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="" />
 
         </TableRow>
 
@@ -116,7 +153,7 @@
                 android:id="@+id/strength"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="" />
 
         </TableRow>
 
@@ -129,7 +166,7 @@
                 android:id="@+id/defense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="" />
 
         </TableRow>
 
@@ -142,7 +179,7 @@
                 android:id="@+id/dexterity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="" />
 
         </TableRow>
 
@@ -155,61 +192,13 @@
                 android:id="@+id/intelligence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
-        
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        
-	        <TextView
-	            android:id="@+id/healthp"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="Health Potions: 0" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        
-	        <TextView
-	            android:id="@+id/manap"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="Mana Potions: 0" />
-        
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        
-            <Button
-                android:id="@+id/healthbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Health" />
-        
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        
-            <Button
-                android:id="@+id/manabutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mana" />
+                android:text="" />
         
         </TableRow>
 
     </TableLayout>
+    
+    
+    </RelativeLayout>
+
 </LinearLayout>

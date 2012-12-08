@@ -43,7 +43,7 @@ abstract public class Character
 
     // Type
     public enum PlayerType { WARRIOR, WIZARD, ARCHER };
-    public enum EnemyType { ZOMBIE, SKELETON, RAT };
+    public enum EnemyType { ZOMBIE, SKELETON, ORC };
 
     // The action being taken in battle
     public enum BattleAction { ATTACKING, MOVING, IDLE, HURT, DEAD, CASTING };

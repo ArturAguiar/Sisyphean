@@ -42,8 +42,25 @@ public class Enemy extends Character
 
         switch (type)
         {
+            case ORC:
+                this.setName("Orc");
+                this.setDescription("A hulking brute of a monster.");
+                this.experienceGiven = 5.0f + getLevel() * 4.5f;
+                this.setMaxHealth(20.0f + getLevel() * 2.2f );
+                //this.setMaxStamina(25.0f);
+                this.setStrength(20.0f + getLevel() * 12.0f );
+                this.setDexterity(8.0f + getLevel() * 5.0f );
+                this.setDefense(10.0f + getLevel() * 2.0f );
+                this.setMazeSprite(
+                    new Sprite(R.drawable.ic_launcher, 32, 32, 1, 1,
+                               gameWorld.getDisplayMetrics().density));
+                this.setBattleSprite(
+                    new Sprite(R.drawable.orc_sheet, 1040, 700, 8, 5,
+                               gameWorld.getDisplayMetrics().density));
+                this.getBattleSprite().setRow(2);
+                Log.v("Enemy", "Orc level " + this.getLevel() + " created!");
+                break;
             case ZOMBIE:
-            case RAT:
                 this.setName("Zombie");
                 this.setDescription("A flesh eating undead creature.");
                 this.experienceGiven = 5.0f + getLevel() * 4.5f;
