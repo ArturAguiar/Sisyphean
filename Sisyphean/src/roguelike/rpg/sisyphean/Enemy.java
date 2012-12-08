@@ -1,6 +1,5 @@
 package roguelike.rpg.sisyphean;
 
-import roguelike.rpg.sisyphean.Character.BattleAction;
 import android.util.Log;
 
 
@@ -43,7 +42,7 @@ public class Enemy extends Character
         switch (type)
         {
             case ZOMBIE:
-            case RAT:
+            case ORC:
                 this.setName("Zombie");
                 this.setDescription("A flesh eating undead creature.");
                 this.experienceGiven = 5.0f + getLevel() * 4.5f;
@@ -151,7 +150,7 @@ public class Enemy extends Character
                     break;
 
                 case HURT:
-                    if (battleFrame >= 6.0f)
+                    if (battleFrame >= 8.0f)
                     {
                         battleFrame = 0.0f;
                         this.setBattleAction(BattleAction.IDLE);
@@ -164,6 +163,9 @@ public class Enemy extends Character
                         battleFrame = 7.0f;
                         this.setAlive(false);
                     }
+                    break;
+
+                default:
                     break;
             }
         }
@@ -218,6 +220,43 @@ public class Enemy extends Character
         return 0.0f;
     }
 
+    /**
+     *  Called when this enemy is hit by a magic.
+     *  @param player The player that casted the magic.
+     *  @param magic The magic that was casted.
+     *  @return The total damage done.
+     */
+    public float wasHit(Player player, Magic magic)
+    {
+        float damageDone = magic.getTotalEffect(player);
+
+        this.setBattleAction(BattleAction.HURT);
+
+        if ( damageDone > 0 )
+        {
+            this.setHealth( this.getHealth() - damageDone );
+            Log.v("Enemy", "Health left: " + this.getHealth());
+
+            if (this.getHealth() <= 0.0f)
+            {
+                this.setBattleAction(BattleAction.DEAD);
+                this.getBattleObserver().enemyDied();
+                this.setMazeSprite(new Sprite(
+                    R.drawable.bones, 32, 32, 1, 1,
+                    gameWorld.getDisplayMetrics().density));
+            }
+
+            return damageDone;
+        }
+
+        return 0.0f;
+    }
+
+    /**
+     * Returns the experience that this enemy gives to the player when it is
+     * defeated.
+     * @return The experience given.
+     */
     public float getExperienceGiven()
     {
         return experienceGiven;

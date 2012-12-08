@@ -19,13 +19,11 @@ abstract public class Player extends Character
     private Weapon weapon;
     private Armor armor;
 
-    public enum Facing { DOWN, LEFT, RIGHT, UP };
+    private enum Facing { DOWN, LEFT, RIGHT, UP };
     private Facing facing = Facing.DOWN;
 
     private float walkFrame = 1.0f;
     private boolean walking = false;
-
-    private float moveSpeed = 1.5f;
 
     private PointF moveBy = new PointF();
 
@@ -237,6 +235,10 @@ abstract public class Player extends Character
         }
     }
 
+    /**
+     * Starts the casting animation.
+     * This is meant to be called by the battle screen.
+     */
     public void castMagic()
     {
         if (battleAction == BattleAction.IDLE)
@@ -294,11 +296,6 @@ abstract public class Player extends Character
     protected void setType(PlayerType type)
     {
         this.type = type;
-    }
-
-    public void setFacing(Facing direction)
-    {
-        this.facing = direction;
     }
 
     /**
@@ -549,6 +546,10 @@ abstract public class Player extends Character
         }
     }
 
+    /**
+     * Starts the moving animation facing the direction given.
+     * @param direction The direction that the player is moving.
+     */
     public void startMoving(String direction)
     {
         if (direction == null)
@@ -558,34 +559,56 @@ abstract public class Player extends Character
         else if (direction.equals("down"))
         {
             facing = Facing.DOWN;
-            currentCellY++;
+            //currentCellY++;
         }
         else if (direction.equals("up"))
         {
             facing = Facing.UP;
-            currentCellY--;
+            //currentCellY--;
         }
         else if (direction.equals("right"))
         {
             facing = Facing.RIGHT;
-            currentCellX++;
+            //currentCellX++;
         }
         else if (direction.equals("left"))
         {
             facing = Facing.LEFT;
-            currentCellX--;
+            //currentCellX--;
         }
         else
         {
             return;
         }
+
         walking = true;
         this.getMazeSprite().setRow(facing.ordinal());
         this.getArmor().getMazeIcon().setRow(facing.ordinal());
     }
 
+    /**
+     * Stops moving animation and updates the current player cell.
+     */
     public void stopMoving()
     {
+        if (facing == Facing.UP)
+        {
+            currentCellY--;
+        }
+        else if (facing == Facing.DOWN)
+        {
+            currentCellY++;
+        }
+        else if (facing == Facing.LEFT)
+        {
+            currentCellX--;
+        }
+        else if (facing == Facing.RIGHT)
+        {
+            currentCellX++;
+        }
+
+        Log.v("Player", "Position = (" + this.getCellX() + ", " + this.getCellY() + ")");
         walking = false;
         walkFrame = 1.0f;
     }

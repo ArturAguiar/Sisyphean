@@ -161,6 +161,7 @@ public class GameScreen extends ShapeScreen
         float width = shapeView.getWidth();
         float size = Math.min(height, width);
         this.cellSize = size / 5;
+        Log.v("GameScreen", "CellSize = " + this.cellSize);
 
         shapeView.setAutoRepaint(false);
 
@@ -174,12 +175,12 @@ public class GameScreen extends ShapeScreen
         if (height > width)
         {
             boundaryRect = new RectangleShape(0.0f, 5 * cellSize,
-                                              5 * cellSize, 5 * cellSize + height - width + 1);
+                                              5 * cellSize, 5 * cellSize + height - width + 20.0f);
         }
         else if (width > height)
         {
             boundaryRect = new RectangleShape(5 * cellSize, 0.0f,
-                                              5 * cellSize + width - height + 1, 5 * cellSize);
+                                              5 * cellSize + width - height + 20.0f, 5 * cellSize);
         }
 
         boundaryRect.setFilled(true);
@@ -217,32 +218,6 @@ public class GameScreen extends ShapeScreen
         }
     }
 
-    private void removeMazeRow(int row)
-    {
-        shapeView.setAutoRepaint(false);
-
-        float top = (row - gameWorld.getPlayer().getCellY() + 2) * cellSize;
-        float left = 0;
-
-        float bottom = top + cellSize;
-        float right = 5 * cellSize;
-
-        RectangleShape hitRect = new RectangleShape(left, top, right, bottom);
-        hitRect.setFilled(true);
-        hitRect.setFillColor(Color.black);
-        shapeView.add(hitRect);
-
-        for (Shape toRemove : shapeView.getIntersectingShapes(hitRect, ImageShape.class))
-        {
-            shapeView.remove(toRemove);
-        }
-
-        shapeView.remove(hitRect);
-
-        shapeView.setAutoRepaint(true);
-        shapeView.repaint();
-    }
-
     private void drawMazeCol(int col)
     {
         int cellRow;
@@ -261,26 +236,53 @@ public class GameScreen extends ShapeScreen
         }
     }
 
+    private void removeMazeRow(int row)
+    {
+        shapeView.setAutoRepaint(false);
+
+        float top = (row - gameWorld.getPlayer().getCellY() + 2) * cellSize + 2.0f;
+        float left = 0;
+
+        float bottom = top + cellSize - 2.0f;
+        float right = 5 * cellSize;
+
+        RectangleShape hitRect = new RectangleShape(left, top, right, bottom);
+        hitRect.setFillColor(Color.red);
+        shapeView.add(hitRect);
+
+        for (Shape toRemove : shapeView.getIntersectingShapes(hitRect, Shape.class))
+        {
+            if (toRemove != boundaryRect)
+                shapeView.remove(toRemove);
+        }
+
+        //shapeView.remove(hitRect);
+
+        shapeView.setAutoRepaint(true);
+        shapeView.repaint();
+    }
+
     private void removeMazeCol(int col)
     {
         shapeView.setAutoRepaint(false);
 
         float top = 0.0f;
-        float left = (col - gameWorld.getPlayer().getCellX() + 2) * cellSize;
+        float left = (col - gameWorld.getPlayer().getCellX() + 2) * cellSize + 5.0f;
 
         float bottom = 5 * cellSize;
-        float right = left + cellSize;
+        float right = left + cellSize - 5.0f;
 
         RectangleShape hitRect = new RectangleShape(left, top, right, bottom);
         hitRect.setFilled(true);
         shapeView.add(hitRect);
 
-        for (Shape toRemove : shapeView.getIntersectingShapes(hitRect, ImageShape.class))
+        for (Shape toRemove : shapeView.getIntersectingShapes(hitRect, Shape.class))
         {
-            shapeView.remove(toRemove);
+            if (toRemove != boundaryRect)
+                shapeView.remove(toRemove);
         }
 
-        shapeView.remove(hitRect);
+        //shapeView.remove(hitRect);
 
         shapeView.setAutoRepaint(true);
         shapeView.repaint();
@@ -333,12 +335,11 @@ public class GameScreen extends ShapeScreen
 
         if (cell.getItem() != null)
         {
-            cell.getItem().getMazeIcon().setSize(cellSize * 0.8f);
-            Log.v("GameScreen", cell.getItem().getClass() + " size = " + cellSize * 0.8f);
-            cell.getItem().setPosition(left + cellSize * 0.2f, top + cellSize * 0.3f);
-            Log.v("GameScreen", cell.getItem().getClass() + " position = (" + (cellSize * 0.2f) + ", " + (cellSize * 0.3f) + ")");
+            cell.getItem().setPosition(left, top);
+            cell.getItem().getMazeIcon().setSize(cellSize);
 
             shapeView.add(cell.getItem().getMazeIcon().getImageShape());
+            Log.v("GameScreen", "Item in (" + cell.x() + ", " + cell.y() + ")");
         }
     }
 
@@ -409,7 +410,6 @@ public class GameScreen extends ShapeScreen
 
         if (!gameWorld.getMaze().getCell(x, y).getWalls()[0] && y - 1 >= 0 && !checkForEnemyIn(x, y - 1))
         {
-            //gameWorld.getPlayer().move("up", Math.min(shapeView.getHeight(), shapeView.getWidth()) / gameWorld.getMaze().floorSize());
             shapeView.setAutoRepaint(false);
             this.drawMazeRow(y - 3);
             shapeView.setAutoRepaint(true);
@@ -580,49 +580,75 @@ public class GameScreen extends ShapeScreen
 
         if (moveBy.y > 0.0f)
         {
-            this.translateViewBy(0.0f, moveSpeed, true);
-            moveBy.set(moveBy.x, moveBy.y - moveSpeed);
-            if (moveBy.y <= 0.0f)
+
+            if (moveBy.y >= moveSpeed)
+            {
+                this.translateViewBy(0.0f, moveSpeed, true);
+                moveBy.set(moveBy.x, moveBy.y - moveSpeed);
+            }
+            else
             {
                 this.translateViewBy(0.0f, moveBy.y, true);
                 moveBy.set(moveBy.x, 0.0f);
+            }
 
+
+            if (moveBy.y == 0.0f)
+            {
                 this.removeMazeRow(gameWorld.getPlayer().getCellY() + 3);
             }
         }
         else if (moveBy.y < 0.0f)
         {
-            this.translateViewBy(0.0f, -moveSpeed, true);
-            moveBy.set(moveBy.x, moveBy.y + moveSpeed);
-            if (moveBy.y >= 0.0f)
+            if (moveBy.y <= -moveSpeed )
+            {
+                this.translateViewBy(0.0f, -moveSpeed, true);
+                moveBy.set(moveBy.x, moveBy.y + moveSpeed);
+            }
+            else
             {
                 this.translateViewBy(0.0f, moveBy.y, true);
                 moveBy.set(moveBy.x, 0.0f);
+            }
 
+            if (moveBy.y == 0.0f)
+            {
                 this.removeMazeRow(gameWorld.getPlayer().getCellY() - 3);
             }
         }
         else if (moveBy.x > 0.0f)
         {
-            this.translateViewBy(moveSpeed, 0.0f, true);
-            moveBy.set(moveBy.x - moveSpeed, moveBy.y);
-            if (moveBy.x <= 0.0f)
+            if (moveBy.x >= moveSpeed)
+            {
+                this.translateViewBy(moveSpeed, 0.0f, true);
+                moveBy.set(moveBy.x - moveSpeed, moveBy.y);
+            }
+            else
             {
                 this.translateViewBy(moveBy.x, 0.0f, true);
                 moveBy.set(0.0f, moveBy.y);
+            }
 
+            if (moveBy.x == 0.0f)
+            {
                 this.removeMazeCol(gameWorld.getPlayer().getCellX() + 3);
             }
         }
         else if (moveBy.x < 0.0f)
         {
-            this.translateViewBy(-moveSpeed, 0.0f, true);
-            moveBy.set(moveBy.x + moveSpeed, moveBy.y);
-            if (moveBy.x >= 0.0f)
+            if (moveBy.x <= -moveSpeed)
+            {
+                this.translateViewBy(-moveSpeed, 0.0f, true);
+                moveBy.set(moveBy.x + moveSpeed, moveBy.y);
+            }
+            else
             {
                 this.translateViewBy(moveBy.x, 0.0f, true);
                 moveBy.set(0.0f, moveBy.y);
+            }
 
+            if (moveBy.x == 0.0f)
+            {
                 this.removeMazeCol(gameWorld.getPlayer().getCellX() - 3);
             }
         }
