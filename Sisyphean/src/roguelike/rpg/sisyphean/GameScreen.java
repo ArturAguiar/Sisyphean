@@ -31,7 +31,7 @@ public class GameScreen extends ShapeScreen
 
     private GameWorld gameWorld;
 
-    private TextView level, strength, defense, dexterity, armor,
+    private TextView health, mana, level, strength, defense, dexterity, armor,
         weapon, intelligence, healthp, manap;
     // Maze images
     private Image groundImage;
@@ -160,11 +160,13 @@ public class GameScreen extends ShapeScreen
         String currentDef = (int)(thePlayer.getDefense()) + "";
         String currentDex = (int)(thePlayer.getDexterity()) + "";
         String currentIntel = (int)(thePlayer.getIntelligence()) + "";
+        health.setText("Health: " + (int)thePlayer.getHealth() + " / " + (int)thePlayer.getMaxHealth());
+        mana.setText("Mana: " + (int)thePlayer.getMana() + " / " + (int)thePlayer.getMaxMana());
         level.setText("Level: " + currentLevel);
-        strength.setText("Strength: " + currentStr);
-        defense.setText("Defense: " + currentDef);
-        dexterity.setText("Dexterity: " + currentDex);
-        intelligence.setText("Intelligence: " + currentIntel);
+        strength.setText("Str: " + currentStr);
+        defense.setText("Def: " + currentDef);
+        dexterity.setText("Dex: " + currentDex);
+        intelligence.setText("Intel: " + currentIntel);
         healthp.setText("Health Potions: " + thePlayer.getHealthPotions());
         manap.setText("Mana Potions: " + thePlayer.getManaPotions());
     }
@@ -525,9 +527,7 @@ public class GameScreen extends ShapeScreen
                     }
                 });
 
-                //TODO: Remove the item from the screen.
-                //It goes away after a battle or shifting the screen, but not immediately.
-                //shapeView.repaint();?
+                shapeView.remove(item.getMazeIcon());
             }
             else
             {
