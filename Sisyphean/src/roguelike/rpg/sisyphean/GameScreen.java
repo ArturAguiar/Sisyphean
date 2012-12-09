@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import android.text.Editable;
+import android.widget.EditText;
 import android.widget.TextView;
 import sofia.graphics.TextShape;
 import sofia.graphics.Color;
@@ -31,7 +33,7 @@ public class GameScreen extends ShapeScreen
     private GameWorld gameWorld;
 
     private TextView level, strength, defense, dexterity, armor,
-        weapon, intelligence;
+        weapon, intelligence, playerName;
     // Maze images
     private Image groundImage;
     private Image backImage;
@@ -56,7 +58,7 @@ public class GameScreen extends ShapeScreen
      * @param playerClass The class of the player's character.
      * @param floor The floor of the maze.
      */
-    public void initialize(Character.PlayerType playerClass, int floor)
+    public void initialize(Character.PlayerType playerClass, int floor, String name)
     {
         // Create the game world and set the display metrics.
         this.gameWorld = new GameWorld();
@@ -70,18 +72,20 @@ public class GameScreen extends ShapeScreen
         gameWorld.getLogicThread().start();
 
 
+        playerName.setText(name);
+
         Log.v("GameScreen", "initialized.");
 
         switch (playerClass)
         {
             case WARRIOR:
-                gameWorld.setPlayer(new Warrior("John Doe", 250.0f, 250.0f, gameWorld));
+                gameWorld.setPlayer(new Warrior(name, 250.0f, 250.0f, gameWorld));
                 break;
             case WIZARD:
-                gameWorld.setPlayer(new Wizard("John Doe", 250.0f, 250.0f, gameWorld));
+                gameWorld.setPlayer(new Wizard(name, 250.0f, 250.0f, gameWorld));
                 break;
             case ARCHER:
-                gameWorld.setPlayer(new Archer("John Doe", 250.0f, 250.0f, gameWorld));
+                gameWorld.setPlayer(new Archer(name, 250.0f, 250.0f, gameWorld));
             default:
                 break;
         }
@@ -126,6 +130,25 @@ public class GameScreen extends ShapeScreen
         gameWorld.getLogicThread().setGameScreen(this);
 
         this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
+        Player thePlayer = gameWorld.getPlayer();
+
+        String name = thePlayer.getName();
+        playerName.setText(name);
+        String weaponString = thePlayer.getWeapon().getName();
+        weapon.setText(weaponString);
+        String armorString = thePlayer.getArmor().getName();
+        armor.setText(armorString);
+        String currentLevel = thePlayer.getLevel() + "";
+        String currentStr = (int) (thePlayer.getStrength()) + "";
+        String currentDef = (int)(thePlayer.getDefense()) + "";
+        String currentDex = (int)(thePlayer.getDexterity()) + "";
+        String currentIntel = (int)(thePlayer.getIntelligence()) + "";
+        level.setText("Level: " + currentLevel);
+        strength.setText("Strength: " + currentStr);
+        defense.setText("Defense: " + currentDef);
+        dexterity.setText("Dexterity: " + currentDex);
+        intelligence.setText("Intelligence: " + currentIntel);
+
     }
 
     private void drawMazeSection(Maze maze, Player player)

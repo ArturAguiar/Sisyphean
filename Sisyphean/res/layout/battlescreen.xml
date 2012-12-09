@@ -73,30 +73,19 @@
         android:layout_alignBottom="@+id/manaPoints"
         android:layout_toLeftOf="@+id/healthPoints" />
 
-    <Button
-        android:id="@+id/heal"
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/manaPoints"
-        android:layout_alignBottom="@+id/manaPoints"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/escape"
-        android:textSize="20dp"
-        android:textColor="@android:color/white"
-        android:background="@android:color/black"
-        android:text="Heal"
-        android:visibility="invisible" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/attack"
+        android:layout_toLeftOf="@+id/shapeView2"
+        android:layout_toRightOf="@+id/escape" >
 
-    <Button
-        android:id="@+id/damage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/manaPoints"
-        android:layout_alignLeft="@+id/heal"
-        android:background="@android:color/black"
-        android:text="Damage"
-        android:textColor="@android:color/white"
-        android:textSize="20dp"
-        android:visibility="invisible" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

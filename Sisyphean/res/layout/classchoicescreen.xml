@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <EditText
-        android:id="@+id/name"
+        android:id="@+id/playerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -20,16 +20,16 @@
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/name"
+        android:layout_alignTop="@+id/playerName"
         android:layout_marginLeft="51dp"
-        android:layout_toRightOf="@+id/name"
+        android:layout_toRightOf="@+id/playerName"
         android:text="Submit" />
 
     <CheckBox
         android:id="@+id/archer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/name"
+        android:layout_alignLeft="@+id/playerName"
         android:layout_centerVertical="true"
         android:text="Archer" />
 

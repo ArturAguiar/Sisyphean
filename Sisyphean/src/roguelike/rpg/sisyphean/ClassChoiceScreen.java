@@ -20,7 +20,7 @@ import sofia.app.Screen;
 public class ClassChoiceScreen extends Screen
 {
     private CheckBox wizard, warrior, archer;
-    private EditText name;
+    private EditText playerName;
     private Button submit;
 
     // ----------------------------------------------------------
@@ -38,23 +38,25 @@ public class ClassChoiceScreen extends Screen
      */
     public void submitClicked()
     {
+        String name = playerName.getText().toString();
+
         if (warrior.isChecked() && !(wizard.isChecked() || archer.isChecked()))
         {
 
-            presentScreen(GameScreen.class, Character.PlayerType.WARRIOR, 1);
+            presentScreen(GameScreen.class, Character.PlayerType.WARRIOR, 1, name);
             finish();
         }
         else if (wizard.isChecked() &&
             !(warrior.isChecked() || archer.isChecked()))
         {
 
-            presentScreen(GameScreen.class, Character.PlayerType.WIZARD, 1);
+            presentScreen(GameScreen.class, Character.PlayerType.WIZARD, 1, name);
             finish();
         }
         else
         {
 
-            presentScreen(GameScreen.class, Character.PlayerType.ARCHER, 1);
+            presentScreen(GameScreen.class, Character.PlayerType.ARCHER, 1, name);
             finish();
         }
     }

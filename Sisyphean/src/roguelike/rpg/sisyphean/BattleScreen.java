@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import android.widget.ScrollView;
+import android.graphics.Canvas;
 import sofia.graphics.Color;
 import sofia.graphics.TextShape;
 import sofia.graphics.RectangleShape;
@@ -21,9 +23,9 @@ import android.widget.Button;
 public class BattleScreen extends ShapeScreen
 {
     private GameWorld gameWorld;
-
+    private ScrollView scrollView1;
     private Player player;
-
+    private Button[] buttonArray;
     private boolean wait = false;
 
     private Enemy enemy;
@@ -42,6 +44,7 @@ public class BattleScreen extends ShapeScreen
      */
     public void initialize(GameWorld myGameWorld, Enemy myEnemy)
     {
+        buttonArray = new Button[10];
         this.gameWorld = myGameWorld;
         this.gameWorld.setEnemyKilled(null);
         this.player = gameWorld.getPlayer();
@@ -71,6 +74,9 @@ public class BattleScreen extends ShapeScreen
         healthRect.setFilled(true);
         healthRect.setFillColor(Color.green);
         shapeView2.add(healthRect);
+        String healthRatio = (int)(player.getHealth()) +"/"+(int)(player.getMaxHealth());
+        String manaRatio =(int)(player.getMana()) +"/"+ (int)(player.getMaxMana());
+
         float top = (shapeView2.getHeight() / 3) * 2;
         manaRect = new RectangleShape(0, top,
             shapeView2.getWidth(), shapeView2.getHeight());
@@ -86,7 +92,17 @@ public class BattleScreen extends ShapeScreen
         shapeView2.setAutoRepaint(true);
         shapeView.repaint();
         shapeView2.repaint();
+        int counter = 0;
+        for (Magic magic : player.getMagics())
+        {
+            Button button = new Button(this);
+            button.setText(magic.getName());
+            buttonArray[counter] = button;
+            counter++;
+            scrollView1.addView(button);
+        }
     }
+
 
     @Override
     public void onDestroy()
@@ -129,14 +145,17 @@ public class BattleScreen extends ShapeScreen
     public void magicClicked()
     {
         // Make other buttons appear
-        heal.setVisibility(0);
-        damage.setVisibility(0);
-        // for (Magic magic : this.getMagics())
-            // if magic.getName.equals("String of magic clicked")
-                // clicked = magic;
-                // break;
-        // player.castMagic(magic);
-        // manaDecrease();
+        int counter = 0;
+        for (Magic magic : player.getMagics())
+        {
+
+            if (magic.getName().equals(buttonArray[counter].getText()))
+            {
+                player.castMagic();
+                break;
+            }
+        }
+        updateMP();
     }
 
     public void playerAttackDone()
