@@ -1,5 +1,6 @@
 package roguelike.rpg.sisyphean;
 
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,8 @@ import sofia.app.Screen;
  */
 public class ClassChoiceScreen extends Screen
 {
+
+    private EditText playerName;
     private RadioButton wizard, warrior, archer;
     private EditText name;
     private Button submit;
@@ -38,23 +41,25 @@ public class ClassChoiceScreen extends Screen
      */
     public void submitClicked()
     {
+        String name = playerName.getText().toString();
+
         if (warrior.isChecked() && !(wizard.isChecked() || archer.isChecked()))
         {
 
-            presentScreen(GameScreen.class, Character.PlayerType.WARRIOR, 1);
+            presentScreen(GameScreen.class, Character.PlayerType.WARRIOR, 1, name);
             finish();
         }
         else if (wizard.isChecked() &&
             !(warrior.isChecked() || archer.isChecked()))
         {
 
-            presentScreen(GameScreen.class, Character.PlayerType.WIZARD, 1);
+            presentScreen(GameScreen.class, Character.PlayerType.WIZARD, 1, name);
             finish();
         }
         else
         {
 
-            presentScreen(GameScreen.class, Character.PlayerType.ARCHER, 1);
+            presentScreen(GameScreen.class, Character.PlayerType.ARCHER, 1, name);
             finish();
         }
     }

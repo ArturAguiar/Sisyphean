@@ -1,8 +1,14 @@
 package roguelike.rpg.sisyphean;
 
+
+import android.text.Editable;
+import android.widget.EditText;
+
+
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 import android.widget.TextView;
 import sofia.graphics.TextShape;
 import sofia.graphics.Color;
@@ -38,7 +44,7 @@ public class GameScreen extends ShapeScreen
 
     private TextView health, mana, level, strength, defense, dexterity, armor,
         weapon, intelligence, healthp, manap, currentitem, currentname,
-        currentdesc, currentbuff, newitem, newname, newdesc, newbuff;
+        currentdesc, currentbuff, newitem, newname, newdesc, newbuff, playerName;
     // Maze images
     private Image groundImage;
     private Image backImage;
@@ -58,6 +64,7 @@ public class GameScreen extends ShapeScreen
 
     private boolean choiceMenu;
     private ImageShape popUp;
+    private String name;
 
 
     // ----------------------------------------------------------
@@ -66,7 +73,7 @@ public class GameScreen extends ShapeScreen
      * @param playerClass The class of the player's character.
      * @param floor The floor of the maze.
      */
-    public void initialize(Character.PlayerType playerClass, int floor)
+    public void initialize(Character.PlayerType playerClass, int floor, String name)
     {
         // Create the game world and set the display metrics.
         this.gameWorld = new GameWorld();
@@ -78,20 +85,22 @@ public class GameScreen extends ShapeScreen
 
         gameWorld.getLogicThread().setRunning(true);
         gameWorld.getLogicThread().start();
+        this.name = name;
 
+        playerName.setText(name);
 
         Log.v("GameScreen", "initialized.");
 
         switch (playerClass)
         {
             case WARRIOR:
-                gameWorld.setPlayer(new Warrior("John Doe", 250.0f, 250.0f, gameWorld));
+                gameWorld.setPlayer(new Warrior(name, 250.0f, 250.0f, gameWorld));
                 break;
             case WIZARD:
-                gameWorld.setPlayer(new Wizard("John Doe", 250.0f, 250.0f, gameWorld));
+                gameWorld.setPlayer(new Wizard(name, 250.0f, 250.0f, gameWorld));
                 break;
             case ARCHER:
-                gameWorld.setPlayer(new Archer("John Doe", 250.0f, 250.0f, gameWorld));
+                gameWorld.setPlayer(new Archer(name, 250.0f, 250.0f, gameWorld));
             default:
                 break;
         }
@@ -177,6 +186,8 @@ public class GameScreen extends ShapeScreen
     private void updateFields()
     {
         Player thePlayer = gameWorld.getPlayer();
+        String name = thePlayer.getName();
+        playerName.setText(name);
         String weaponString = thePlayer.getWeapon().getName();
         weapon.setText(weaponString);
         String armorString = thePlayer.getArmor().getName();
@@ -195,6 +206,13 @@ public class GameScreen extends ShapeScreen
         intelligence.setText("Intel: " + currentIntel);
         healthp.setText("Health Potions: " + thePlayer.getHealthPotions());
         manap.setText("Mana Potions: " + thePlayer.getManaPotions());
+
+        this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
+        Player thePlayer1 = gameWorld.getPlayer();
+
+
+
+
     }
 
     private void drawMazeSection(Maze maze, Player player)
@@ -409,40 +427,11 @@ public class GameScreen extends ShapeScreen
      */
     public void onTouchDown(MotionEvent event)
     {
-        if (choiceMenu && shapeView2.getBounds().contains(event.getX(), event.getY()))
-        {
-            if (chooseItem(event))
-            {
-                shapeView.remove(gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem().getMazeIcon());
-                gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).setItem(null);
-            }
-            runOnUiThread(new Runnable() {
-                public void run()
-                {
-                    choiceMenu = false;
-                    shapeView.remove(popUp);
-                    currentitem.setText("");
-                    currentname.setText("");
-                    currentdesc.setText("");
-                    currentbuff.setText("");
-                    newitem.setText("");
-                    newname.setText("");
-                    newdesc.setText("");
-                    newbuff.setText("");
-                    mainscreen.bringToFront();
-                    weapon.setText(gameWorld.getPlayer().getWeapon().getName());
-                    armor.setText(gameWorld.getPlayer().getArmor().getName());
-                }
 
-            });
-        }
-        else
+     // Pops up a toast with information for testing purposes
+        for (String name : gameWorld.getMaze().itemlist)
         {
-            // Pops up a toast with information for testing purposes
-            for (String name : gameWorld.getMaze().itemlist)
-            {
-                Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-            }
+            Toast.makeText(this, name, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -619,9 +608,7 @@ public class GameScreen extends ShapeScreen
 
                 shapeView.remove(item.getMazeIcon());
             }
-            else
-            {
-                if (item instanceof Weapon)
+            else if (item instanceof Weapon)
                 {
                     runOnUiThread(new Runnable() {
                         public void run()
@@ -662,7 +649,7 @@ public class GameScreen extends ShapeScreen
                     });
                 }
             }
-        }
+
     }
 
     private void checkForExit(int x, int y)

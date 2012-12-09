@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <EditText
-        android:id="@+id/name"
+        android:id="@+id/playerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -20,41 +20,38 @@
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/name"
+        android:layout_alignTop="@+id/playerName"
         android:layout_marginLeft="51dp"
-        android:layout_toRightOf="@+id/name"
+        android:layout_toRightOf="@+id/playerName"
         android:text="Submit" />
 
     <RadioGroup
         android:id="@+id/classes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="14dp" >
+        android:layout_alignLeft="@+id/playerName"
+        android:layout_centerVertical="true" >
 
         <RadioButton
             android:id="@+id/archer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/name"
-            android:layout_centerVertical="true"
+            android:layout_alignBottom="@+id/classes"
+            android:layout_alignLeft="@+id/playerName"
             android:text="Archer" />
 
         <RadioButton
             android:id="@+id/warrior"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/archer"
-            android:layout_below="@+id/archer"
             android:text="Warrior" />
 
         <RadioButton
             android:id="@+id/wizard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/archer"
-            android:layout_below="@+id/warrior"
+            android:layout_alignLeft="@+id/classes"
+            android:layout_below="@+id/classes"
             android:text="Wizard" />
     </RadioGroup>
 

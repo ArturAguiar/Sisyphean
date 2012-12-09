@@ -1,5 +1,6 @@
 package roguelike.rpg.sisyphean;
 
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import sofia.util.Random;
 import roguelike.rpg.sisyphean.Character.PlayerType;
@@ -24,7 +25,7 @@ import android.widget.Button;
 public class BattleScreen extends ShapeScreen
 {
     private GameWorld gameWorld;
-
+    private TextShape hp, mp;
     private Player player;
 
     private boolean wait = false;
@@ -32,9 +33,12 @@ public class BattleScreen extends ShapeScreen
     private Enemy enemy;
     private boolean enemyDied = false;
 
-    private Button attack, escape, magic, heal, damage;
+    private Button attack, escape, magic;
+    private Button[] buttonArray;
+    private LinearLayout buttonLayout;
+
     private TextView healthPoints, manaPoints;
-    private ShapeView shapeView, shapeView2;
+    private ShapeView shapeView, shapeView2, hpText, mpText;
     private RectangleShape healthRect, manaRect;
 
     // Keeps the magic that is being casted, until the damage/healing should be done.
@@ -48,6 +52,7 @@ public class BattleScreen extends ShapeScreen
      */
     public void initialize(GameWorld myGameWorld, Enemy myEnemy)
     {
+        buttonArray = new Button[4];
         this.gameWorld = myGameWorld;
         this.player = gameWorld.getPlayer();
         this.player.setBattleObserver(this);
@@ -83,7 +88,14 @@ public class BattleScreen extends ShapeScreen
         manaRect.setFilled(true);
         manaRect.setFillColor(Color.blue);
         shapeView2.add(manaRect);
-
+        TextShape hp =  new TextShape((int)(player.getHealth()) + "/" +
+            (int)(player.getMaxHealth()), hpText.getWidth()/2,
+            hpText.getHeight()/2);
+        TextShape mp =  new TextShape((int)(player.getMana()) + "/" +
+            (int)(player.getMaxMana()), mpText.getWidth() /2,
+            mpText.getHeight()/2);
+        hpText.add(hp);
+        mpText.add(mp);
         // Add projectile.
         if (player.getType() == PlayerType.ARCHER)
         {
@@ -157,21 +169,33 @@ public class BattleScreen extends ShapeScreen
      */
     public void magicClicked()
     {
-        /* This is fine as it is, but you should keep track of the magic that
-         * was clicked in a variable (magicBeingCasted) and wait for when the
-         * casting is done.
+     // Make other buttons appear
         int counter = 0;
         for (Magic magic : player.getMagics())
         {
-            if (magic.getName().equals(buttonArray[counter].getText()))
+            Button button = new Button(this);
+            button.setText(magic.getName());
+            buttonArray[counter] = button;
+            counter++;
+            buttonLayout.addView(button);
+        }
+        int index = 0;
+
+        for (Magic magic : player.getMagics())
+        {
+
+            if (magic.getName().equals(buttonArray[index].getText()))
             {
                 magicBeingCasted = magic;
                 player.castMagic();
                 break;
             }
+            index++;
         }
-        */
+        updateMP();
     }
+
+
 
     public void playerAttackDone()
     {
@@ -359,7 +383,7 @@ public class BattleScreen extends ShapeScreen
                 int currentHealth = (int) (player.getHealth());
                 int maxHealth = (int) (player.getMaxHealth());
                 String healthString = currentHealth + "/" + maxHealth;
-                healthPoints.setText(healthString);
+                updateHPText();
 
                 float currentHealthRatio = player.getHealth() / player.getMaxHealth();
                 float newRight = currentHealthRatio * shapeView2.getWidth();
@@ -396,7 +420,6 @@ public class BattleScreen extends ShapeScreen
                 int currentMana = (int) (player.getMana());
                 int maxMana = (int) (player.getMaxMana());
                 String manaString = currentMana + "/" + maxMana;
-                manaPoints.setText(manaString);
 
                 if (player.getMana() != player.getMaxMana())
                 {
@@ -410,5 +433,31 @@ public class BattleScreen extends ShapeScreen
 
         Log.v("BattleScreen", "Mana = " + gameWorld.getPlayer().getMana());
     }
+
+    private void updateHPText()
+    {
+
+            if (player.getHealth() != player.getMaxHealth())
+            {
+                    String healthRatio = (int)(player.getHealth()) + "/" +
+                        (int)(player.getMaxHealth());
+                    hpText.remove(hp);
+                    hp = new TextShape(healthRatio, hpText.getWidth()/2, hpText.getHeight());
+                    hp.setTypeSize(25);
+                    hpText.add(hp);
+                }
+
+
+    }
+
+    private void updateMPText()
+    {
+        String manaRatio = (int)(player.getMana()) + "/" +
+            (int)(player.getMaxMana());
+        //mp.setText(manaRatio);
+        mpText.add(mp);
+    }
+
+
 
 }
