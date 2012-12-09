@@ -28,6 +28,7 @@ import sofia.app.ShapeScreen;
 public class GameScreen extends ShapeScreen
 {
     private ShapeView shapeView;
+    private ShapeView shapeView2;
 
     private GameWorld gameWorld;
 
@@ -525,7 +526,7 @@ public class GameScreen extends ShapeScreen
             }
             else
             {
-                //Make pop up
+                shapeView2.setVisibility(0);
             }
         }
     }
@@ -539,6 +540,8 @@ public class GameScreen extends ShapeScreen
         {
             gameWorld.getPlayer().consumePotion(PotionType.HEALTH);
             healthp.setText("Health Potions: " + gameWorld.getPlayer().getHealthPotions());
+            health.setText("Health: " + (int)gameWorld.getPlayer().getHealth() +
+                " / " + (int)gameWorld.getPlayer().getMaxHealth());
         }
 
         Log.v("Health Potions", gameWorld.getPlayer().getHealthPotions() + " potions");
@@ -553,6 +556,8 @@ public class GameScreen extends ShapeScreen
         {
             gameWorld.getPlayer().consumePotion(PotionType.MANA);
             manap.setText("Mana Potions: " + gameWorld.getPlayer().getManaPotions());
+            mana.setText("Mana: " + (int)gameWorld.getPlayer().getMana() +
+                " / " + (int)gameWorld.getPlayer().getMaxMana());
         }
 
         Log.v("Mana Potions", gameWorld.getPlayer().getManaPotions() + " potions");
