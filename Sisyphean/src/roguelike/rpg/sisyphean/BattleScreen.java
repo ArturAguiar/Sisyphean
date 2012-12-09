@@ -1,5 +1,8 @@
 package roguelike.rpg.sisyphean;
 
+import android.widget.Toast;
+import sofia.util.Random;
+import roguelike.rpg.sisyphean.Character.PlayerType;
 import sofia.graphics.Color;
 import sofia.graphics.TextShape;
 import sofia.graphics.RectangleShape;
@@ -81,6 +84,15 @@ public class BattleScreen extends ShapeScreen
         manaRect.setFillColor(Color.blue);
         shapeView2.add(manaRect);
 
+        // Add projectile.
+        if (player.getType() == PlayerType.ARCHER)
+        {
+            player.getProjectile().setPosition(player.getInitialBattlePosition(),
+                                               enemy.getBattleSprite().getPosition().y +
+                                               enemy.getBattleSprite().getImageShape().getHeight() / 2.0f);
+            shapeView.add(player.getProjectile().getImageShape());
+        }
+
         this.updateHP();
         this.updateMP();
 
@@ -97,6 +109,8 @@ public class BattleScreen extends ShapeScreen
 
         this.player.setBattleObserver(null);
         this.enemy.setBattleObserver(null);
+
+        this.clear();
 
         super.onDestroy();
     }
@@ -120,7 +134,20 @@ public class BattleScreen extends ShapeScreen
     {
         if (!wait)
         {
-            presentScreen(GameScreen.class, gameWorld);
+            Random rand = new sofia.util.Random();
+            Log.v("BattleScreen", "Trying to escape: " + (player.getDexterity() - enemy.getDexterity() + 50));
+            if (player.getDexterity() - enemy.getDexterity() + 100 > 0 &&
+                rand.nextInt(1, (int)(player.getDexterity() - enemy.getDexterity() + 100)) > 50)
+            {
+                // Escaped successfully.
+                presentScreen(GameScreen.class, gameWorld);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(this, "Attempt to escape failed!", Toast.LENGTH_LONG).show();
+                enemy.getBattleSprite().getImageShape().animate(800).name("enemyActionDelay").play();
+            }
         }
     }
 

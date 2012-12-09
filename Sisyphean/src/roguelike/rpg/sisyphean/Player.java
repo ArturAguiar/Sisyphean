@@ -35,6 +35,9 @@ abstract public class Player extends Character
     private int healthPotions = 0;
     private int manaPotions = 0;
 
+    private Sprite projectile;
+    private boolean shootingProjectile = false;
+
     /**
     * Method to be called when the player levels up.
     */
@@ -45,65 +48,13 @@ abstract public class Player extends Character
     {
         int tempFrame = 0;
 
-        /* The walking movement and animation frame-change in maze mode.
+        /* The walking animation frame-change in maze mode.
         * On frame 1 the character is standing, on frame 0 and 2 he is walking.
         * Animation goes 1 -> 2 -> 1 -> 0 -> repeat (columns)
         * and the row is determined by the facing direction enum type.
         */
         if (walking && !gameWorld.getBattling())
         {
-            // Actual walking.
-            /*
-            if (moveBy.y > 0.0f)
-            {
-                this.getMazeSprite().move(0.0f, moveSpeed);
-                moveBy.set(moveBy.x, moveBy.y - moveSpeed);
-                if (moveBy.y < 0.0f)
-                {
-                    this.getMazeSprite().move(0.0f, moveBy.y);
-                    moveBy.set(moveBy.x, 0.0f);
-                }
-            }
-            else if (moveBy.y < 0.0f)
-            {
-                this.getMazeSprite().move(0.0f, -moveSpeed);
-                moveBy.set(moveBy.x, moveBy.y + moveSpeed);
-                if (moveBy.y > 0.0f)
-                {
-                    this.getMazeSprite().move(0.0f, moveBy.y);
-                    moveBy.set(moveBy.x, 0.0f);
-                }
-            }
-            else if (moveBy.x > 0.0f)
-            {
-                this.getMazeSprite().move(moveSpeed, 0.0f);
-                moveBy.set(moveBy.x - moveSpeed, moveBy.y);
-                if (moveBy.x < 0.0f)
-                {
-                    this.getMazeSprite().move(moveBy.x, 0.0f);
-                    moveBy.set(0.0f, moveBy.y);
-                }
-            }
-            else if (moveBy.x < 0.0f)
-            {
-                this.getMazeSprite().move(-moveSpeed, 0.0f);
-                moveBy.set(moveBy.x + moveSpeed, moveBy.y);
-                if (moveBy.x > 0.0f)
-                {
-                    this.getMazeSprite().move(moveBy.x, 0.0f);
-                    moveBy.set(0.0f, moveBy.y);
-                }
-            }
-            else
-            {
-                // This makes the character animation stop one frame after it
-                // should, but I don't believe it will be a problem.
-                walking = false;
-                walkFrame = 1.0f;
-            }
-            */
-
-            // Walking animation.
             tempFrame = (int)(walkFrame);
 
             if (tempFrame == 3)
@@ -167,9 +118,10 @@ abstract public class Player extends Character
                     break;
 
                 case ATTACKING:
-                    if (!attackCalled && battleFrame >= 4.0f)
+                    if (this.getType() != PlayerType.ARCHER && !attackCalled && battleFrame >= 4.0f)
                     {
                         attackCalled = true;
+
                         // Make a callback to the BattleScreen to let it know that the attack was performed.
                         if (this.getBattleObserver() != null)
                             this.getBattleObserver().playerAttackDone();
@@ -181,6 +133,10 @@ abstract public class Player extends Character
                         this.getBattleSprite().setPosition(this.getInitialBattlePosition(),
                                                            this.getBattleSprite().getPosition().y);
                         attackCalled = false;
+
+                        if (this.getType() == PlayerType.ARCHER)
+                            projectile.setCol(1);
+                            shootingProjectile = true;
                     }
 
                     break;
@@ -217,6 +173,21 @@ abstract public class Player extends Character
                     }
                     break;
             }
+
+            // Projectile animation (archer)
+            if (shootingProjectile && projectile != null)
+            {
+                projectile.move(-5.0f, 0.0f);
+
+                if (projectile.getPosition().x <= gameWorld.getDisplayMetrics().widthPixels / 3.0f - 50.0f )
+                {
+                    shootingProjectile = false;
+                    projectile.setCol(0);
+                    projectile.setPosition(this.getInitialBattlePosition(), projectile.getPosition().y);
+
+                    this.getBattleObserver().playerAttackDone();
+                }
+            }
         }
 
     }
@@ -226,8 +197,16 @@ abstract public class Player extends Character
     {
         if (battleAction == BattleAction.IDLE)
         {
-            attackMove = gameWorld.getDisplayMetrics().widthPixels / 3.0f - 50.0f;
-            this.setBattleAction(BattleAction.MOVING);
+            if (this.getType() == PlayerType.ARCHER)
+            {
+                this.setBattleAction(BattleAction.ATTACKING);
+            }
+            else
+            {
+                attackMove = gameWorld.getDisplayMetrics().widthPixels / 3.0f - 50.0f;
+                this.setBattleAction(BattleAction.MOVING);
+            }
+
         }
     }
 
@@ -605,5 +584,15 @@ abstract public class Player extends Character
         Log.v("Player", "Position = (" + this.getCellX() + ", " + this.getCellY() + ")");
         walking = false;
         walkFrame = 1.0f;
+    }
+
+    public Sprite getProjectile()
+    {
+        return projectile;
+    }
+
+    public void setProjectile(Sprite projectile)
+    {
+        this.projectile = projectile;
     }
 }

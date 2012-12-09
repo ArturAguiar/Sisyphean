@@ -42,7 +42,7 @@ public class Wizard
         this.setExpToNextLevel(10.0f);
 
         // The sprite in maze mode.
-        this.setMazeSprite(new Sprite(R.drawable.male_base, 96, 128, 3, 4, gameWorld.getDisplayMetrics().density));
+        this.setMazeSprite(new Sprite(R.drawable.wizard, 96, 128, 3, 4, gameWorld.getDisplayMetrics().density));
         this.getMazeSprite().setCol(1);
 
         // The sprite in battle mode.

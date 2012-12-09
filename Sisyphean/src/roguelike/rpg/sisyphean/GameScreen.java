@@ -65,6 +65,7 @@ public class GameScreen extends ShapeScreen
 
         // Start the logic thread.
         gameWorld.setLogicThread(new LogicThread(gameWorld));
+        gameWorld.getLogicThread().setGameScreen(this);
 
         gameWorld.getLogicThread().setRunning(true);
         gameWorld.getLogicThread().start();
@@ -98,8 +99,6 @@ public class GameScreen extends ShapeScreen
 
         this.updateFields();
         this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
-
-        gameWorld.getLogicThread().setGameScreen(this);
     }
 
     /**
@@ -347,13 +346,14 @@ public class GameScreen extends ShapeScreen
             cell.getEnemy().getMazeSprite().setSize(cellSize * 0.8f);
             shapeView.add(cell.getEnemy().getMazeSprite().getImageShape());
 
-            TextShape levelText = new TextShape("" + cell.getEnemy().getLevel(), 0, 0);
+            TextShape levelText = new TextShape("" + cell.getEnemy().getLevel(),
+                left + cellSize * 0.1f, top + cellSize * 0.1f);
 
             levelText.setColor(Color.red);
             levelText.setTypefaceAndSize("*-bold-8");
             shapeView.add(levelText);
-            levelText.setPosition(left + cellSize - levelText.getWidth() - 5.0f,
-                                  top + cellSize - levelText.getHeight() - 5.0f);
+            levelText.setPosition(left + cellSize * 0.9f - levelText.getWidth(),
+                                  top + cellSize * 0.9f - levelText.getHeight());
         }
         else if (cell.getItem() != null)
         {

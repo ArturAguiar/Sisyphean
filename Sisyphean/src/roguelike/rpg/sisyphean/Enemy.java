@@ -205,8 +205,16 @@ public class Enemy extends Character
      */
     public float wasHit(Player player)
     {
-        // TODO: This is probably not the best way to calculate things...
-        float damageDone = player.getStrength() + player.getWeapon().getDamage() - getDefense();
+        float damageDone = 0.0f;
+
+        if (player.getType() == PlayerType.ARCHER)
+        {
+            damageDone = player.getDexterity() + player.getWeapon().getDamage() - getDefense();
+        }
+        else
+        {
+            damageDone = player.getStrength() + player.getWeapon().getDamage() - getDefense();
+        }
         Float bonusDamage = player.getWeapon().getBonusDamageHash().get(this.type.toString());
 
         if (bonusDamage != null)
