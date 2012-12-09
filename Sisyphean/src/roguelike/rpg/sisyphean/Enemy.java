@@ -1,6 +1,5 @@
 package roguelike.rpg.sisyphean;
 
-import roguelike.rpg.sisyphean.Character.BattleAction;
 import android.util.Log;
 
 
@@ -42,8 +41,26 @@ public class Enemy extends Character
 
         switch (type)
         {
+            case ORC:
+                this.setName("Orc");
+                this.setDescription("A hulking brute of a monster.");
+                this.experienceGiven = 5.0f + getLevel() * 4.5f;
+                this.setMaxHealth(20.0f + getLevel() * 2.2f );
+                //this.setMaxStamina(25.0f);
+                this.setStrength(20.0f + getLevel() * 12.0f );
+                this.setDexterity(8.0f + getLevel() * 5.0f );
+                this.setDefense(10.0f + getLevel() * 2.0f );
+                this.setMazeSprite(
+                    new Sprite(R.drawable.orc_single, 32, 32, 1, 1,
+                               gameWorld.getDisplayMetrics().density));
+                this.setBattleSprite(
+                    new Sprite(R.drawable.orc_sheet, 1040, 700, 8, 5,
+                               gameWorld.getDisplayMetrics().density));
+                this.getBattleSprite().setRow(2);
+                Log.v("Enemy", "Orc level " + this.getLevel() + " created!");
+                break;
+
             case ZOMBIE:
-            case RAT:
                 this.setName("Zombie");
                 this.setDescription("A flesh eating undead creature.");
                 this.experienceGiven = 5.0f + getLevel() * 4.5f;
@@ -75,7 +92,7 @@ public class Enemy extends Character
                     new Sprite(R.drawable.skeleton_single, 32, 32, 1, 1,
                                gameWorld.getDisplayMetrics().density));
                 this.setBattleSprite(
-                    new Sprite(R.drawable.skeleton_battle_sheet, 800, 500, 8, 5,
+                    new Sprite(R.drawable.skeleton_sheet, 1040, 650, 8, 5,
                                gameWorld.getDisplayMetrics().density));
                 this.getBattleSprite().setRow(2);
                 Log.v("Enemy", "Skeleton level " + this.getLevel() + " created!");
@@ -151,7 +168,7 @@ public class Enemy extends Character
                     break;
 
                 case HURT:
-                    if (battleFrame >= 6.0f)
+                    if (battleFrame >= 8.0f)
                     {
                         battleFrame = 0.0f;
                         this.setBattleAction(BattleAction.IDLE);
@@ -164,6 +181,9 @@ public class Enemy extends Character
                         battleFrame = 7.0f;
                         this.setAlive(false);
                     }
+                    break;
+
+                default:
                     break;
             }
         }
@@ -218,6 +238,43 @@ public class Enemy extends Character
         return 0.0f;
     }
 
+    /**
+     *  Called when this enemy is hit by a magic.
+     *  @param player The player that casted the magic.
+     *  @param magic The magic that was casted.
+     *  @return The total damage done.
+     */
+    public float wasHit(Player player, Magic magic)
+    {
+        float damageDone = magic.getTotalEffect(player);
+
+        this.setBattleAction(BattleAction.HURT);
+
+        if ( damageDone > 0 )
+        {
+            this.setHealth( this.getHealth() - damageDone );
+            Log.v("Enemy", "Health left: " + this.getHealth());
+
+            if (this.getHealth() <= 0.0f)
+            {
+                this.setBattleAction(BattleAction.DEAD);
+                this.getBattleObserver().enemyDied();
+                this.setMazeSprite(new Sprite(
+                    R.drawable.bones, 32, 32, 1, 1,
+                    gameWorld.getDisplayMetrics().density));
+            }
+
+            return damageDone;
+        }
+
+        return 0.0f;
+    }
+
+    /**
+     * Returns the experience that this enemy gives to the player when it is
+     * defeated.
+     * @return The experience given.
+     */
     public float getExperienceGiven()
     {
         return experienceGiven;

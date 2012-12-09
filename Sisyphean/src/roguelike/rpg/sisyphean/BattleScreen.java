@@ -36,6 +36,9 @@ public class BattleScreen extends ShapeScreen
     private ShapeView shapeView, shapeView2;
     private RectangleShape healthRect, manaRect;
 
+    // Keeps the magic that is being casted, until the damage/healing should be done.
+    private Magic magicBeingCasted = null;
+
     /**
      * Called when the battle starts.
      *
@@ -46,7 +49,6 @@ public class BattleScreen extends ShapeScreen
     {
         buttonArray = new Button[10];
         this.gameWorld = myGameWorld;
-        this.gameWorld.setEnemyKilled(null);
         this.player = gameWorld.getPlayer();
         this.player.setBattleObserver(this);
 
@@ -144,6 +146,7 @@ public class BattleScreen extends ShapeScreen
      */
     public void magicClicked()
     {
+
         // Make other buttons appear
         int counter = 0;
         for (Magic magic : player.getMagics())
@@ -156,6 +159,22 @@ public class BattleScreen extends ShapeScreen
             }
         }
         updateMP();
+
+        /* This is fine as it is, but you should keep track of the magic that
+         * was clicked in a variable (magicBeingCasted) and wait for when the
+         * casting is done.
+        int counter = 0;
+        for (Magic magic : player.getMagics())
+        {
+            if (magic.getName().equals(buttonArray[counter].getText()))
+            {
+                magicBeingCasted = magic;
+                player.castMagic();
+                break;
+            }
+        }
+        */
+
     }
 
     public void playerAttackDone()
@@ -170,24 +189,19 @@ public class BattleScreen extends ShapeScreen
 
     public void playerCastingDone()
     {
-        Magic casted = null;
-        // TODO: get this magic from the selection.
-        for (Magic magic : player.getMagics())
-        {
-            casted = magic;
-        }
+        if (magicBeingCasted == null)
+            return;
 
-        if (casted != null && casted.heals())
+        if (magicBeingCasted.heals())
         {
-            float healAmount = casted.getTotalEffect(player);
+            float healAmount = magicBeingCasted.getTotalEffect(player);
             player.setHealth(player.getHealth() + healAmount);
 
             this.createHealingText(healAmount, player.getBattleSprite().getPosition().x + 60.0f, player.getBattleSprite().getPosition().y - 10.0f);
         }
         else
         {
-            // TODO: pass the magic to the wasHit method.
-            this.createDamageText((int)enemy.wasHit(player), enemy.getBattleSprite().getPosition().x + 30.0f, enemy.getBattleSprite().getPosition().y - 10.0f);
+            this.createDamageText((int)enemy.wasHit(player, magicBeingCasted), enemy.getBattleSprite().getPosition().x + 30.0f, enemy.getBattleSprite().getPosition().y - 10.0f);
         }
 
         if (!enemyDied)
@@ -195,14 +209,15 @@ public class BattleScreen extends ShapeScreen
             enemy.getBattleSprite().getImageShape().animate(800).name("enemyActionDelay").play();
         }
 
+        // Set the magic being casted back to null just to be safe
+        magicBeingCasted = null;
+
         this.updateHP();
         this.updateMP();
     }
 
     public void enemyAttackDone()
     {
-
-        player.wasHit(enemy);
         this.createDamageText((int)player.wasHit(enemy), player.getBattleSprite().getPosition().x + 60.0f, player.getBattleSprite().getPosition().y - 10.0f);
         wait = false;
 
@@ -222,7 +237,6 @@ public class BattleScreen extends ShapeScreen
         player.getBattleSprite().getImageShape().animate(5800).name("victory").play();
         Log.v("BattleScreen", "Enemy died.");
 
-        gameWorld.setEnemyKilled(enemy);
         player.addExperience(enemy.getExperienceGiven());
     }
 

@@ -13,7 +13,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
             android:text="Inventory"
             android:textSize="18dp" />
 
@@ -23,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/inventory"
             android:layout_below="@+id/inventory"
-            android:text="Current Weapon" />
+            android:text="" />
 
         <TextView
             android:id="@+id/armor"
@@ -31,40 +30,38 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/weapon"
             android:layout_below="@+id/weapon"
-            android:text="Current Armor" />
+            android:text="" />
 
-        <Button
-            android:id="@+id/down"
+        <ImageButton
+            android:id="@+id/healthbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:text="v" />
-
-        <Button
-            android:id="@+id/left"
+            android:layout_below="@+id/armor"
+            android:background="@drawable/health_potion" />
+    
+        <TextView
+            android:id="@+id/healthp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignLeft="@+id/weapon"
+            android:layout_below="@+id/healthbutton"
+            android:text="" />
+    
+        <ImageButton
+            android:id="@+id/manabutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/down"
-            android:layout_toLeftOf="@+id/down"
-            android:text="&lt;" />
-
-        <Button
-            android:id="@+id/right"
-            android:layout_width="wrap_content"
+            android:layout_below="@+id/healthp"
+            android:background="@drawable/mana_potion" />
+    
+        <TextView
+            android:id="@+id/manap"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/left"
-            android:layout_alignBottom="@+id/left"
-            android:layout_alignParentRight="true"
-            android:text=">" />
-
-        <Button
-            android:id="@+id/up"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/right"
-            android:layout_centerHorizontal="true"
-            android:text="^" />
+            android:layout_alignLeft="@+id/weapon"
+            android:layout_below="@+id/manabutton"
+            android:text="" />
+        
 
     </RelativeLayout>
 
@@ -74,12 +71,51 @@
         android:layout_height="match_parent"
         android:layout_weight="4.71" />
 
+
+    <RelativeLayout
+        android:layout_width="83dp"
+        android:layout_height="wrap_content" >
+        
+        <ImageButton
+            android:id="@+id/down"
+            android:layout_width="83dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bottom_button" />
+
+        <ImageButton
+            android:id="@+id/left"
+            android:layout_width="wrap_content"
+            android:layout_height="83dp"
+            android:layout_above="@+id/down"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/left_button" />
+
+	    <ImageButton
+	        android:id="@+id/right"
+	        android:layout_width="wrap_content"
+	        android:layout_height="83dp"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@+id/up"
+	        android:background="@drawable/right_button" />
+
+        <ImageButton
+            android:id="@+id/up"
+            android:layout_width="83dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/left"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/top_button" />
+
+
+
     <TableLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content" >
 
         <TableRow
-            android:id="@+id/tableRow8"
+            android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
@@ -93,7 +129,35 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow9"
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/health"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="10dp" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/mana"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="10dp" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
@@ -101,12 +165,13 @@
                 android:id="@+id/level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text=""
+                android:textSize="10dp" />
 
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow10"
+            android:id="@+id/tableRow5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
@@ -114,12 +179,13 @@
                 android:id="@+id/strength"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text=""
+                android:textSize="10dp" />
 
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow11"
+            android:id="@+id/tableRow6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
@@ -127,12 +193,13 @@
                 android:id="@+id/defense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text=""
+                android:textSize="10dp" />
 
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow1"
+            android:id="@+id/tableRow7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
@@ -140,15 +207,27 @@
                 android:id="@+id/dexterity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text=""
+                android:textSize="10dp" />
 
         </TableRow>
 
-        <TextView
-            android:id="@+id/intelligence"
+        <TableRow
+            android:id="@+id/tableRow8"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/intelligence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="10dp" />
+        
+        </TableRow>
 
     </TableLayout>
+    
+    </RelativeLayout>
+
 </LinearLayout>

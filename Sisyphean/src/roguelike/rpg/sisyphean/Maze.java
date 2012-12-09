@@ -33,6 +33,8 @@ public class Maze
 
     private int counter;
 
+    public String[] itemlist= new String[5];
+
     // ----------------------------------------------------------
     /**
      * Create a new Maze object, the size of which is proportional to the floor.
@@ -352,9 +354,11 @@ public class Maze
         {
             //Get a random cell for the enemy to spawn in
             Cell cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
-            //If that cell is either of the start or exit cells, pick a new cell until it's not
+            //If that cell is either of the start or exit cells, or already has
+            //an enemy in it, pick a new cell until it's not
             while ((cell.x() == startX && cell.y() == startY)
-                || (cell.x() == exitX && cell.y() == exitY))
+                || (cell.x() == exitX && cell.y() == exitY) ||
+                cell.getEnemy() != null)
             {
                 cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
             }
@@ -365,7 +369,7 @@ public class Maze
     }
 
     /**
-     * Randomly places items on empty cells
+     * Randomly places items on empty cells (this does not include enemy drops)
      */
     private void placeItems()
     {
@@ -375,26 +379,23 @@ public class Maze
         {
             //Get a random cell for the item to be placed in
             Cell cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
-            //If that cell is either of the start or exit cells, pick a new cell until it's not
+            //If that cell is either of the start or exit cells,
+            //or if there is an enemy or item already there, pick a new cell
+            //until a valid empty one is found
             while ((cell.x() == startX && cell.y() == startY)
                 || (cell.x() == exitX && cell.y() == exitY)
-                || cell.getEnemy() != null)
+                || cell.getEnemy() != null || cell.getItem() != null)
             {
                 cell = grid[rand.nextInt(grid.length)][rand.nextInt(grid[0].length)];
             }
-            //Store the item in the cell
-            cell.setItem(new Potion(PotionType.MANA, gameWorld)); //Use Willie's stuff to determin what type of item gets made
+            //Store a generated item in the cell
+            cell.setItem(gameWorld.getItemCreator().selectItem());
+
+            itemlist[items] = cell.getItem().getName() + ", (" + cell.x() + ", " + cell.y() + " )";
+
             items++;
         }
 
-        // Testing for creating & drawing items
-        /*grid[0][0].setItem(new Potion(PotionType.HEALTH, gameWorld));
-        grid[0][1].setItem(new Potion(PotionType.MANA, gameWorld));
-        grid[0][2].setItem(new Weapon("Doombringer", "The ultimate foe-slaying force!", 2.0f, gameWorld));
-        grid[0][3].setItem(new Armor("Iron Abs",
-            "A chestplate that shows off your muscles!",
-            2.0f,
-            new Sprite(R.drawable.chestplate, 70, 70, 1, 1, gameWorld.getDisplayMetrics().density), gameWorld));*/
     }
 
     // ----------------------------------------------------------

@@ -41,14 +41,54 @@ abstract public class Character
     private float dexterity;
     private float intelligence;
 
-    // Type
-    public enum PlayerType { WARRIOR, WIZARD, ARCHER };
-    public enum EnemyType { ZOMBIE, SKELETON, RAT };
+    /** The different player types/classes available. */
+    public enum PlayerType
+    {
+        /** Warrior class. */
+        WARRIOR,
+        /** Wizard class. */
+        WIZARD,
+        /** Archer class. */
+        ARCHER
+    };
 
-    // The action being taken in battle
-    public enum BattleAction { ATTACKING, MOVING, IDLE, HURT, DEAD, CASTING };
+    /** The different enemy types/classes available. */
+    public enum EnemyType
+    {
+        /** Zombie enemy. */
+        ZOMBIE,
+        /** Skeleton enemy. */
+        SKELETON,
+        /** Orc enemy. */
+        ORC
+    };
+
+    // Battle actions.
+
+    /** The different actions in battle */
+    public enum BattleAction
+    {
+        /** When the character is attacking. */
+        ATTACKING,
+        /** When the character is moving to attack */
+        MOVING,
+        /** When the character is idle in battle. */
+        IDLE,
+        /** When the character has been hit. */
+        HURT,
+        /** When the character is dying. */
+        DEAD,
+        /** When the character is casting magic. Only implemented for players. */
+        CASTING
+    };
+
+    /** The action being taken in battle */
     protected BattleAction battleAction = BattleAction.IDLE;
+
+    /** The current frame of the battle animation */
     protected float battleFrame = 0.0f;
+
+    /** The amount movement to attack. */
     protected float attackMove = 0.0f;
 
     private float initialBattlePosition;
@@ -492,31 +532,59 @@ abstract public class Character
         }
     }
 
+    /**
+     * Returns the default battle position of this character.
+     * @return The default battle position of this character.
+     */
     public float getInitialBattlePosition()
     {
         return initialBattlePosition;
     }
 
+    /**
+     * Sets the initial/default position of this character in battle.
+     * @param initialBattlePosition The initial/default position of this
+     *        character in battle.
+     */
     public void setInitialBattlePosition(float initialBattlePosition)
     {
         this.initialBattlePosition = initialBattlePosition;
     }
 
-    public BattleScreen getBattleObserver()
+    /**
+     * Returns the battle observer of this character. The screen to receive
+     * callbacks when animations finish.
+     * @return The battle observer of this character.
+     */
+    protected BattleScreen getBattleObserver()
     {
         return battleObserver;
     }
 
+    /**
+     * The battle observer setter.
+     * Meant to be called by the battle screen passing itself when initialized.
+     * @param battleObserver The reference to the battle screen.
+     */
     public void setBattleObserver(BattleScreen battleObserver)
     {
         this.battleObserver = battleObserver;
     }
 
+    /**
+     * Returns if the character is alive or not.
+     * @return True if the character is alive, false otherwise.
+     */
     public boolean isAlive()
     {
         return alive;
     }
 
+    /**
+     * Determines if the character is alive or not.
+     * Dead characters do not update animations and etc.
+     * @param alive If the character is alive or not.
+     */
     public void setAlive(boolean alive)
     {
         this.alive = alive;

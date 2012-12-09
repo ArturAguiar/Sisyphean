@@ -45,6 +45,10 @@ public class LogicThread extends Thread
         run = newRun;
     }
 
+    /**
+     * Assigns a game screen so that the logic thread can update it.
+     * @param gameScreen The new gameScreen reference.
+     */
     public void setGameScreen(GameScreen gameScreen)
     {
         this.gameScreen = gameScreen;

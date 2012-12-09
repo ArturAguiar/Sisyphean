@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import android.graphics.RectF;
+import sofia.graphics.ImageShape;
 import sofia.util.Random;
 
 // -------------------------------------------------------------------------
@@ -29,13 +31,15 @@ public class Potion extends Item
         type = potionType;
         if (potionType == PotionType.HEALTH)
         {
-            setMazeIcon(new Sprite(R.drawable.health_potion, 70, 70, 1, 1,
-                gameWorld.getDisplayMetrics().density));
+            setMazeIcon(new ImageShape(R.drawable.health_potion, new RectF(0.0f, 0.0f, 70.0f, 70.0f)));
+            setName("Health Potion");
+            setDescription("A hot elixir that rejuvenates your body. It restores a fourth of your health");
         }
         else
         {
-            setMazeIcon(new Sprite(R.drawable.mana_potion, 70, 70, 1, 1,
-                gameWorld.getDisplayMetrics().density));
+            setMazeIcon(new ImageShape(R.drawable.mana_potion, new RectF(0.0f, 0.0f, 70.0f, 70.0f)));
+            setName("Mana Potion");
+            setDescription("A chilled concoction makes you feel more powerful. It restores a fourth of your mana");
         }
     }
 

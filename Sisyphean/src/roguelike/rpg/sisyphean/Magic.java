@@ -63,6 +63,10 @@ public class Magic
         return consumption;
     }
 
+    /**
+     * Indicates if this magic heals the player or does damage to the enemy.
+     * @return True if it heals, false if it does damage.
+     */
     public boolean heals()
     {
         return heals;

@@ -41,7 +41,7 @@ public class ItemCreator
 
 
     /**
-     * Selects an item for the user to randomly pick up when found.
+     * Selects an item for the user to randomly pick up when found
      * @return String The key for the item
      */
     public Item selectItem()
@@ -60,13 +60,11 @@ public class ItemCreator
         {
             if (rand.nextInt(2) == 0)
             {
-                //return health potion
-                return null;
+                return new Potion(PotionType.HEALTH, gameWorld);
             }
             else
             {
-                //return mana potion
-                return null;
+                return new Potion(PotionType.MANA, gameWorld);
             }
         }
 

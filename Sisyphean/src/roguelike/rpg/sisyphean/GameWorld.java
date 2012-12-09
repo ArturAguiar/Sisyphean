@@ -26,8 +26,6 @@ public class GameWorld
 
     private boolean gameOver = false;
 
-    private Enemy enemyKilled;
-
     private LogicThread logicThread;
 
     private ItemCreator itemCreator;
@@ -135,16 +133,6 @@ public class GameWorld
     public boolean isGameOver()
     {
         return gameOver;
-    }
-
-    public Enemy getEnemyKilled()
-    {
-        return enemyKilled;
-    }
-
-    public void setEnemyKilled(Enemy enemyKilled)
-    {
-        this.enemyKilled = enemyKilled;
     }
 
     public LogicThread getLogicThread()

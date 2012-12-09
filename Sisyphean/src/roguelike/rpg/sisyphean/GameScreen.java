@@ -1,7 +1,11 @@
 package roguelike.rpg.sisyphean;
 
+
 import android.text.Editable;
 import android.widget.EditText;
+
+import android.widget.Toast;
+
 import android.widget.TextView;
 import sofia.graphics.TextShape;
 import sofia.graphics.Color;
@@ -32,8 +36,9 @@ public class GameScreen extends ShapeScreen
 
     private GameWorld gameWorld;
 
-    private TextView level, strength, defense, dexterity, armor,
-        weapon, intelligence, playerName;
+    private TextView health, mana, level, strength, defense, dexterity, armor,
+        weapon, intelligence, healthp, manap, playerName;
+
     // Maze images
     private Image groundImage;
     private Image backImage;
@@ -98,6 +103,7 @@ public class GameScreen extends ShapeScreen
         gameWorld.getPlayer().getMazeSprite().setSize(cellSize * 0.8f);
         gameWorld.getPlayer().setPosition(2.1f * cellSize, 2.1f * cellSize);
         gameWorld.getPlayer().setCell(gameWorld.getMaze().startColumn(), gameWorld.getMaze().startRow());
+        Log.v("Starting Position", "(" + gameWorld.getMaze().startColumn() + ", " + gameWorld.getMaze().startRow() + ")");
 
         this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
 
@@ -106,16 +112,22 @@ public class GameScreen extends ShapeScreen
         weapon.setText(weaponString);
         String armorString = thePlayer.getArmor().getName();
         armor.setText(armorString);
+        String currentHealth = (int)thePlayer.getHealth() + "";
+        String currentMana = (int)thePlayer.getMana() + "";
         String currentLevel = thePlayer.getLevel() + "";
         String currentStr = (int) (thePlayer.getStrength()) + "";
         String currentDef = (int)(thePlayer.getDefense()) + "";
         String currentDex = (int)(thePlayer.getDexterity()) + "";
         String currentIntel = (int)(thePlayer.getIntelligence()) + "";
+        health.setText("Health: " + currentHealth + " / " + (int)thePlayer.getMaxHealth());
+        mana.setText("Mana: " + currentMana + " / " + (int)thePlayer.getMaxMana());
         level.setText("Level: " + currentLevel);
-        strength.setText("Strength: " + currentStr);
-        defense.setText("Defense: " + currentDef);
-        dexterity.setText("Dexterity: " + currentDex);
-        intelligence.setText("Intelligence: " + currentIntel);
+        strength.setText("Str: " + currentStr);
+        defense.setText("Def: " + currentDef);
+        dexterity.setText("Dex: " + currentDex);
+        intelligence.setText("Int: " + currentIntel);
+        healthp.setText("Health Potions: " + thePlayer.getHealthPotions());
+        manap.setText("Mana Potions: " + thePlayer.getManaPotions());
     }
 
     /**
@@ -129,9 +141,7 @@ public class GameScreen extends ShapeScreen
         this.gameWorld = myGameWorld;
         gameWorld.getLogicThread().setGameScreen(this);
 
-        this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
         Player thePlayer = gameWorld.getPlayer();
-
         String name = thePlayer.getName();
         playerName.setText(name);
         String weaponString = thePlayer.getWeapon().getName();
@@ -143,11 +153,21 @@ public class GameScreen extends ShapeScreen
         String currentDef = (int)(thePlayer.getDefense()) + "";
         String currentDex = (int)(thePlayer.getDexterity()) + "";
         String currentIntel = (int)(thePlayer.getIntelligence()) + "";
+        health.setText("Health: " + (int)thePlayer.getHealth() + " / " + (int)thePlayer.getMaxHealth());
+        mana.setText("Mana: " + (int)thePlayer.getMana() + " / " + (int)thePlayer.getMaxMana());
         level.setText("Level: " + currentLevel);
-        strength.setText("Strength: " + currentStr);
-        defense.setText("Defense: " + currentDef);
-        dexterity.setText("Dexterity: " + currentDex);
-        intelligence.setText("Intelligence: " + currentIntel);
+        strength.setText("Str: " + currentStr);
+        defense.setText("Def: " + currentDef);
+        dexterity.setText("Dex: " + currentDex);
+        intelligence.setText("Intel: " + currentIntel);
+        healthp.setText("Health Potions: " + thePlayer.getHealthPotions());
+        manap.setText("Mana Potions: " + thePlayer.getManaPotions());
+
+        this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
+        Player thePlayer1 = gameWorld.getPlayer();
+
+
+
 
     }
 
@@ -164,6 +184,7 @@ public class GameScreen extends ShapeScreen
         float width = shapeView.getWidth();
         float size = Math.min(height, width);
         this.cellSize = size / 5;
+        Log.v("GameScreen", "CellSize = " + this.cellSize);
 
         shapeView.setAutoRepaint(false);
 
@@ -177,12 +198,12 @@ public class GameScreen extends ShapeScreen
         if (height > width)
         {
             boundaryRect = new RectangleShape(0.0f, 5 * cellSize,
-                                              5 * cellSize, 5 * cellSize + height - width + 1);
+                                              5 * cellSize, 5 * cellSize + height - width + 20.0f);
         }
         else if (width > height)
         {
             boundaryRect = new RectangleShape(5 * cellSize, 0.0f,
-                                              5 * cellSize + width - height + 1, 5 * cellSize);
+                                              5 * cellSize + width - height + 20.0f, 5 * cellSize);
         }
 
         boundaryRect.setFilled(true);
@@ -220,32 +241,6 @@ public class GameScreen extends ShapeScreen
         }
     }
 
-    private void removeMazeRow(int row)
-    {
-        shapeView.setAutoRepaint(false);
-
-        float top = (row - gameWorld.getPlayer().getCellY() + 2) * cellSize;
-        float left = 0;
-
-        float bottom = top + cellSize;
-        float right = 5 * cellSize;
-
-        RectangleShape hitRect = new RectangleShape(left, top, right, bottom);
-        hitRect.setFilled(true);
-        hitRect.setFillColor(Color.black);
-        shapeView.add(hitRect);
-
-        for (Shape toRemove : shapeView.getIntersectingShapes(hitRect, ImageShape.class))
-        {
-            shapeView.remove(toRemove);
-        }
-
-        shapeView.remove(hitRect);
-
-        shapeView.setAutoRepaint(true);
-        shapeView.repaint();
-    }
-
     private void drawMazeCol(int col)
     {
         int cellRow;
@@ -264,26 +259,53 @@ public class GameScreen extends ShapeScreen
         }
     }
 
+    private void removeMazeRow(int row)
+    {
+        shapeView.setAutoRepaint(false);
+
+        float top = (row - gameWorld.getPlayer().getCellY() + 2) * cellSize + 2.0f;
+        float left = 0;
+
+        float bottom = top + cellSize - 2.0f;
+        float right = 5 * cellSize;
+
+        RectangleShape hitRect = new RectangleShape(left, top, right, bottom);
+        hitRect.setFillColor(Color.red);
+        shapeView.add(hitRect);
+
+        for (Shape toRemove : shapeView.getIntersectingShapes(hitRect, Shape.class))
+        {
+            if (toRemove != boundaryRect)
+                shapeView.remove(toRemove);
+        }
+
+        //shapeView.remove(hitRect);
+
+        shapeView.setAutoRepaint(true);
+        shapeView.repaint();
+    }
+
     private void removeMazeCol(int col)
     {
         shapeView.setAutoRepaint(false);
 
         float top = 0.0f;
-        float left = (col - gameWorld.getPlayer().getCellX() + 2) * cellSize;
+        float left = (col - gameWorld.getPlayer().getCellX() + 2) * cellSize + 5.0f;
 
         float bottom = 5 * cellSize;
-        float right = left + cellSize;
+        float right = left + cellSize - 5.0f;
 
         RectangleShape hitRect = new RectangleShape(left, top, right, bottom);
         hitRect.setFilled(true);
         shapeView.add(hitRect);
 
-        for (Shape toRemove : shapeView.getIntersectingShapes(hitRect, ImageShape.class))
+        for (Shape toRemove : shapeView.getIntersectingShapes(hitRect, Shape.class))
         {
-            shapeView.remove(toRemove);
+            if (toRemove != boundaryRect)
+                shapeView.remove(toRemove);
         }
 
-        shapeView.remove(hitRect);
+        //shapeView.remove(hitRect);
 
         shapeView.setAutoRepaint(true);
         shapeView.repaint();
@@ -336,12 +358,14 @@ public class GameScreen extends ShapeScreen
 
         if (cell.getItem() != null)
         {
-            cell.getItem().getMazeIcon().setSize(cellSize * 0.8f);
-            Log.v("GameScreen", "Potion size = " + cellSize * 0.8f);
-            cell.getItem().setPosition(left + cellSize * 0.2f, top + cellSize * 0.3f);
-            Log.v("GameScreen", "Potion position = (" + (cellSize * 0.2f) + ", " + (cellSize * 0.3f) + ")");
+            cell.getItem().getMazeIcon().setBounds(new RectF(
+                0.0f,
+                0.0f,
+                cellSize * 0.6f,
+                cellSize * 0.6f));
+            cell.getItem().setPosition(left + cellSize * 0.2f, top + cellSize * 0.2f);
 
-            shapeView.add(cell.getItem().getMazeIcon().getImageShape());
+            shapeView.add(cell.getItem().getMazeIcon());
         }
     }
 
@@ -366,7 +390,10 @@ public class GameScreen extends ShapeScreen
         else
         {
             // Pops up a toast with information for testing purposes
-            //Toast.makeText(this, gameWorld.getMaze().counter(), Toast.LENGTH_LONG).show();
+            for (String name : gameWorld.getMaze().itemlist)
+            {
+                Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -392,6 +419,7 @@ public class GameScreen extends ShapeScreen
             this.move("down");
         }
 
+        checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
     }
 
     // ----------------------------------------------------------
@@ -408,13 +436,14 @@ public class GameScreen extends ShapeScreen
 
         if (!gameWorld.getMaze().getCell(x, y).getWalls()[0] && y - 1 >= 0 && !checkForEnemyIn(x, y - 1))
         {
-            //gameWorld.getPlayer().move("up", Math.min(shapeView.getHeight(), shapeView.getWidth()) / gameWorld.getMaze().floorSize());
             shapeView.setAutoRepaint(false);
             this.drawMazeRow(y - 3);
             shapeView.setAutoRepaint(true);
             shapeView.repaint();
             this.move("up");
         }
+
+        checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
     }
 
     // ----------------------------------------------------------
@@ -438,7 +467,7 @@ public class GameScreen extends ShapeScreen
             this.move("right");
         }
 
-
+        checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
     }
 
     // ----------------------------------------------------------
@@ -461,6 +490,8 @@ public class GameScreen extends ShapeScreen
             shapeView.repaint();
             this.move("left");
         }
+
+        checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
     }
 
     /**
@@ -485,6 +516,61 @@ public class GameScreen extends ShapeScreen
         }
 
         return false;
+    }
+
+    /**
+     * Checks for the existence of an item in the given cell coordinate.
+     * If there is a potion, pick it up.
+     * Make a choice pop-up for weapons and armor.
+     * @param x The x coordinate of the cell to check.
+     * @param y the y coordinate of the cell to check.
+     */
+    public void checkForItem(int x, int y)
+    {
+        if (gameWorld.getMaze().getCell(x, y).getItem() != null)
+        {
+            Item item = gameWorld.getMaze().getCell(x, y).getItem();
+            if (item instanceof Potion)
+            {
+                gameWorld.getPlayer().pickUpPotion(((Potion)item).getType());
+                gameWorld.getMaze().getCell(x, y).setItem(null);
+                healthp.setText("Health Potions: " + gameWorld.getPlayer().getHealthPotions());
+                manap.setText("Mana Potions: " + gameWorld.getPlayer().getManaPotions());
+                shapeView.remove(item.getMazeIcon());
+            }
+            else
+            {
+                //Make pop up
+            }
+        }
+    }
+
+    /**
+     * Consume a health potion.
+     */
+    public void healthbuttonClicked()
+    {
+        if (gameWorld.getPlayer().getHealth() < gameWorld.getPlayer().getMaxHealth())
+        {
+            gameWorld.getPlayer().consumePotion(PotionType.HEALTH);
+            healthp.setText("Health Potions: " + gameWorld.getPlayer().getHealthPotions());
+        }
+
+        Log.v("Health Potions", gameWorld.getPlayer().getHealthPotions() + " potions");
+    }
+
+    /**
+     * Consume a mana potion.
+     */
+    public void manabuttonClicked()
+    {
+        if (gameWorld.getPlayer().getMana() < gameWorld.getPlayer().getMaxMana())
+        {
+            gameWorld.getPlayer().consumePotion(PotionType.MANA);
+            manap.setText("Mana Potions: " + gameWorld.getPlayer().getManaPotions());
+        }
+
+        Log.v("Mana Potions", gameWorld.getPlayer().getManaPotions() + " potions");
     }
 
 
@@ -515,49 +601,75 @@ public class GameScreen extends ShapeScreen
 
         if (moveBy.y > 0.0f)
         {
-            this.translateViewBy(0.0f, moveSpeed, true);
-            moveBy.set(moveBy.x, moveBy.y - moveSpeed);
-            if (moveBy.y <= 0.0f)
+
+            if (moveBy.y >= moveSpeed)
+            {
+                this.translateViewBy(0.0f, moveSpeed, true);
+                moveBy.set(moveBy.x, moveBy.y - moveSpeed);
+            }
+            else
             {
                 this.translateViewBy(0.0f, moveBy.y, true);
                 moveBy.set(moveBy.x, 0.0f);
+            }
 
+
+            if (moveBy.y == 0.0f)
+            {
                 this.removeMazeRow(gameWorld.getPlayer().getCellY() + 3);
             }
         }
         else if (moveBy.y < 0.0f)
         {
-            this.translateViewBy(0.0f, -moveSpeed, true);
-            moveBy.set(moveBy.x, moveBy.y + moveSpeed);
-            if (moveBy.y >= 0.0f)
+            if (moveBy.y <= -moveSpeed )
+            {
+                this.translateViewBy(0.0f, -moveSpeed, true);
+                moveBy.set(moveBy.x, moveBy.y + moveSpeed);
+            }
+            else
             {
                 this.translateViewBy(0.0f, moveBy.y, true);
                 moveBy.set(moveBy.x, 0.0f);
+            }
 
+            if (moveBy.y == 0.0f)
+            {
                 this.removeMazeRow(gameWorld.getPlayer().getCellY() - 3);
             }
         }
         else if (moveBy.x > 0.0f)
         {
-            this.translateViewBy(moveSpeed, 0.0f, true);
-            moveBy.set(moveBy.x - moveSpeed, moveBy.y);
-            if (moveBy.x <= 0.0f)
+            if (moveBy.x >= moveSpeed)
+            {
+                this.translateViewBy(moveSpeed, 0.0f, true);
+                moveBy.set(moveBy.x - moveSpeed, moveBy.y);
+            }
+            else
             {
                 this.translateViewBy(moveBy.x, 0.0f, true);
                 moveBy.set(0.0f, moveBy.y);
+            }
 
+            if (moveBy.x == 0.0f)
+            {
                 this.removeMazeCol(gameWorld.getPlayer().getCellX() + 3);
             }
         }
         else if (moveBy.x < 0.0f)
         {
-            this.translateViewBy(-moveSpeed, 0.0f, true);
-            moveBy.set(moveBy.x + moveSpeed, moveBy.y);
-            if (moveBy.x >= 0.0f)
+            if (moveBy.x <= -moveSpeed)
+            {
+                this.translateViewBy(-moveSpeed, 0.0f, true);
+                moveBy.set(moveBy.x + moveSpeed, moveBy.y);
+            }
+            else
             {
                 this.translateViewBy(moveBy.x, 0.0f, true);
                 moveBy.set(0.0f, moveBy.y);
+            }
 
+            if (moveBy.x == 0.0f)
+            {
                 this.removeMazeCol(gameWorld.getPlayer().getCellX() - 3);
             }
         }

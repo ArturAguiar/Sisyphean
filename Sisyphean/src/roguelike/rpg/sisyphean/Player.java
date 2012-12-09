@@ -19,13 +19,11 @@ abstract public class Player extends Character
     private Weapon weapon;
     private Armor armor;
 
-    public enum Facing { DOWN, LEFT, RIGHT, UP };
+    private enum Facing { DOWN, LEFT, RIGHT, UP };
     private Facing facing = Facing.DOWN;
 
     private float walkFrame = 1.0f;
     private boolean walking = false;
-
-    private float moveSpeed = 1.5f;
 
     private PointF moveBy = new PointF();
 
@@ -45,9 +43,6 @@ abstract public class Player extends Character
     @Override
     public void update()
     {
-        // Update the armor location to always be covering the character.
-        this.getArmor().getMazeIcon().setPosition(getPosition().x, getPosition().y);
-
         int tempFrame = 0;
 
         /* The walking movement and animation frame-change in maze mode.
@@ -117,7 +112,6 @@ abstract public class Player extends Character
             }
 
             this.getMazeSprite().setCol(tempFrame);
-            //this.getArmor().getMazeIcon().setCol(tempFrame);
 
             walkFrame += 0.5f;
 
@@ -237,6 +231,10 @@ abstract public class Player extends Character
         }
     }
 
+    /**
+     * Starts the casting animation.
+     * This is meant to be called by the battle screen.
+     */
     public void castMagic()
     {
         if (battleAction == BattleAction.IDLE)
@@ -294,11 +292,6 @@ abstract public class Player extends Character
     protected void setType(PlayerType type)
     {
         this.type = type;
-    }
-
-    public void setFacing(Facing direction)
-    {
-        this.facing = direction;
     }
 
     /**
@@ -423,7 +416,6 @@ abstract public class Player extends Character
             }
             walking = true;
             this.getMazeSprite().setRow(facing.ordinal());
-            this.getArmor().getMazeIcon().setRow(facing.ordinal());
         }
     }
 
@@ -487,8 +479,31 @@ abstract public class Player extends Character
 
     // ----------------------------------------------------------
     /**
-     * Tells the player to consume a potion .
-     * @param potion
+     * Allows the player to pick up a potion.
+     * @param potion The type of potion
+     */
+    public void pickUpPotion(PotionType potion)
+    {
+        switch (potion)
+        {
+            case HEALTH:
+            {
+                healthPotions++;
+            }
+                break;
+
+            case MANA:
+            {
+                manaPotions++;
+            }
+                break;
+        }
+    }
+
+    // ----------------------------------------------------------
+    /**
+     * Tells the player to consume a potion.
+     * @param potion The type of potion
      */
     public void consumePotion(PotionType potion)
     {
@@ -510,7 +525,7 @@ abstract public class Player extends Character
                 break;
 
             case MANA:
-                if (healthPotions > 0)
+                if (manaPotions > 0)
                 {
                     if (Potion.fullRestore())
                     {
@@ -526,6 +541,10 @@ abstract public class Player extends Character
         }
     }
 
+    /**
+     * Starts the moving animation facing the direction given.
+     * @param direction The direction that the player is moving.
+     */
     public void startMoving(String direction)
     {
         if (direction == null)
@@ -535,34 +554,55 @@ abstract public class Player extends Character
         else if (direction.equals("down"))
         {
             facing = Facing.DOWN;
-            currentCellY++;
+            //currentCellY++;
         }
         else if (direction.equals("up"))
         {
             facing = Facing.UP;
-            currentCellY--;
+            //currentCellY--;
         }
         else if (direction.equals("right"))
         {
             facing = Facing.RIGHT;
-            currentCellX++;
+            //currentCellX++;
         }
         else if (direction.equals("left"))
         {
             facing = Facing.LEFT;
-            currentCellX--;
+            //currentCellX--;
         }
         else
         {
             return;
         }
+
         walking = true;
         this.getMazeSprite().setRow(facing.ordinal());
-        this.getArmor().getMazeIcon().setRow(facing.ordinal());
     }
 
+    /**
+     * Stops moving animation and updates the current player cell.
+     */
     public void stopMoving()
     {
+        if (facing == Facing.UP)
+        {
+            currentCellY--;
+        }
+        else if (facing == Facing.DOWN)
+        {
+            currentCellY++;
+        }
+        else if (facing == Facing.LEFT)
+        {
+            currentCellX--;
+        }
+        else if (facing == Facing.RIGHT)
+        {
+            currentCellX++;
+        }
+
+        Log.v("Player", "Position = (" + this.getCellX() + ", " + this.getCellY() + ")");
         walking = false;
         walkFrame = 1.0f;
     }

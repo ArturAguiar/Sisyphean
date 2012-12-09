@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import android.graphics.RectF;
+import sofia.graphics.ImageShape;
 import java.util.HashMap;
 
 /**
@@ -30,8 +32,7 @@ public class Weapon extends Item
         this.damage = damage;
         this.bonusDamage = new HashMap<String, Float>();
 
-        setMazeIcon(new Sprite(R.drawable.sword, 70, 70, 1, 1,
-            gameWorld.getDisplayMetrics().density));
+        setMazeIcon(new ImageShape(R.drawable.sword, new RectF(0.0f, 0.0f, 70.0f, 70.0f)));
     }
 
     /**
