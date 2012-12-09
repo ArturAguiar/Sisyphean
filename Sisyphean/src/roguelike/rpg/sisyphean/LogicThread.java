@@ -69,7 +69,13 @@ public class LogicThread extends Thread
                 }
 
                 if (gameScreen != null)
+                {
                     gameScreen.update();
+                }
+                else
+                {
+                    Log.v("LogicThread", "GameScreen null.");
+                }
             }
 
             try

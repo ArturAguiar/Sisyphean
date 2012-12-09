@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.graphics.Canvas;
 import sofia.graphics.Color;
@@ -23,7 +25,7 @@ import android.widget.Button;
 public class BattleScreen extends ShapeScreen
 {
     private GameWorld gameWorld;
-    private ScrollView scrollView1;
+    private LinearLayout buttonLayout;
     private Player player;
     private Button[] buttonArray;
     private boolean wait = false;
@@ -47,7 +49,7 @@ public class BattleScreen extends ShapeScreen
      */
     public void initialize(GameWorld myGameWorld, Enemy myEnemy)
     {
-        buttonArray = new Button[10];
+        buttonArray = new Button[4];
         this.gameWorld = myGameWorld;
         this.player = gameWorld.getPlayer();
         this.player.setBattleObserver(this);
@@ -94,15 +96,7 @@ public class BattleScreen extends ShapeScreen
         shapeView2.setAutoRepaint(true);
         shapeView.repaint();
         shapeView2.repaint();
-        int counter = 0;
-        for (Magic magic : player.getMagics())
-        {
-            Button button = new Button(this);
-            button.setText(magic.getName());
-            buttonArray[counter] = button;
-            counter++;
-            scrollView1.addView(button);
-        }
+
     }
 
 
@@ -151,30 +145,26 @@ public class BattleScreen extends ShapeScreen
         int counter = 0;
         for (Magic magic : player.getMagics())
         {
-
-            if (magic.getName().equals(buttonArray[counter].getText()))
-            {
-                player.castMagic();
-                break;
-            }
+            Button button = new Button(this);
+            button.setText(magic.getName());
+            buttonArray[counter] = button;
+            counter++;
+            buttonLayout.addView(button);
         }
-        updateMP();
+        int index = 0;
 
-        /* This is fine as it is, but you should keep track of the magic that
-         * was clicked in a variable (magicBeingCasted) and wait for when the
-         * casting is done.
-        int counter = 0;
         for (Magic magic : player.getMagics())
         {
-            if (magic.getName().equals(buttonArray[counter].getText()))
+
+            if (magic.getName().equals(buttonArray[index].getText()))
             {
                 magicBeingCasted = magic;
                 player.castMagic();
                 break;
             }
+            index++;
         }
-        */
-
+        updateMP();
     }
 
     public void playerAttackDone()
