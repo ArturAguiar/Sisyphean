@@ -24,7 +24,7 @@
                             android:layout_alignTop="@+id/shapeView2"
                             android:layout_alignParentLeft="true"
                             android:text=""
-                            android:textSize="20dp"
+                            android:textSize="18dp"
                             android:maxWidth="100dp" />
                     <TextView
                             android:id="@+id/currentname"
@@ -33,7 +33,7 @@
                             android:layout_below="@+id/currentitem"
                             android:layout_alignLeft="@+id/currentitem"
                             android:text=""
-                            android:textSize="18dp"
+                            android:textSize="15dp"
                             android:maxWidth="100dp" />
 
                    <TextView
@@ -43,7 +43,7 @@
                             android:layout_below="@+id/currentname"
                             android:layout_alignLeft="@+id/currentitem"
                             android:text=""
-                            android:textSize="15dp"
+                            android:textSize="12dp"
                             android:maxWidth="100dp" />
 
                     
@@ -54,7 +54,7 @@
                             android:layout_below="@+id/currentdesc"
                             android:layout_alignLeft="@+id/currentitem"
                             android:text=""
-                            android:textSize="18dp"
+                            android:textSize="15dp"
                             android:maxWidth="100dp" />
 
                     
@@ -65,7 +65,7 @@
                             android:layout_alignTop="@+id/shapeView2"
                             android:layout_alignParentRight="true"
                             android:text=""
-                            android:textSize="20dp"
+                            android:textSize="18dp"
                             android:maxWidth="100dp" />
                     
                     <TextView
@@ -75,7 +75,7 @@
                             android:layout_below="@+id/newitem"
                             android:layout_alignLeft="@+id/newitem"
                             android:text=""
-                            android:textSize="18dp"
+                            android:textSize="15dp"
                             android:maxWidth="100dp" />
                     
                         <TextView
@@ -85,7 +85,7 @@
                             android:layout_below="@+id/newname"
                             android:layout_alignLeft="@+id/newitem"
                             android:text=""
-                            android:textSize="15dp"
+                            android:textSize="10dp"
                             android:maxWidth="100dp" />
 
                         <TextView
@@ -95,7 +95,7 @@
                             android:layout_below="@+id/newdesc"
                             android:layout_alignLeft="@+id/newitem"
                             android:text=""
-                            android:textSize="18dp"
+                            android:textSize="15dp"
                             android:maxWidth="100dp" />
         
     </RelativeLayout>

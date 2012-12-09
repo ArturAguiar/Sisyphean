@@ -113,8 +113,8 @@ public class GameScreen extends ShapeScreen
 
         choiceMenu = false;
         popUp = new ImageShape("popup",
-            getWidth() / 2 - 200, getHeight() / 2 - 200,
-            getWidth() / 2 + 200, getHeight() / 2 + 200);
+            getWidth() / 2 - cellSize * 2, getHeight() / 2 - cellSize,
+            getWidth() / 2 + cellSize * 2, getHeight() / 2 + cellSize);
         popUp.setZIndex(11);
     }
 
@@ -134,8 +134,8 @@ public class GameScreen extends ShapeScreen
         gameWorld.getLogicThread().setGameScreen(this);
 
         popUp = new ImageShape("popup",
-            getWidth() / 2 - 200, getHeight() / 2 - 200,
-            getWidth() / 2 + 200, getHeight() / 2 + 200);
+            getWidth() / 2 - cellSize * 2, getHeight() / 2 - cellSize,
+            getWidth() / 2 + cellSize * 2, getHeight() / 2 + cellSize);
         popUp.setZIndex(11);
     }
 
@@ -169,8 +169,8 @@ public class GameScreen extends ShapeScreen
         gameWorld.getLogicThread().setGameScreen(this);
 
         popUp = new ImageShape("popup",
-            getWidth() / 2 - 200, getHeight() / 2 - 200,
-            getWidth() / 2 + 200, getHeight() / 2 + 200);
+            getWidth() / 2 - cellSize * 2, getHeight() / 2 - cellSize,
+            getWidth() / 2 + cellSize * 2, getHeight() / 2 + cellSize);
         popUp.setZIndex(11);
     }
 
