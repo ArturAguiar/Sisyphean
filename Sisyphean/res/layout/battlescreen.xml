@@ -38,25 +38,6 @@
         android:textColor="@android:color/white"
         android:textSize="25dp" />
 
-    <TextView
-        android:id="@+id/manaPoints"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/escape"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:text="50/50"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/healthPoints"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/magic"
-        android:layout_alignRight="@+id/manaPoints"
-        android:text="100/100"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
     <sofia.graphics.ShapeView
         android:id="@+id/shapeView"
         android:layout_width="wrap_content"
@@ -66,20 +47,12 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" />
 
-    <sofia.graphics.ShapeView
-        android:id="@+id/shapeView2"
-        android:layout_width="200dp"
-        android:layout_height="55dp"
-        android:layout_alignBottom="@+id/manaPoints"
-        android:layout_toLeftOf="@+id/healthPoints" />
-
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignTop="@+id/attack"
-        android:layout_toLeftOf="@+id/shapeView2"
         android:layout_toRightOf="@+id/escape" >
 
         <LinearLayout
@@ -92,8 +65,33 @@
                 android:layout_height="90dp"
                 android:orientation="vertical" >
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
+
+    <sofia.graphics.ShapeView
+        android:id="@+id/shapeView2"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:layout_above="@+id/escape"
+        android:layout_below="@+id/shapeView"
+        android:layout_centerHorizontal="true" />
+
+    <sofia.graphics.ShapeView
+        android:id="@+id/hpText"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/magic"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/shapeView"
+        android:layout_toRightOf="@+id/shapeView2" />
+
+    <sofia.graphics.ShapeView
+        android:id="@+id/mpText"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/escape"
+        android:layout_alignLeft="@+id/hpMpText"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/magic" />
 
 </RelativeLayout>

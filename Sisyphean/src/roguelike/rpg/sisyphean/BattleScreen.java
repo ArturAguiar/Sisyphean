@@ -25,7 +25,7 @@ import android.widget.Button;
 public class BattleScreen extends ShapeScreen
 {
     private GameWorld gameWorld;
-
+    private TextShape hp, mp;
     private Player player;
 
     private boolean wait = false;
@@ -38,7 +38,7 @@ public class BattleScreen extends ShapeScreen
     private LinearLayout buttonLayout;
 
     private TextView healthPoints, manaPoints;
-    private ShapeView shapeView, shapeView2;
+    private ShapeView shapeView, shapeView2, hpText, mpText;
     private RectangleShape healthRect, manaRect;
 
     // Keeps the magic that is being casted, until the damage/healing should be done.
@@ -88,7 +88,14 @@ public class BattleScreen extends ShapeScreen
         manaRect.setFilled(true);
         manaRect.setFillColor(Color.blue);
         shapeView2.add(manaRect);
-
+        TextShape hp =  new TextShape((int)(player.getHealth()) + "/" +
+            (int)(player.getMaxHealth()), hpText.getWidth()/2,
+            hpText.getHeight()/2);
+        TextShape mp =  new TextShape((int)(player.getMana()) + "/" +
+            (int)(player.getMaxMana()), mpText.getWidth() /2,
+            mpText.getHeight()/2);
+        hpText.add(hp);
+        mpText.add(mp);
         // Add projectile.
         if (player.getType() == PlayerType.ARCHER)
         {
@@ -376,7 +383,7 @@ public class BattleScreen extends ShapeScreen
                 int currentHealth = (int) (player.getHealth());
                 int maxHealth = (int) (player.getMaxHealth());
                 String healthString = currentHealth + "/" + maxHealth;
-                healthPoints.setText(healthString);
+                updateHPText();
 
                 float currentHealthRatio = player.getHealth() / player.getMaxHealth();
                 float newRight = currentHealthRatio * shapeView2.getWidth();
@@ -413,7 +420,6 @@ public class BattleScreen extends ShapeScreen
                 int currentMana = (int) (player.getMana());
                 int maxMana = (int) (player.getMaxMana());
                 String manaString = currentMana + "/" + maxMana;
-                manaPoints.setText(manaString);
 
                 if (player.getMana() != player.getMaxMana())
                 {
@@ -427,5 +433,31 @@ public class BattleScreen extends ShapeScreen
 
         Log.v("BattleScreen", "Mana = " + gameWorld.getPlayer().getMana());
     }
+
+    private void updateHPText()
+    {
+
+            if (player.getHealth() != player.getMaxHealth())
+            {
+                    String healthRatio = (int)(player.getHealth()) + "/" +
+                        (int)(player.getMaxHealth());
+                    hpText.remove(hp);
+                    hp = new TextShape(healthRatio, hpText.getWidth()/2, hpText.getHeight());
+                    hp.setTypeSize(25);
+                    hpText.add(hp);
+                }
+
+
+    }
+
+    private void updateMPText()
+    {
+        String manaRatio = (int)(player.getMana()) + "/" +
+            (int)(player.getMaxMana());
+        //mp.setText(manaRatio);
+        mpText.add(mp);
+    }
+
+
 
 }
