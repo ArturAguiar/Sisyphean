@@ -25,28 +25,37 @@
         android:layout_toRightOf="@+id/name"
         android:text="Submit" />
 
-    <CheckBox
-        android:id="@+id/archer"
+    <RadioGroup
+        android:id="@+id/classes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/name"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:text="Archer" />
+        android:layout_marginLeft="14dp" >
 
-    <CheckBox
-        android:id="@+id/warrior"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/archer"
-        android:layout_below="@+id/archer"
-        android:text="Warrior" />
+        <RadioButton
+            android:id="@+id/archer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/name"
+            android:layout_centerVertical="true"
+            android:text="Archer" />
 
-    <CheckBox
-        android:id="@+id/wizard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/archer"
-        android:layout_below="@+id/warrior"
-        android:text="Wizard" />
+        <RadioButton
+            android:id="@+id/warrior"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/archer"
+            android:layout_below="@+id/archer"
+            android:text="Warrior" />
+
+        <RadioButton
+            android:id="@+id/wizard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/archer"
+            android:layout_below="@+id/warrior"
+            android:text="Wizard" />
+    </RadioGroup>
 
 </RelativeLayout>

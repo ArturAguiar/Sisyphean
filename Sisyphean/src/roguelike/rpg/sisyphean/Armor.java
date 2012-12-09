@@ -20,7 +20,6 @@ public class Armor extends Item
      * @param name The name of this armor.
      * @param description The description of this armor.
      * @param defense The defense bonus given by this armor.
-     * @param mazeSprite The sprite displayed when not in battle mode.
      * @param gameWorld The GameWorld
      */
     public Armor(String name, String description, float defense, GameWorld gameWorld)

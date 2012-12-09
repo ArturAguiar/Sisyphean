@@ -120,6 +120,7 @@ public class BattleScreen extends ShapeScreen
     {
         if (!wait)
         {
+            finish();
             presentScreen(GameScreen.class, gameWorld);
         }
     }

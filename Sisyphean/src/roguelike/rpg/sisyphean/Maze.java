@@ -373,6 +373,15 @@ public class Maze
      */
     private void placeItems()
     {
+        if (startX < grid.length - 1 && grid[startX + 1][startY].getEnemy() == null)
+        {
+            grid[startX + 1][startY].setItem(new Armor("Chestplate", "Keeps your guts inside your body", 5.0f, gameWorld));
+        }
+        if (startX > 0 && grid[startX - 1][startY].getEnemy() == null)
+        {
+            grid[startX - 1][startY].setItem(new Weapon("Sword", "Pointy sticks are fun to swing around", 5.0f, gameWorld));
+        }
+
         // TODO: Determine how may items per floor. Right now is just floorsize/2
         int items = 0;
         while (items < floorSize / 2)
@@ -395,7 +404,6 @@ public class Maze
 
             items++;
         }
-
     }
 
     // ----------------------------------------------------------

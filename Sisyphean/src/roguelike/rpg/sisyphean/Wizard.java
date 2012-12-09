@@ -46,7 +46,7 @@ public class Wizard
         this.getMazeSprite().setCol(1);
 
         // The sprite in battle mode.
-        this.setBattleSprite(new Sprite(R.drawable.crusader_sprite_sheet, 1440, 390, 8, 3, gameWorld.getDisplayMetrics().density));
+        this.setBattleSprite(new Sprite(R.drawable.wizard_sheet, 1040, 700, 8, 5, gameWorld.getDisplayMetrics().density));
         this.getBattleSprite().setRow(2);
 
 
