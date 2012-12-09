@@ -65,7 +65,6 @@ public class GameScreen extends ShapeScreen
 
         // Start the logic thread.
         gameWorld.setLogicThread(new LogicThread(gameWorld));
-        gameWorld.getLogicThread().setGameScreen(this);
 
         gameWorld.getLogicThread().setRunning(true);
         gameWorld.getLogicThread().start();
@@ -97,25 +96,10 @@ public class GameScreen extends ShapeScreen
         gameWorld.getPlayer().setCell(gameWorld.getMaze().startColumn(), gameWorld.getMaze().startRow());
         Log.v("Starting Position", "(" + gameWorld.getMaze().startColumn() + ", " + gameWorld.getMaze().startRow() + ")");
 
+        this.updateFields();
         this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
 
-        Player thePlayer = gameWorld.getPlayer();
-        String weaponString = thePlayer.getWeapon().getName();
-        weapon.setText(weaponString);
-        String armorString = thePlayer.getArmor().getName();
-        armor.setText(armorString);
-        String currentLevel = thePlayer.getLevel() + "";
-        String currentStr = (int) (thePlayer.getStrength()) + "";
-        String currentDef = (int)(thePlayer.getDefense()) + "";
-        String currentDex = (int)(thePlayer.getDexterity()) + "";
-        String currentIntel = (int)(thePlayer.getIntelligence()) + "";
-        level.setText("Level: " + currentLevel);
-        strength.setText("Strength: " + currentStr);
-        defense.setText("Defense: " + currentDef);
-        dexterity.setText("Dexterity: " + currentDex);
-        intelligence.setText("Intelligence: " + currentIntel);
-        healthp.setText("Health Potions: " + thePlayer.getHealthPotions());
-        manap.setText("Mana Potions: " + thePlayer.getManaPotions());
+        gameWorld.getLogicThread().setGameScreen(this);
     }
 
     /**
@@ -127,8 +111,45 @@ public class GameScreen extends ShapeScreen
     public void initialize(GameWorld myGameWorld)
     {
         this.gameWorld = myGameWorld;
-        gameWorld.getLogicThread().setGameScreen(this);
 
+        this.updateFields();
+        this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
+
+        gameWorld.getLogicThread().setGameScreen(this);
+    }
+
+    /**
+     * This initialize method gets called when the maze has to be recreated
+     * because the player reached the floor's stairs.
+     * It does not instantiate the game world, but it makes a new maze
+     * bigger than the previous.
+     * @param myGameWorld The game world reference.
+     * @param floor The floor number of the new maze.
+     */
+    public void initialize(GameWorld myGameWorld, int floor)
+    {
+        gameWorld = myGameWorld;
+
+        gameWorld.getAllCharacters().clear();
+        gameWorld.getAllCharacters().add(gameWorld.getPlayer());
+
+        gameWorld.setMaze(new Maze(gameWorld, floor));
+
+        this.cellSize = Math.min(shapeView.getHeight(), shapeView.getWidth()) / 5;
+
+        // Set the player's size, cell, and position.
+        gameWorld.getPlayer().getMazeSprite().setSize(cellSize * 0.8f);
+        gameWorld.getPlayer().setPosition(2.1f * cellSize, 2.1f * cellSize);
+        gameWorld.getPlayer().setCell(gameWorld.getMaze().startColumn(), gameWorld.getMaze().startRow());
+
+        this.updateFields();
+        this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
+
+        gameWorld.getLogicThread().setGameScreen(this);
+    }
+
+    private void updateFields()
+    {
         Player thePlayer = gameWorld.getPlayer();
         String weaponString = thePlayer.getWeapon().getName();
         weapon.setText(weaponString);
@@ -146,8 +167,6 @@ public class GameScreen extends ShapeScreen
         intelligence.setText("Intelligence: " + currentIntel);
         healthp.setText("Health Potions: " + thePlayer.getHealthPotions());
         manap.setText("Mana Potions: " + thePlayer.getManaPotions());
-
-        this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
     }
 
     private void drawMazeSection(Maze maze, Player player)
@@ -242,10 +261,10 @@ public class GameScreen extends ShapeScreen
     {
         shapeView.setAutoRepaint(false);
 
-        float top = (row - gameWorld.getPlayer().getCellY() + 2) * cellSize + 2.0f;
+        float top = (row - gameWorld.getPlayer().getCellY() + 2) * cellSize * 1.1f;
         float left = 0;
 
-        float bottom = top + cellSize - 2.0f;
+        float bottom = top + cellSize * 0.9f;
         float right = 5 * cellSize;
 
         RectangleShape hitRect = new RectangleShape(left, top, right, bottom);
@@ -269,10 +288,10 @@ public class GameScreen extends ShapeScreen
         shapeView.setAutoRepaint(false);
 
         float top = 0.0f;
-        float left = (col - gameWorld.getPlayer().getCellX() + 2) * cellSize + 5.0f;
+        float left = (col - gameWorld.getPlayer().getCellX() + 2) * cellSize * 1.1f;
 
         float bottom = 5 * cellSize;
-        float right = left + cellSize - 5.0f;
+        float right = left + cellSize * 0.9f;
 
         RectangleShape hitRect = new RectangleShape(left, top, right, bottom);
         hitRect.setFilled(true);
@@ -334,8 +353,7 @@ public class GameScreen extends ShapeScreen
             levelText.setPosition(left + cellSize - levelText.getWidth() - 5.0f,
                                   top + cellSize - levelText.getHeight() - 5.0f);
         }
-
-        if (cell.getItem() != null)
+        else if (cell.getItem() != null)
         {
             cell.getItem().getMazeIcon().setBounds(new RectF(
                 0.0f,
@@ -345,6 +363,12 @@ public class GameScreen extends ShapeScreen
             cell.getItem().setPosition(left + cellSize * 0.2f, top + cellSize * 0.2f);
 
             shapeView.add(cell.getItem().getMazeIcon());
+        }
+        else if (cell.isExit())
+        {
+            ImageShape exit = new ImageShape(R.drawable.stairs, new RectF(0.0f, 0.0f, cellSize, cellSize));
+            exit.setPosition(left, top);
+            shapeView.add(exit);
         }
     }
 
@@ -356,23 +380,10 @@ public class GameScreen extends ShapeScreen
      */
     public void onTouchDown(MotionEvent event)
     {
-        // If you click on the exit cell, you move to the next floor
-        if (event.getX() > cellSize * gameWorld.getMaze().exitColumn() &&
-            event.getX() < cellSize * (gameWorld.getMaze().exitColumn() + 1) &&
-            event.getY() > cellSize * gameWorld.getMaze().exitRow() &&
-            event.getY() < cellSize * (gameWorld.getMaze().exitRow() + 1))
+        // Pops up a toast with information for testing purposes
+        for (String name : gameWorld.getMaze().itemlist)
         {
-            this.clear();
-            presentScreen(GameScreen.class, Character.PlayerType.WARRIOR, gameWorld.getMaze().getFloor() + 1);
-            finish();
-        }
-        else
-        {
-            // Pops up a toast with information for testing purposes
-            for (String name : gameWorld.getMaze().itemlist)
-            {
-                Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-            }
+            Toast.makeText(this, name, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -397,8 +408,6 @@ public class GameScreen extends ShapeScreen
             shapeView.repaint();
             this.move("down");
         }
-
-        checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
     }
 
     // ----------------------------------------------------------
@@ -421,8 +430,6 @@ public class GameScreen extends ShapeScreen
             shapeView.repaint();
             this.move("up");
         }
-
-        checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
     }
 
     // ----------------------------------------------------------
@@ -445,8 +452,6 @@ public class GameScreen extends ShapeScreen
             shapeView.repaint();
             this.move("right");
         }
-
-        checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
     }
 
     // ----------------------------------------------------------
@@ -469,8 +474,6 @@ public class GameScreen extends ShapeScreen
             shapeView.repaint();
             this.move("left");
         }
-
-        checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
     }
 
     /**
@@ -504,7 +507,7 @@ public class GameScreen extends ShapeScreen
      * @param x The x coordinate of the cell to check.
      * @param y the y coordinate of the cell to check.
      */
-    public void checkForItem(int x, int y)
+    private void checkForItem(int x, int y)
     {
         if (gameWorld.getMaze().getCell(x, y).getItem() != null)
         {
@@ -513,16 +516,34 @@ public class GameScreen extends ShapeScreen
             {
                 gameWorld.getPlayer().pickUpPotion(((Potion)item).getType());
                 gameWorld.getMaze().getCell(x, y).setItem(null);
-                healthp.setText("Health Potions: " + gameWorld.getPlayer().getHealthPotions());
-                manap.setText("Mana Potions: " + gameWorld.getPlayer().getManaPotions());
+
+                runOnUiThread(new Runnable() {
+                    public void run()
+                    {
+                        healthp.setText("Health Potions: " + gameWorld.getPlayer().getHealthPotions());
+                        manap.setText("Mana Potions: " + gameWorld.getPlayer().getManaPotions());
+                    }
+                });
+
                 //TODO: Remove the item from the screen.
                 //It goes away after a battle or shifting the screen, but not immediately.
                 //shapeView.repaint();?
             }
             else
             {
-                //Make pop up
+                //???
             }
+        }
+    }
+
+    private void checkForExit(int x, int y)
+    {
+        // If you move into the the exit cell, you move to the next floor
+        if (gameWorld.getMaze().getCell(x, y).isExit())
+        {
+            this.clear();
+            presentScreen(GameScreen.class, gameWorld, gameWorld.getMaze().getFloor() + 1);
+            finish();
         }
     }
 
@@ -560,7 +581,7 @@ public class GameScreen extends ShapeScreen
     {
         Log.v("GameScreen", "Destroyed.");
         shapeView.clear();
-        gameWorld.getLogicThread().setGameScreen(null);
+        //gameWorld.getLogicThread().setGameScreen(null);
 
         super.onDestroy();
     }
@@ -657,8 +678,11 @@ public class GameScreen extends ShapeScreen
         else if (gameWorld.getPlayer() != null && gameWorld.getPlayer().isWalking())
         {
             gameWorld.getPlayer().stopMoving();
+            checkForItem(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
+            checkForExit(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY());
         }
     }
+
 
     private void move(String direction)
     {
