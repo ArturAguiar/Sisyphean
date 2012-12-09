@@ -44,11 +44,11 @@ public class Archer
         this.setExpToNextLevel(10.0f);
 
         // The sprite in maze mode.
-        this.setMazeSprite(new Sprite(R.drawable.male_base, 96, 128, 3, 4, gameWorld.getDisplayMetrics().density));
+        this.setMazeSprite(new Sprite(R.drawable.archer, 96, 128, 3, 4, gameWorld.getDisplayMetrics().density));
         this.getMazeSprite().setCol(1);
 
         // The sprite in battle mode.
-        this.setBattleSprite(new Sprite(R.drawable.crusader_sprite_sheet, 1440, 390, 8, 3, gameWorld.getDisplayMetrics().density));
+        this.setBattleSprite(new Sprite(R.drawable.archer_sprite_sheet, 1040, 780, 8, 6, gameWorld.getDisplayMetrics().density));
         this.getBattleSprite().setRow(2);
 
 
@@ -71,6 +71,9 @@ public class Archer
             6.0f,
             gameWorld));
         this.getWeapon().addBonusDamage("ZOMBIE", 2.0f);
+
+        this.setProjectile(new Sprite(R.drawable.arrow, 62, 7, 2, 1,
+            gameWorld.getDisplayMetrics().density));
     }
 
 
