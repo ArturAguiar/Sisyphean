@@ -135,16 +135,28 @@ public class GameWorld
         return gameOver;
     }
 
+    /**
+     * Returns the reference to the logic thread.
+     * @return The logic thread reference.
+     */
     public LogicThread getLogicThread()
     {
         return logicThread;
     }
 
+    /**
+     * Change the reference to the logic thread.
+     * @param logicThread The reference to the new logic thread.
+     */
     public void setLogicThread(LogicThread logicThread)
     {
         this.logicThread = logicThread;
     }
 
+    /**
+     * Returns the item creator that randomizes items on the maze.
+     * @return The item creator.
+     */
     public ItemCreator getItemCreator()
     {
         return itemCreator;

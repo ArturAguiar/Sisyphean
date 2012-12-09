@@ -586,11 +586,19 @@ abstract public class Player extends Character
         walkFrame = 1.0f;
     }
 
+    /**
+     * Returns the projectile sprite. Used for the archer class.
+     * @return The projectile fired when the player attacks (arrow).
+     */
     public Sprite getProjectile()
     {
         return projectile;
     }
 
+    /**
+     * Sets the projectile sprite to a new value.
+     * @param projectile The new sprite for the projectile (arrow).
+     */
     public void setProjectile(Sprite projectile)
     {
         this.projectile = projectile;

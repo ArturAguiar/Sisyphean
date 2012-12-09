@@ -66,7 +66,7 @@ public class Archer
         // Anyway to change to a staff or rod??
         // -tk
         this.setWeapon(new Weapon(
-            "Rusty Dagger",
+            "Rusty Bow",
             "If tetanus killed quickly, this would actually be half-decent.",
             6.0f,
             gameWorld));

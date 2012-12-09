@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import roguelike.rpg.sisyphean.Character.PlayerType;
+
 /**
  *  A magic deals arcane damage to the enemy and consumes mana.
  *
@@ -75,10 +77,19 @@ public class Magic
     /**
      * Calculates the total damage/healing done by this magic.
      * Takes into account the player's intelligence.
+     * @param player The player casting this magic.
      * @return the total damage/healing done by this magic.
      */
     public float getTotalEffect(Player player)
     {
-        return leastAmount + BONUS_MULTIPLIER * player.getIntelligence();
+        if (player.getType() == PlayerType.WIZARD)
+        {
+            // The wizard's staff helps dealing damage when casting magic.
+            return leastAmount + player.getWeapon().getDamage() / 2.0f + BONUS_MULTIPLIER * player.getIntelligence();
+        }
+        else
+        {
+            return leastAmount + BONUS_MULTIPLIER * player.getIntelligence();
+        }
     }
 }

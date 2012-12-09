@@ -57,18 +57,17 @@ public class Wizard
         // Initial equipment
         this.setArmor(new Armor(
             "Prisoner Garments",
-            "Rusty handcuffs and dark pants.%nHardly any protection.",
+            "Rusty handcuffs and dark pants. Hardly any protection.",
             2.0f, gameWorld));
         this.getArmor().getMazeIcon().setPosition(x, y);
 
         // Anyway to change to a staff or rod??
         // -tk
         this.setWeapon(new Weapon(
-            "Rusty Dagger",
-            "If tetanus killed quickly, this would actually be half-decent.",
+            "Broken Stick",
+            "From small beginnings.",
             6.0f,
             gameWorld));
-        this.getWeapon().addBonusDamage("ZOMBIE", 2.0f);
     }
 
     @Override
