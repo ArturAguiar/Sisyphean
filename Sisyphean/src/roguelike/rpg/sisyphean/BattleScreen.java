@@ -52,6 +52,7 @@ public class BattleScreen extends ShapeScreen
      */
     public void initialize(GameWorld myGameWorld, Enemy myEnemy)
     {
+        buttonArray = new Button[4];
         this.gameWorld = myGameWorld;
         this.player = gameWorld.getPlayer();
         this.player.setBattleObserver(this);

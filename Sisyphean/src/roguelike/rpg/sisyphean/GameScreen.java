@@ -64,6 +64,7 @@ public class GameScreen extends ShapeScreen
 
     private boolean choiceMenu;
     private ImageShape popUp;
+    private String name;
 
 
     // ----------------------------------------------------------
@@ -84,7 +85,7 @@ public class GameScreen extends ShapeScreen
 
         gameWorld.getLogicThread().setRunning(true);
         gameWorld.getLogicThread().start();
-
+        this.name = name;
 
         playerName.setText(name);
 
