@@ -206,13 +206,6 @@ public class GameScreen extends ShapeScreen
         intelligence.setText("Intel: " + currentIntel);
         healthp.setText("Health Potions: " + thePlayer.getHealthPotions());
         manap.setText("Mana Potions: " + thePlayer.getManaPotions());
-
-        this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
-        Player thePlayer1 = gameWorld.getPlayer();
-
-
-
-
     }
 
     private void drawMazeSection(Maze maze, Player player)
@@ -263,7 +256,6 @@ public class GameScreen extends ShapeScreen
         // Re-enable repaint and repaint the view.
         shapeView.setAutoRepaint(true);
         shapeView.repaint();
-
 
     }
 

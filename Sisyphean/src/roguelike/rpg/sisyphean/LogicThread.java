@@ -68,13 +68,9 @@ public class LogicThread extends Thread
                     character.update();
                 }
 
-                if (gameScreen != null)
+                if (!gameWorld.getBattling() && gameScreen != null)
                 {
                     gameScreen.update();
-                }
-                else
-                {
-                    Log.v("LogicThread", "GameScreen null.");
                 }
             }
 

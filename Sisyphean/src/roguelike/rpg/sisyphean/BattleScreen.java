@@ -25,7 +25,6 @@ import android.widget.Button;
 public class BattleScreen extends ShapeScreen
 {
     private GameWorld gameWorld;
-    private TextShape hp, mp;
     private Player player;
 
     private boolean wait = false;
@@ -37,8 +36,8 @@ public class BattleScreen extends ShapeScreen
     private Button[] buttonArray;
     private LinearLayout buttonLayout;
 
-    private TextView healthPoints, manaPoints;
-    private ShapeView shapeView, shapeView2, hpText, mpText;
+    private TextShape healthPoints, manaPoints;
+    private ShapeView shapeView, statsView;
     private RectangleShape healthRect, manaRect;
 
     // Keeps the magic that is being casted, until the damage/healing should be done.
@@ -63,7 +62,7 @@ public class BattleScreen extends ShapeScreen
         gameWorld.setBattling(true);
 
         shapeView.setAutoRepaint(false);
-        shapeView2.setAutoRepaint(false);
+        statsView.setAutoRepaint(false);
 
         shapeView.add(enemy.getBattleSprite().getImageShape());
         this.enemy.getBattleSprite().setPosition(getWidth() / 3.0f - enemy.getBattleSprite().getImageShape().getWidth(),
@@ -75,27 +74,39 @@ public class BattleScreen extends ShapeScreen
         this.player.getBattleSprite().setPosition(player.getInitialBattlePosition(),
                                              getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);
 
-        healthRect = new RectangleShape(0, 0, shapeView2.getWidth(),
-            shapeView2.getHeight()/3);
+        // Health points.
+        healthPoints = new TextShape((int)this.player.getHealth() + "/" + (int)this.player.getMaxHealth(), 0.0f, 0.0f);
+        statsView.add(healthPoints);
+
+        // Health bar.
+        float currentHealthRatio = player.getHealth() / player.getMaxHealth();
+        healthRect = new RectangleShape(
+            0.0f, healthPoints.getHeight() * 1.5f,
+            currentHealthRatio * statsView.getWidth(), healthPoints.getHeight() + statsView.getHeight()/3);
+
         healthRect.setColor(Color.green);
         healthRect.setFilled(true);
         healthRect.setFillColor(Color.green);
-        shapeView2.add(healthRect);
-        float top = (shapeView2.getHeight() / 3) * 2;
-        manaRect = new RectangleShape(0, top,
-            shapeView2.getWidth(), shapeView2.getHeight());
+        statsView.add(healthRect);
+
+
+        // Mana bar.
+        float currentManaRatio = player.getMana() / player.getMaxMana();
+        float top = (statsView.getHeight() / 3) * 2;
+        manaRect = new RectangleShape(
+            0.0f, top,
+            currentManaRatio * statsView.getWidth(), statsView.getHeight());
+
         manaRect.setColor(Color.blue);
         manaRect.setFilled(true);
         manaRect.setFillColor(Color.blue);
-        shapeView2.add(manaRect);
-        TextShape hp =  new TextShape((int)(player.getHealth()) + "/" +
-            (int)(player.getMaxHealth()), hpText.getWidth()/2,
-            hpText.getHeight()/2);
-        TextShape mp =  new TextShape((int)(player.getMana()) + "/" +
-            (int)(player.getMaxMana()), mpText.getWidth() /2,
-            mpText.getHeight()/2);
-        hpText.add(hp);
-        mpText.add(mp);
+        statsView.add(manaRect);
+
+        // Mana points.
+        manaPoints = new TextShape((int)this.player.getMana() + "/" + (int)this.player.getMaxMana(),
+            0.0f, manaRect.getY() - healthPoints.getHeight() * 1.5f);
+        statsView.add(manaPoints);
+
         // Add projectile.
         if (player.getType() == PlayerType.ARCHER)
         {
@@ -105,13 +116,22 @@ public class BattleScreen extends ShapeScreen
             shapeView.add(player.getProjectile().getImageShape());
         }
 
-        this.updateHP();
-        this.updateMP();
+        /*
+        int counter = 0;
+        for (Magic playerMagic : player.getMagics())
+        {
+            Button button = new Button(this);
+            button.setText(playerMagic.getName());
+            buttonArray[counter] = button;
+            counter++;
+            buttonLayout.addView(button);
+        }
+        */
 
         shapeView.setAutoRepaint(true);
-        shapeView2.setAutoRepaint(true);
+        statsView.setAutoRepaint(true);
         shapeView.repaint();
-        shapeView2.repaint();
+        statsView.repaint();
     }
 
     @Override
@@ -160,6 +180,8 @@ public class BattleScreen extends ShapeScreen
                 Toast.makeText(this, "Attempt to escape failed!", Toast.LENGTH_LONG).show();
                 enemy.getBattleSprite().getImageShape().animate(800).name("enemyActionDelay").play();
             }
+
+            wait = true;
         }
     }
 
@@ -169,16 +191,8 @@ public class BattleScreen extends ShapeScreen
      */
     public void magicClicked()
     {
-     // Make other buttons appear
-        int counter = 0;
-        for (Magic magic : player.getMagics())
-        {
-            Button button = new Button(this);
-            button.setText(magic.getName());
-            buttonArray[counter] = button;
-            counter++;
-            buttonLayout.addView(button);
-        }
+        // Make other buttons appear
+
         int index = 0;
 
         for (Magic magic : player.getMagics())
@@ -192,6 +206,7 @@ public class BattleScreen extends ShapeScreen
             }
             index++;
         }
+
         updateMP();
     }
 
@@ -382,31 +397,32 @@ public class BattleScreen extends ShapeScreen
             {
                 int currentHealth = (int) (player.getHealth());
                 int maxHealth = (int) (player.getMaxHealth());
-                String healthString = currentHealth + "/" + maxHealth;
-                updateHPText();
+
+                statsView.remove(healthPoints);
+                healthPoints = new TextShape(currentHealth + "/" + maxHealth, 0.0f, 0.0f);
+                statsView.add(healthPoints);
 
                 float currentHealthRatio = player.getHealth() / player.getMaxHealth();
-                float newRight = currentHealthRatio * shapeView2.getWidth();
-                if ( newRight < 0 )
+                float newRight = currentHealthRatio * statsView.getWidth();
+                if ( newRight < 0.0f )
                 {
-                    newRight = 0;
+                    newRight = 0.0f;
                 }
-                if (currentHealth == 0)
+                if (currentHealth == 0.0f)
                 {
                     healthRect.setColor(Color.black);
                     healthRect.setFillColor(Color.black);
-
                 }
                 else
                 {
-                    RectF newBounds = new RectF(0, 0, newRight,
-                        shapeView2.getHeight() / 3);
+                    RectF newBounds = new RectF(healthRect.getX(), healthRect.getY(),
+                        healthRect.getX() + newRight, healthRect.getY() + healthRect.getHeight());
                     healthRect.setBounds(newBounds);
                 }
            }
        });
-
     }
+
     /**
      * This method changes the mana text view and bar to let the user know
      * what their current mana points are.
@@ -419,43 +435,31 @@ public class BattleScreen extends ShapeScreen
             {
                 int currentMana = (int) (player.getMana());
                 int maxMana = (int) (player.getMaxMana());
-                String manaString = currentMana + "/" + maxMana;
 
-                if (player.getMana() != player.getMaxMana())
+                statsView.remove(manaPoints);
+                manaPoints = new TextShape(currentMana + "/" + maxMana, 0.0f, 0.0f);
+                statsView.add(manaPoints);
+
+                float currentManaRatio = player.getMana() / player.getMaxMana();
+                float newRight = currentManaRatio * statsView.getWidth();
+                if ( newRight < 0.0f )
                 {
-                    float currentManaRatio = player.getMana() / player.getMaxMana();
-                    float newRight = currentManaRatio * shapeView2.getWidth();
-                    RectF newBounds = new RectF(0, 0, newRight, shapeView2.getHeight());
+                    newRight = 0.0f;
+                }
+                if (currentMana == 0.0f)
+                {
+                    manaRect.setColor(Color.black);
+                    manaRect.setFillColor(Color.black);
+
+                }
+                else
+                {
+                    RectF newBounds = new RectF(manaRect.getX(), manaRect.getY(),
+                        manaRect.getX() + newRight, manaRect.getY() + manaRect.getHeight());
                     manaRect.setBounds(newBounds);
                 }
             }
         });
-
-        Log.v("BattleScreen", "Mana = " + gameWorld.getPlayer().getMana());
-    }
-
-    private void updateHPText()
-    {
-
-            if (player.getHealth() != player.getMaxHealth())
-            {
-                    String healthRatio = (int)(player.getHealth()) + "/" +
-                        (int)(player.getMaxHealth());
-                    hpText.remove(hp);
-                    hp = new TextShape(healthRatio, hpText.getWidth()/2, hpText.getHeight());
-                    hp.setTypeSize(25);
-                    hpText.add(hp);
-                }
-
-
-    }
-
-    private void updateMPText()
-    {
-        String manaRatio = (int)(player.getMana()) + "/" +
-            (int)(player.getMaxMana());
-        //mp.setText(manaRatio);
-        mpText.add(mp);
     }
 
 
