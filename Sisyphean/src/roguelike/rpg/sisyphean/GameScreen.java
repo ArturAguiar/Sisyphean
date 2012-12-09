@@ -4,6 +4,9 @@ package roguelike.rpg.sisyphean;
 import android.text.Editable;
 import android.widget.EditText;
 
+
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import android.widget.TextView;
@@ -33,12 +36,15 @@ import sofia.app.ShapeScreen;
 public class GameScreen extends ShapeScreen
 {
     private ShapeView shapeView;
+    private ShapeView shapeView2;
+    private RelativeLayout popup;
+    private LinearLayout mainscreen;
 
     private GameWorld gameWorld;
 
     private TextView health, mana, level, strength, defense, dexterity, armor,
-        weapon, intelligence, healthp, manap, playerName;
-
+        weapon, intelligence, healthp, manap, currentitem, currentname,
+        currentdesc, currentbuff, newitem, newname, newdesc, newbuff, playerName;
     // Maze images
     private Image groundImage;
     private Image backImage;
@@ -56,6 +62,9 @@ public class GameScreen extends ShapeScreen
     private PointF moveBy = new PointF();
     private final float moveSpeed = 5.0f;
 
+    private boolean choiceMenu;
+    private ImageShape popUp;
+
 
     // ----------------------------------------------------------
     /**
@@ -71,6 +80,7 @@ public class GameScreen extends ShapeScreen
 
         // Start the logic thread.
         gameWorld.setLogicThread(new LogicThread(gameWorld));
+        gameWorld.getLogicThread().setGameScreen(this);
 
         gameWorld.getLogicThread().setRunning(true);
         gameWorld.getLogicThread().start();
@@ -108,6 +118,12 @@ public class GameScreen extends ShapeScreen
         this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
 
         gameWorld.getLogicThread().setGameScreen(this);
+
+        choiceMenu = false;
+        popUp = new ImageShape("popup",
+            getWidth() / 2 - cellSize * 2, getHeight() / 2 - cellSize,
+            getWidth() / 2 + cellSize * 2, getHeight() / 2 + cellSize);
+        popUp.setZIndex(11);
     }
 
     /**
@@ -124,6 +140,11 @@ public class GameScreen extends ShapeScreen
         this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
 
         gameWorld.getLogicThread().setGameScreen(this);
+
+        popUp = new ImageShape("popup",
+            getWidth() / 2 - cellSize * 2, getHeight() / 2 - cellSize,
+            getWidth() / 2 + cellSize * 2, getHeight() / 2 + cellSize);
+        popUp.setZIndex(11);
     }
 
     /**
@@ -154,6 +175,11 @@ public class GameScreen extends ShapeScreen
         this.drawMazeSection(gameWorld.getMaze(), gameWorld.getPlayer());
 
         gameWorld.getLogicThread().setGameScreen(this);
+
+        popUp = new ImageShape("popup",
+            getWidth() / 2 - cellSize * 2, getHeight() / 2 - cellSize,
+            getWidth() / 2 + cellSize * 2, getHeight() / 2 + cellSize);
+        popUp.setZIndex(11);
     }
 
     private void updateFields()
@@ -364,13 +390,14 @@ public class GameScreen extends ShapeScreen
             cell.getEnemy().getMazeSprite().setSize(cellSize * 0.8f);
             shapeView.add(cell.getEnemy().getMazeSprite().getImageShape());
 
-            TextShape levelText = new TextShape("" + cell.getEnemy().getLevel(), 0, 0);
+            TextShape levelText = new TextShape("" + cell.getEnemy().getLevel(),
+                left + cellSize * 0.1f, top + cellSize * 0.1f);
 
             levelText.setColor(Color.red);
             levelText.setTypefaceAndSize("*-bold-8");
             shapeView.add(levelText);
-            levelText.setPosition(left + cellSize - levelText.getWidth() - 5.0f,
-                                  top + cellSize - levelText.getHeight() - 5.0f);
+            levelText.setPosition(left + cellSize * 0.9f - levelText.getWidth(),
+                                  top + cellSize * 0.9f - levelText.getHeight());
         }
         else if (cell.getItem() != null)
         {
@@ -399,10 +426,44 @@ public class GameScreen extends ShapeScreen
      */
     public void onTouchDown(MotionEvent event)
     {
-        // Pops up a toast with information for testing purposes
+
+     // Pops up a toast with information for testing purposes
         for (String name : gameWorld.getMaze().itemlist)
         {
             Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Helper method for onTouchDown to determine whether the player chooses to
+     * keep their current item or pick up the new one found.
+     * @param e Where the player touches
+     * @return boolean Whether the player chose the new item or not
+     */
+    private boolean chooseItem(MotionEvent e)
+    {
+        //If the player chooses to keep their weapon by touching the right side,
+        // do nothing.
+        if (e.getX() < shapeView2.getWidth() / 2)
+        {
+            return false;
+        }
+        //otherwise swap items
+        else
+        {
+            if (gameWorld.getMaze().getCell(
+                gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem()
+                instanceof Weapon)
+            {
+                gameWorld.getPlayer().setWeapon((Weapon)gameWorld.getMaze().getCell(
+                    gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem());
+            }
+            else
+            {
+                gameWorld.getPlayer().setArmor((Armor)gameWorld.getMaze().getCell(
+                    gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem());
+            }
+            return true;
         }
     }
 
@@ -412,7 +473,7 @@ public class GameScreen extends ShapeScreen
      */
     public void downClicked()
     {
-        if (gameWorld.getPlayer().isWalking())
+        if (gameWorld.getPlayer().isWalking() || choiceMenu)
             return;
 
         int x = gameWorld.getPlayer().getCellX();
@@ -435,7 +496,7 @@ public class GameScreen extends ShapeScreen
      */
     public void upClicked()
     {
-        if (gameWorld.getPlayer().isWalking())
+        if (gameWorld.getPlayer().isWalking() || choiceMenu)
             return;
 
         int x = gameWorld.getPlayer().getCellX();
@@ -457,7 +518,7 @@ public class GameScreen extends ShapeScreen
      */
     public void rightClicked()
     {
-        if (gameWorld.getPlayer().isWalking())
+        if (gameWorld.getPlayer().isWalking() || choiceMenu)
             return;
 
         int x = gameWorld.getPlayer().getCellX();
@@ -479,7 +540,7 @@ public class GameScreen extends ShapeScreen
      */
     public void leftClicked()
     {
-        if (gameWorld.getPlayer().isWalking())
+        if (gameWorld.getPlayer().isWalking() || choiceMenu)
             return;
 
         int x = gameWorld.getPlayer().getCellX();
@@ -546,11 +607,48 @@ public class GameScreen extends ShapeScreen
 
                 shapeView.remove(item.getMazeIcon());
             }
-            else
-            {
-                //???
+            else if (item instanceof Weapon)
+                {
+                    runOnUiThread(new Runnable() {
+                        public void run()
+                        {
+                            currentitem.setText("Current Item");
+                            currentname.setText(gameWorld.getPlayer().getWeapon().getName());
+                            currentdesc.setText(gameWorld.getPlayer().getWeapon().getDescription());
+                            currentbuff.setText("Damage: " + (int)gameWorld.getPlayer().getWeapon().getDamage());
+                            newitem.setText("New Item");
+                            newname.setText(gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem().getName());
+                            newdesc.setText(gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem().getDescription());
+                            newbuff.setText("Damage :" + (int)((Weapon)gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem()).getDamage());
+                            shapeView.add(popUp);
+                            popup.bringToFront();
+                            choiceMenu = true;
+                        }
+
+                    });
+                }
+                else
+                {
+                    runOnUiThread(new Runnable() {
+                        public void run()
+                        {
+                            currentitem.setText("Current Item");
+                            currentname.setText(gameWorld.getPlayer().getArmor().getName());
+                            currentdesc.setText(gameWorld.getPlayer().getArmor().getName());
+                            currentbuff.setText("Defense: " + (int)gameWorld.getPlayer().getArmor().getDefense());
+                            newitem.setText("New Item");
+                            newname.setText(gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem().getName());
+                            newdesc.setText(gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem().getDescription());
+                            newbuff.setText("Defense: " + (int)((Armor)gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem()).getDefense());
+                            shapeView.add(popUp);
+                            popup.bringToFront();
+                            choiceMenu = true;
+                        }
+
+                    });
+                }
             }
-        }
+
     }
 
     private void checkForExit(int x, int y)
@@ -573,6 +671,8 @@ public class GameScreen extends ShapeScreen
         {
             gameWorld.getPlayer().consumePotion(PotionType.HEALTH);
             healthp.setText("Health Potions: " + gameWorld.getPlayer().getHealthPotions());
+            health.setText("Health: " + (int)gameWorld.getPlayer().getHealth() +
+                " / " + (int)gameWorld.getPlayer().getMaxHealth());
         }
 
         Log.v("Health Potions", gameWorld.getPlayer().getHealthPotions() + " potions");
@@ -587,6 +687,8 @@ public class GameScreen extends ShapeScreen
         {
             gameWorld.getPlayer().consumePotion(PotionType.MANA);
             manap.setText("Mana Potions: " + gameWorld.getPlayer().getManaPotions());
+            mana.setText("Mana: " + (int)gameWorld.getPlayer().getMana() +
+                " / " + (int)gameWorld.getPlayer().getMaxMana());
         }
 
         Log.v("Mana Potions", gameWorld.getPlayer().getManaPotions() + " potions");
