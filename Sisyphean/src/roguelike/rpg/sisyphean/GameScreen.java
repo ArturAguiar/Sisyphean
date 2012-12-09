@@ -31,7 +31,7 @@ public class GameScreen extends ShapeScreen
 
     private GameWorld gameWorld;
 
-    private TextView level, strength, defense, dexterity, armor,
+    private TextView health, mana, level, strength, defense, dexterity, armor,
         weapon, intelligence, healthp, manap;
     // Maze images
     private Image groundImage;
@@ -104,16 +104,20 @@ public class GameScreen extends ShapeScreen
         weapon.setText(weaponString);
         String armorString = thePlayer.getArmor().getName();
         armor.setText(armorString);
+        String currentHealth = (int)thePlayer.getHealth() + "";
+        String currentMana = (int)thePlayer.getMana() + "";
         String currentLevel = thePlayer.getLevel() + "";
         String currentStr = (int) (thePlayer.getStrength()) + "";
         String currentDef = (int)(thePlayer.getDefense()) + "";
         String currentDex = (int)(thePlayer.getDexterity()) + "";
         String currentIntel = (int)(thePlayer.getIntelligence()) + "";
+        health.setText("Health: " + currentHealth + " / " + (int)thePlayer.getMaxHealth());
+        mana.setText("Mana: " + currentMana + " / " + (int)thePlayer.getMaxMana());
         level.setText("Level: " + currentLevel);
-        strength.setText("Strength: " + currentStr);
-        defense.setText("Defense: " + currentDef);
-        dexterity.setText("Dexterity: " + currentDex);
-        intelligence.setText("Intelligence: " + currentIntel);
+        strength.setText("Str: " + currentStr);
+        defense.setText("Def: " + currentDef);
+        dexterity.setText("Dex: " + currentDex);
+        intelligence.setText("Int: " + currentIntel);
         healthp.setText("Health Potions: " + thePlayer.getHealthPotions());
         manap.setText("Mana Potions: " + thePlayer.getManaPotions());
     }
@@ -139,11 +143,13 @@ public class GameScreen extends ShapeScreen
         String currentDef = (int)(thePlayer.getDefense()) + "";
         String currentDex = (int)(thePlayer.getDexterity()) + "";
         String currentIntel = (int)(thePlayer.getIntelligence()) + "";
+        health.setText("Health: " + (int)thePlayer.getHealth() + " / " + (int)thePlayer.getMaxHealth());
+        mana.setText("Mana: " + (int)thePlayer.getMana() + " / " + (int)thePlayer.getMaxMana());
         level.setText("Level: " + currentLevel);
-        strength.setText("Strength: " + currentStr);
-        defense.setText("Defense: " + currentDef);
-        dexterity.setText("Dexterity: " + currentDex);
-        intelligence.setText("Intelligence: " + currentIntel);
+        strength.setText("Str: " + currentStr);
+        defense.setText("Def: " + currentDef);
+        dexterity.setText("Dex: " + currentDex);
+        intelligence.setText("Intel: " + currentIntel);
         healthp.setText("Health Potions: " + thePlayer.getHealthPotions());
         manap.setText("Mana Potions: " + thePlayer.getManaPotions());
 
@@ -515,9 +521,7 @@ public class GameScreen extends ShapeScreen
                 gameWorld.getMaze().getCell(x, y).setItem(null);
                 healthp.setText("Health Potions: " + gameWorld.getPlayer().getHealthPotions());
                 manap.setText("Mana Potions: " + gameWorld.getPlayer().getManaPotions());
-                //TODO: Remove the item from the screen.
-                //It goes away after a battle or shifting the screen, but not immediately.
-                //shapeView.repaint();?
+                shapeView.remove(item.getMazeIcon());
             }
             else
             {
