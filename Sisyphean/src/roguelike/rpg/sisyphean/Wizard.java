@@ -27,14 +27,14 @@ public class Wizard
         this.setName(name);
         this.setType(PlayerType.WIZARD);
 
-        this.setMaxHealth(120.0f);
+        this.setMaxHealth(100.0f);
         this.setMaxMana(100.0f);
         //this.setMaxStamina(120.0f);
 
         // I swapped the strength and intelligence skill number.
         // Change them if you need to!
         this.setStrength(10.0f);
-        this.setDefense(25.0f);
+        this.setDefense(15.0f);
         this.setDexterity(12.0f);
         this.setIntelligence(30.0f);
 
@@ -56,18 +56,22 @@ public class Wizard
 
         // Initial equipment
         this.setArmor(new Armor(
-            "Prisoner Garments",
-            "Rusty handcuffs and dark pants. Hardly any protection.",
+            "Wizards Robe",
+            "Wizards robing. Cloth material.",
             2.0f, gameWorld));
         this.getArmor().getMazeIcon().setPosition(x, y);
 
-        // Anyway to change to a staff or rod??
-        // -tk
         this.setWeapon(new Weapon(
             "Broken Stick",
             "From small beginnings.",
             6.0f,
             gameWorld));
+
+        // Initial Magic.
+        getMagics().add(new Magic(
+            "Petty Damage",
+            "Deals 20 damage to the enemy unit.",
+            20.0f, 10.0f, false));
     }
 
     @Override
@@ -75,39 +79,69 @@ public class Wizard
     {
         // I changed the stats so that it would make sense for a wizard class.
         // Increase statuses.
-        this.setMaxHealth(getMaxHealth() + 13.0f);
+        this.setMaxHealth(getMaxHealth() + getMaxHealth() * 0.13F);
         //this.setMaxStamina(getMaxStamina() + 12.0f);
-        this.setMaxMana(getMaxMana() + 13.0f);
-        this.setStrength(getStrength() + 8.0f);
-        this.setDefense(getDefense() + 12.0f);
-        this.setDexterity(getDexterity() + 6.0f);
-        this.setIntelligence(getIntelligence() + 13.0f);
+        this.setMaxMana(getMaxMana() + getMaxMana() * .10F);
+        this.setStrength(getStrength() + getStrength() * 0.05F);
+        this.setDefense(getDefense() + getDefense() * 0.10F);
+        this.setDexterity(getDexterity() + getDexterity() * 0.08F);
+        this.setIntelligence(getIntelligence() + getIntelligence() * 0.15F);
 
         // Update the level and experience.
         this.setLevel(getLevel() + 1);
         this.setExpToNextLevel(getExpToNextLevel() * 2.5f);
 
-        // Update skills.
-        /*
         switch (getLevel())
         {
             case 3:
-                getSkills().add(new Skill(
-                    "Charged Slash",
-                    "Concentrate your powers before dealing the blow.",
-                    1.5f,
-                    20.0f));
+                getMagics().add(new Magic(
+                    "Minor Heal",
+                    "Heals the warrior for 20 health.",
+                    20.0f, 10.0f, true));
                 break;
 
             case 5:
-                getSkills().add(new Skill(
-                    "Double Slash",
-                    "Strike your foe twice in quick succession.",
-                    2.0f,
-                    28.0f));
+                getMagics().add(new Magic(
+                    "Fire Ball",
+                    "Deals moderate fire damage to the enemy",
+                    30.0f, 15.0f, false));
+                break;
+
+            case 9:
+                getMagics().add(new Magic(
+                    "SKull Splitter",
+                    "Deals major damage to the enemy's skull.",
+                    75.0f, 50.0f, false));
+                break;
+
+            case 13:
+                getMagics().add(new Magic(
+                    "Ice Pick",
+                    "Deals moderate ice damage to the enemy",
+                    45.0f, 20.0f, false));
+                break;
+
+            case 15:
+                getMagics().add(new Magic(
+                    "High Heal",
+                    "Heals a lot of health.",
+                    100.0f, 90.0f, true));
+                break;
+
+            case 20:
+                getMagics().add(new Magic(
+                    "Backstab",
+                    "Hurts the enemy for critical damage.",
+                    66.0f, 60.0f, false));
+                break;
+
+            case 25:
+                getMagics().add(new Magic(
+                    "Potrellos Anguish",
+                    "It will wish it was already dead.",
+                    80.0f, 70.0f, false));
                 break;
         }
-        */
 
         // Check if the player leveled up again.
         if ( getExperience() >= getExpToNextLevel() )

@@ -29,14 +29,14 @@ public class Archer
         this.setName(name);
         this.setType(PlayerType.ARCHER);
 
-        this.setMaxHealth(120.0f);
+        this.setMaxHealth(110.0f);
         this.setMaxMana(100.0f);
         //this.setMaxStamina(120.0f);
 
         // I swapped the strength and intelligence skill number.
         // Change them if you need to!
-        this.setStrength(20.0f);
-        this.setDefense(25.0f);
+        this.setStrength(18.0f);
+        this.setDefense(30.0f);
         this.setDexterity(22.0f);
         this.setIntelligence(10.0f);
 
@@ -51,6 +51,10 @@ public class Archer
         this.setBattleSprite(new Sprite(R.drawable.archer_sprite_sheet, 1040, 780, 8, 6, gameWorld.getDisplayMetrics().density));
         this.getBattleSprite().setRow(2);
 
+        // The arrow sprite for use in battle.
+        this.setProjectile(new Sprite(R.drawable.arrow, 62, 7, 2, 1,
+            gameWorld.getDisplayMetrics().density));
+
 
         // Set the location of the sprite based on the given parameters.
         this.setPosition(x, y);
@@ -58,76 +62,90 @@ public class Archer
 
         // Initial equipment
         this.setArmor(new Armor(
-            "Prisoner Garments",
-            "Rusty handcuffs and dark pants. Hardly any protection.",
-            2.0f, gameWorld));
+            "Leather Cuirass",
+            "Leather chestpiece for archers.",
+            3.0f, gameWorld));
         this.getArmor().getMazeIcon().setPosition(x, y);
 
-        // Anyway to change to a staff or rod??
-        // -tk
+
         this.setWeapon(new Weapon(
-            "Rusty Bow",
-            "If tetanus killed quickly, this would actually be half-decent.",
-            6.0f,
+            "Bone Bow",
+            "Not. Very. Fancy.",
+            3.0f,
             gameWorld));
-        this.getWeapon().addBonusDamage("ZOMBIE", 2.0f);
-
-        this.setProjectile(new Sprite(R.drawable.arrow, 62, 7, 2, 1,
-            gameWorld.getDisplayMetrics().density));
+        this.getWeapon().addBonusDamage("SKELETON", -2.0f);
     }
 
 
-    /**
-     * This method levels up the character by changing its stats and setting
-     * them to their new values. If the character has leveled up twice in one
-     * battle, then a recursive call is made.
-     */
-    @Override
-    public void levelUp()
-    {
-     // I changed the stats so that it would make sense for a wizard class.
-        // Increase statuses.
-        this.setMaxHealth(getMaxHealth() + 11.0f);
-        //this.setMaxStamina(getMaxStamina() + 12.0f);
-        this.setMaxMana(getMaxMana() + 13.0f);
-        this.setStrength(getStrength() + 8.0f);
-        this.setDefense(getDefense() + 12.0f);
-        this.setDexterity(getDexterity() + 11.0f);
-        this.setIntelligence(getIntelligence() + 10.0f);
+   /**
+    * This method levels up the character by changing its stats and setting
+    * them to their new values. If the character has leveled up twice in one
+    * battle, then a recursive call is made.
+    */
+   @Override
+   public void levelUp()
+   {
+    // I changed the stats so that it would make sense for a wizard class.
+       // Increase statuses.
+       this.setMaxHealth(getMaxHealth() + getMaxHealth() * 0.15F);
+       //this.setMaxStamina(getMaxStamina() + 12.0f);
+       this.setMaxMana(getMaxMana() + getMaxMana() * .02F);
+       this.setStrength(getStrength() + getStrength() * 0.07F);
+       this.setDefense(getDefense() + getDefense() * 0.11F);
+       this.setDexterity(getDexterity() + getDexterity() * 0.12F);
+       this.setIntelligence(getIntelligence() + getIntelligence() * 0.05F);
 
-        // Update the level and experience.
-        this.setLevel(getLevel() + 1);
-        this.setExpToNextLevel(getExpToNextLevel() * 2.5f);
+       // Update the level and experience.
+       this.setLevel(getLevel() + 1);
+       this.setExpToNextLevel(getExpToNextLevel() * 2.5f);
 
-        // Update skills.
-        /*
-        switch (getLevel())
-        {
-            case 3:
-                getSkills().add(new Skill(
-                    "Charged Slash",
-                    "Concentrate your powers before dealing the blow.",
-                    1.5f,
-                    20.0f));
-                break;
+       //Update magic for the archer.
+       switch (getLevel())
+       {
+           case 3:
+               getMagics().add(new Magic(
+                   "Minor Heal",
+                   "Heals the warrior for 20 health.",
+                   20.0f, 15.0f, true));
+               break;
 
-            case 5:
-                getSkills().add(new Skill(
-                    "Double Slash",
-                    "Strike your foe twice in quick succession.",
-                    2.0f,
-                    28.0f));
-                break;
-        }
-        */
+           case 5:
+               getMagics().add(new Magic(
+                   "Ice Dagger",
+                   "Deals a small bit of damage.",
+                   30.0f, 25.0f, false));
+               break;
 
-        // Check if the player leveled up again.
-        if ( getExperience() >= getExpToNextLevel() )
-        {
-            levelUp();
-        }
+           case 9:
+               getMagics().add(new Magic(
+                   "Enlightenment",
+                   "hHeals a lot of health.",
+                   60.0f, 30.0f, true));
+               break;
 
-    }
+           case 15:
+               getMagics().add(new Magic(
+                   "High Heal",
+                   "Heals a lot of health.",
+                   100.0f, 90.0f, true));
+               break;
+
+           case 20:
+               getMagics().add(new Magic(
+                   "Vice Grip",
+                   "Hurts the enemy with all of the archer's arcane might.",
+                   150.0f, 100.0f, false));
+               break;
+
+       }
+
+       // Check if the player leveled up again.
+       if ( getExperience() >= getExpToNextLevel() )
+       {
+           levelUp();
+       }
+
+   }
 
 
 }

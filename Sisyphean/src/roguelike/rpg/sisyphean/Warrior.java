@@ -32,7 +32,8 @@ public class Warrior extends Player
         this.setMaxMana(100.0f);
         //this.setMaxStamina(120.0f);
 
-        this.setStrength(30.0f);
+        this.setStrength(20.0f);
+
         this.setDefense(25.0f);
         this.setDexterity(12.0f);
         this.setIntelligence(10.0f);
@@ -55,19 +56,19 @@ public class Warrior extends Player
 
         // Initial equipment.
         this.setArmor(new Armor(
-            "Prisoner Garments",
-            "Rusty handcuffs and dark pants. Hardly any protection.",
+            "Iron Chest",
+            "Iron chestpiece.",
             2.0f, gameWorld));
         this.getArmor().getMazeIcon().setPosition(x, y);
 
         this.setWeapon(new Weapon(
-            "Rusty Dagger",
-            "If tetanus killed quickly, this would actually be half-decent.",
-            6.0f,
+            "Longsword",
+            "Moderately made, but size makes it proficient against Zombies.",
+            7.0f,
             gameWorld));
-        this.getWeapon().addBonusDamage("ZOMBIE", 2.0f);
+        this.getWeapon().addBonusDamage("ZOMBIE", 4.0f);
 
-        // Initial magics FOR TESTING.
+        // Initial magics.
         getMagics().add(new Magic(
             "Constrict",
             "Constricts the enemy causing at least 30 damage.",
@@ -78,49 +79,48 @@ public class Warrior extends Player
     public void levelUp()
     {
         // Increase statuses.
-        this.setMaxHealth(getMaxHealth() + 13.0f);
+        this.setMaxHealth(getMaxHealth() + getMaxHealth() * 0.2F);
         //this.setMaxStamina(getMaxStamina() + 12.0f);
-        this.setMaxMana(getMaxMana() + 8.0f);
-        this.setStrength(getStrength() + 13.0f);
-        this.setDefense(getDefense() + 12.0f);
-        this.setDexterity(getDexterity() + 6.0f);
-        this.setIntelligence(getIntelligence() + 5.0f);
+        this.setMaxMana(getMaxMana() + getMaxMana() * .01F);
+        this.setStrength(getStrength() + getStrength() * 0.13F);
+        this.setDefense(getDefense() + getDefense() * 0.15F);
+        this.setDexterity(getDexterity() + getDexterity() * 0.04F);
+        this.setIntelligence(getIntelligence() + getIntelligence() * 0.03F);
 
         // Update the level and experience.
         this.setLevel(getLevel() + 1);
         this.setExpToNextLevel(getExpToNextLevel() * 2.5f);
 
-        /*
-        // Update skills.
-        switch (getLevel())
-        {
-
-            case 3:
-                getSkills().add(new Skill(
-                    "Charged Slash",
-                    "Concentrate your powers before dealing the blow.",
-                    1.5f,
-                    20.0f));
-                break;
-
-            case 5:
-                getSkills().add(new Skill(
-                    "Double Slash",
-                    "Strike your foe twice in quick succession.",
-                    2.0f,
-                    28.0f));
-                break;
-        }
-         */
-
-        //Update magic.
+        //Update magic for the warrior.
         switch (getLevel())
         {
             case 3:
                 getMagics().add(new Magic(
                     "Minor Heal",
-                    "Heals the warrior for at least 60HP.",
-                    60.0f, 20.0f, true));
+                    "Heals the warrior at least 20 health.",
+                    20.0f, 15.0f, true));
+                break;
+
+            case 9:
+                getMagics().add(new Magic(
+                    "Ice Pick",
+                    "Deals moderate damage to the enemy",
+                    30.0f, 25.0f, false));
+                break;
+
+            case 15:
+                getMagics().add(new Magic(
+                    "High Heal",
+                    "Heals at lot of health for a lot of mana.",
+                    180.0f, 80.0f, true));
+                break;
+
+            case 20:
+                getMagics().add(new Magic(
+                    "Vice Grip",
+                    "Hurts the enemy with all of the warrior's arcane might.",
+                    150.0f, 100.0f, false));
+                break;
         }
 
         // Check if the player leveled up again.

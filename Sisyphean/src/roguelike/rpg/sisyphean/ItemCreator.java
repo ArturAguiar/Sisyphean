@@ -130,8 +130,8 @@ public class ItemCreator
             "Heavy armor. Rare item.", 45.0F, gameWorld));
         armors.add(new Armor("Brutus Chestpiece",
             "Rarest armor. Works best against skeletons.", 50.0F, gameWorld));
-        armors.add(new Armor("Mask of Agammemnon",
-            "Golden mask of Agammemnon.", 30.0F, gameWorld));
+        armors.add(new Armor("Mask of Agamemnon",
+            "Golden mask of Agamemnon.", 30.0F, gameWorld));
     }
 
 

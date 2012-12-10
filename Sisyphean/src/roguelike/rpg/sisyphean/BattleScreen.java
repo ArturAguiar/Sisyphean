@@ -197,7 +197,7 @@ public class BattleScreen extends ShapeScreen
      */
     public void magicClicked()
     {
-        if (wait)
+        if (wait || player.getMagics().isEmpty())
             return;
 
         if (!selectingMagic)

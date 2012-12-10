@@ -64,7 +64,6 @@ public class GameScreen extends ShapeScreen
 
     private boolean choiceMenu;
     private ImageShape popUp;
-    private String name;
 
 
     // ----------------------------------------------------------
@@ -85,22 +84,27 @@ public class GameScreen extends ShapeScreen
 
         gameWorld.getLogicThread().setRunning(true);
         gameWorld.getLogicThread().start();
-        this.name = name;
 
-        playerName.setText(name);
+        String playerNameString = name;
+        if (playerNameString == null || playerNameString.trim().equals(""))
+        {
+            playerNameString = "Sisyphus";
+        }
+
+        playerName.setText(playerNameString);
 
         Log.v("GameScreen", "initialized.");
 
         switch (playerClass)
         {
             case WARRIOR:
-                gameWorld.setPlayer(new Warrior(name, 250.0f, 250.0f, gameWorld));
+                gameWorld.setPlayer(new Warrior(playerNameString, 250.0f, 250.0f, gameWorld));
                 break;
             case WIZARD:
-                gameWorld.setPlayer(new Wizard(name, 250.0f, 250.0f, gameWorld));
+                gameWorld.setPlayer(new Wizard(playerNameString, 250.0f, 250.0f, gameWorld));
                 break;
             case ARCHER:
-                gameWorld.setPlayer(new Archer(name, 250.0f, 250.0f, gameWorld));
+                gameWorld.setPlayer(new Archer(playerNameString, 250.0f, 250.0f, gameWorld));
             default:
                 break;
         }
