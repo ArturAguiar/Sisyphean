@@ -89,6 +89,7 @@ public class GameScreen extends ShapeScreen
         if (playerNameString == null || playerNameString.trim().equals(""))
         {
             playerNameString = "Sisyphus";
+            Log.v("Name", "name set to sisyphus");
         }
 
         playerName.setText(playerNameString);
@@ -126,8 +127,8 @@ public class GameScreen extends ShapeScreen
 
         choiceMenu = false;
         popUp = new ImageShape("popup",
-            getWidth() / 2 - cellSize * 2, getHeight() / 2 - cellSize,
-            getWidth() / 2 + cellSize * 2, getHeight() / 2 + cellSize);
+            getWidth() / 2 - cellSize * 2, getHeight() / 2 - cellSize * 2,
+            getWidth() / 2 + cellSize * 2, getHeight() / 2 + cellSize * 2);
         popUp.setZIndex(11);
     }
 
@@ -147,8 +148,8 @@ public class GameScreen extends ShapeScreen
         gameWorld.getLogicThread().setGameScreen(this);
 
         popUp = new ImageShape("popup",
-            getWidth() / 2 - cellSize * 2, getHeight() / 2 - cellSize,
-            getWidth() / 2 + cellSize * 2, getHeight() / 2 + cellSize);
+            getWidth() / 2 - cellSize * 2, getHeight() / 2 - cellSize * 2,
+            getWidth() / 2 + cellSize * 2, getHeight() / 2 + cellSize * 2);
         popUp.setZIndex(11);
     }
 
@@ -423,11 +424,41 @@ public class GameScreen extends ShapeScreen
      */
     public void onTouchDown(MotionEvent event)
     {
-
-     // Pops up a toast with information for testing purposes
-        for (String name : gameWorld.getMaze().itemlist)
+        if (choiceMenu && shapeView2.getBounds().contains(event.getX(), event.getY()))
         {
-            Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+            if (chooseItem(event))
+            {
+                shapeView.remove(gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem().getMazeIcon());
+                gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).setItem(null);
+            }
+                runOnUiThread(new Runnable() {
+
+                public void run()
+                {
+                    choiceMenu = false;
+                    shapeView.remove(popUp);
+                    currentitem.setText("");
+                    currentname.setText("");
+                    currentdesc.setText("");
+                    currentbuff.setText("");
+                    newitem.setText("");
+                    newname.setText("");
+                    newdesc.setText("");
+                    newbuff.setText("");
+                    mainscreen.bringToFront();
+                    weapon.setText(gameWorld.getPlayer().getWeapon().getName());
+                    armor.setText(gameWorld.getPlayer().getArmor().getName());
+                }
+
+                });
+        }
+        // Pops up a toast with information for testing purposes
+        else
+        {
+            for (String name : gameWorld.getMaze().itemlist)
+            {
+                Toast.makeText(this, name, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -609,11 +640,11 @@ public class GameScreen extends ShapeScreen
                     runOnUiThread(new Runnable() {
                         public void run()
                         {
-                            currentitem.setText("Current Item");
+                            currentitem.setText("Keep Current Item?");
                             currentname.setText(gameWorld.getPlayer().getWeapon().getName());
                             currentdesc.setText(gameWorld.getPlayer().getWeapon().getDescription());
                             currentbuff.setText("Damage: " + (int)gameWorld.getPlayer().getWeapon().getDamage());
-                            newitem.setText("New Item");
+                            newitem.setText("Take New Item?");
                             newname.setText(gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem().getName());
                             newdesc.setText(gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem().getDescription());
                             newbuff.setText("Damage :" + (int)((Weapon)gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem()).getDamage());
@@ -629,11 +660,11 @@ public class GameScreen extends ShapeScreen
                     runOnUiThread(new Runnable() {
                         public void run()
                         {
-                            currentitem.setText("Current Item");
+                            currentitem.setText("Keep Current Item?");
                             currentname.setText(gameWorld.getPlayer().getArmor().getName());
-                            currentdesc.setText(gameWorld.getPlayer().getArmor().getName());
+                            currentdesc.setText(gameWorld.getPlayer().getArmor().getDescription());
                             currentbuff.setText("Defense: " + (int)gameWorld.getPlayer().getArmor().getDefense());
-                            newitem.setText("New Item");
+                            newitem.setText("Take New Item?");
                             newname.setText(gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem().getName());
                             newdesc.setText(gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem().getDescription());
                             newbuff.setText("Defense: " + (int)((Armor)gameWorld.getMaze().getCell(gameWorld.getPlayer().getCellX(), gameWorld.getPlayer().getCellY()).getItem()).getDefense());
