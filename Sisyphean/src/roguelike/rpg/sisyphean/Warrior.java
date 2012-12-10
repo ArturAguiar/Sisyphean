@@ -67,7 +67,7 @@ public class Warrior extends Player
             gameWorld));
         this.getWeapon().addBonusDamage("ZOMBIE", 2.0f);
 
-        // Initial magics.
+        // Initial magics FOR TESTING.
         getMagics().add(new Magic(
             "Constrict",
             "Constricts the enemy causing at least 30 damage.",

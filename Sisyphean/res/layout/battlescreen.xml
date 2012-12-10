@@ -56,15 +56,10 @@
         android:layout_toRightOf="@+id/escape" >
 
         <LinearLayout
+            android:id="@+id/buttonLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <LinearLayout
-                android:id="@+id/buttonLayout"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:orientation="vertical" >
-            </LinearLayout>
+            android:layout_height="90dp"
+            android:orientation="vertical" >
         </LinearLayout>
     </ScrollView>
 

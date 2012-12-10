@@ -214,10 +214,11 @@ abstract public class Player extends Character
      * Starts the casting animation.
      * This is meant to be called by the battle screen.
      */
-    public void castMagic()
+    public void castMagic(Magic magic)
     {
-        if (battleAction == BattleAction.IDLE)
+        if (battleAction == BattleAction.IDLE && this.getMana() >= magic.getConsumption())
         {
+            this.setMana(this.getMana() - magic.getConsumption());
             this.setBattleAction(BattleAction.CASTING);
         }
     }

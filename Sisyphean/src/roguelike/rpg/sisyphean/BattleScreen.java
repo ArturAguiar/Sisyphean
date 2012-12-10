@@ -1,5 +1,7 @@
 package roguelike.rpg.sisyphean;
 
+import android.view.View;
+import java.util.ArrayList;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import sofia.util.Random;
@@ -33,7 +35,7 @@ public class BattleScreen extends ShapeScreen
     private boolean enemyDied = false;
 
     private Button attack, escape, magic;
-    private Button[] buttonArray;
+    private ArrayList<Button> buttonArray;
     private LinearLayout buttonLayout;
 
     private TextShape healthPoints, manaPoints;
@@ -43,6 +45,8 @@ public class BattleScreen extends ShapeScreen
     // Keeps the magic that is being casted, until the damage/healing should be done.
     private Magic magicBeingCasted = null;
 
+    private boolean selectingMagic = false;
+
     /**
      * Called when the battle starts.
      *
@@ -51,7 +55,7 @@ public class BattleScreen extends ShapeScreen
      */
     public void initialize(GameWorld myGameWorld, Enemy myEnemy)
     {
-        buttonArray = new Button[4];
+        buttonArray = new ArrayList<Button>();
         this.gameWorld = myGameWorld;
         this.player = gameWorld.getPlayer();
         this.player.setBattleObserver(this);
@@ -116,17 +120,19 @@ public class BattleScreen extends ShapeScreen
             shapeView.add(player.getProjectile().getImageShape());
         }
 
-        /*
-        int counter = 0;
+
+        // Add the magic list.
         for (Magic playerMagic : player.getMagics())
         {
             Button button = new Button(this);
-            button.setText(playerMagic.getName());
-            buttonArray[counter] = button;
-            counter++;
+            button.setText(playerMagic.getName() + " (" + playerMagic.getConsumption() + ")");
+            button.setOnClickListener(new MagicListButton(playerMagic));
+            buttonArray.add(button);
             buttonLayout.addView(button);
         }
-        */
+
+        buttonLayout.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+        buttonLayout.setVisibility(View.INVISIBLE);
 
         shapeView.setAutoRepaint(true);
         statsView.setAutoRepaint(true);
@@ -191,23 +197,31 @@ public class BattleScreen extends ShapeScreen
      */
     public void magicClicked()
     {
-        // Make other buttons appear
+        if (wait)
+            return;
 
-        int index = 0;
-
-        for (Magic magic : player.getMagics())
+        if (!selectingMagic)
         {
+            selectingMagic = true;
 
-            if (magic.getName().equals(buttonArray[index].getText()))
-            {
-                magicBeingCasted = magic;
-                player.castMagic();
-                break;
-            }
-            index++;
+            buttonLayout.setVisibility(View.VISIBLE);
+
+            attack.setTextColor(android.graphics.Color.parseColor("#666666"));
+            attack.setEnabled(false);
+            escape.setTextColor(android.graphics.Color.parseColor("#666666"));
+            escape.setEnabled(false);
         }
+        else
+        {
+            selectingMagic = false;
 
-        updateMP();
+            buttonLayout.setVisibility(View.INVISIBLE);
+
+            attack.setTextColor(android.graphics.Color.WHITE);
+            attack.setEnabled(true);
+            escape.setTextColor(android.graphics.Color.WHITE);
+            escape.setEnabled(true);
+        }
     }
 
 
@@ -320,47 +334,6 @@ public class BattleScreen extends ShapeScreen
         // by pressing the back button.
     }
 
-
-    // ----------------------------------------------------------
-    /**
-     * This decreases the health bar when the player is hit and has taken damage.
-     */
-    /*
-    public void healthDecrease()
-    {
-        if (player.getHealth() != player.getMaxHealth())
-        {
-            float currentHealthRatio = player.getHealth() / player.getMaxHealth();
-            float newRight = currentHealthRatio * shapeView2.getWidth();
-            if ( newRight < 0 )
-            {
-                newRight = 0;
-            }
-            RectF newBounds = new RectF(0, 0, newRight,
-                shapeView2.getHeight() / 3);
-            healthRect.setBounds(newBounds);
-            //updateHP();
-        }
-    }
-    */
-
-    /**
-     * This decreases the mana bar when the player casts magic.
-     */
-    /*
-    public void manaDecrease()
-    {
-        if (player.getMana() != player.getMaxMana())
-        {
-            float currentManaRatio = player.getMana() / player.getMaxMana();
-            float newRight = currentManaRatio * shapeView2.getWidth();
-            RectF newBounds = new RectF(0, 0, newRight, shapeView2.getHeight());
-            manaRect.setBounds(newBounds);
-            updateMP();
-        }
-    }
-    */
-
     private void createDamageText(int damage, float x, float y)
     {
         TextShape damageText = new TextShape("" + damage, x, y);
@@ -383,6 +356,19 @@ public class BattleScreen extends ShapeScreen
         this.add(damageText);
 
         damageText.animate(800).moveBy(0.0f, -30.0f).alpha(0).removeWhenComplete().play();
+    }
+
+    private void resetStateOfButtons()
+    {
+        selectingMagic = false;
+
+        buttonLayout.setVisibility(View.INVISIBLE);
+
+        attack.setTextColor(android.graphics.Color.parseColor("#ffffff"));
+        attack.setEnabled(true);
+
+        escape.setTextColor(android.graphics.Color.parseColor("#ffffff"));
+        escape.setEnabled(true);
     }
 
     /**
@@ -437,7 +423,8 @@ public class BattleScreen extends ShapeScreen
                 int maxMana = (int) (player.getMaxMana());
 
                 statsView.remove(manaPoints);
-                manaPoints = new TextShape(currentMana + "/" + maxMana, 0.0f, 0.0f);
+                manaPoints = new TextShape(currentMana + "/" + maxMana,
+                    0.0f, manaRect.getY() - healthPoints.getHeight() * 1.5f);
                 statsView.add(manaPoints);
 
                 float currentManaRatio = player.getMana() / player.getMaxMana();
@@ -463,5 +450,25 @@ public class BattleScreen extends ShapeScreen
     }
 
 
+    private class MagicListButton implements View.OnClickListener
+    {
+        private Magic magicToCast;
+
+        public MagicListButton(Magic magic)
+        {
+            this.magicToCast = magic;
+        }
+
+        public void onClick(View v)
+        {
+            if (player.getMana() < magicToCast.getConsumption())
+                return;
+
+            player.castMagic(magicToCast);
+            magicBeingCasted = magicToCast;
+            wait = true;
+            resetStateOfButtons();
+        }
+    }
 
 }
