@@ -46,11 +46,11 @@ public class Enemy extends Character
                 this.setName("Orc");
                 this.setDescription("A hulking brute of a monster.");
                 this.experienceGiven = 5.0f + getLevel() * 4.5f;
-                this.setMaxHealth(150.0f + getLevel() * getMaxHealth() * 0.2F);
+                this.setMaxHealth(20.0f + getLevel() * 2.2f );
                 //this.setMaxStamina(25.0f);
-                this.setStrength(35.0f + getLevel() * getStrength() * 0.12F);
-                this.setDexterity(15.0f + getLevel() * getDexterity() * 0.05F);
-                this.setDefense(25.0f + getLevel() * getDefense() * 0.05F );
+                this.setStrength(28.0f + getLevel() * 12.0f );
+                this.setDexterity(8.0f + getLevel() * 5.0f );
+                this.setDefense(13.0f + getLevel() * 2.0f );
                 this.setMazeSprite(
                     new Sprite(R.drawable.orc_single, 32, 32, 1, 1,
                                gameWorld.getDisplayMetrics().density));
@@ -64,12 +64,12 @@ public class Enemy extends Character
             case ZOMBIE:
                 this.setName("Zombie");
                 this.setDescription("A flesh eating undead creature.");
-                this.experienceGiven = 3.0f + getLevel() * 4.5f;
-                this.setMaxHealth(120.0f + getLevel() * getMaxHealth() * 0.3F);
+                this.experienceGiven = 5.0f + getLevel() * 4.5f;
+                this.setMaxHealth(28.0f + getLevel() * 2.2f );
                 //this.setMaxStamina(25.0f);
-                this.setStrength(35.0f + getLevel() * getStrength() * 0.05F);
-                this.setDexterity(8.0f + getLevel() * getDexterity() * 0.05F);
-                this.setDefense(25.0f + getLevel() * getDefense() * 0.05F );
+                this.setStrength(24.0f + getLevel() * 12.0f );
+                this.setDexterity(8.0f + getLevel() * 5.0f );
+                this.setDefense(10.0f + getLevel() * 2.0f );
                 this.setMazeSprite(
                     new Sprite(R.drawable.zombie_single, 32, 32, 1, 1,
                                gameWorld.getDisplayMetrics().density));
@@ -83,12 +83,12 @@ public class Enemy extends Character
             case SKELETON:
                 this.setName("Skeleton");
                 this.setDescription("A scary skinny white thingy.");
-                this.experienceGiven = 3.0f + getLevel() * 4.5f;
-                this.setMaxHealth(60.0f + (getLevel() * getMaxHealth() * 0.15F));
+                this.experienceGiven = 5.0f + getLevel() * 4.5f;
+                this.setMaxHealth(20.0f + getLevel() * 2.2f );
                 //this.setMaxStamina(25.0f);
-                this.setStrength(40.0f + getLevel() * getStrength() * 0.11F);
-                this.setDexterity(8.0f + getLevel() * getDexterity() * 0.05F );
-                this.setDefense(10.0f + getLevel() * getDefense() * 0.10F);
+                this.setStrength(25.0f + getLevel() * 12.0f );
+                this.setDexterity(8.0f + getLevel() * 5.0f );
+                this.setDefense(7.0f + getLevel() * 2.0f );
                 this.setMazeSprite(
                     new Sprite(R.drawable.skeleton_single, 32, 32, 1, 1,
                                gameWorld.getDisplayMetrics().density));
@@ -255,7 +255,7 @@ public class Enemy extends Character
      */
     public float wasHit(Player player, Magic magic)
     {
-        float damageDone = magic.getTotalEffect(player);
+        float damageDone = magic.getTotalEffect(player) - this.getDefense() * 0.4f;
 
         this.setBattleAction(BattleAction.HURT);
 

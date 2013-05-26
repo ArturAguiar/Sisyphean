@@ -32,11 +32,10 @@ public class Warrior extends Player
         this.setMaxMana(100.0f);
         //this.setMaxStamina(120.0f);
 
-        this.setStrength(20.0f);
-
+        this.setStrength(30.0f);
         this.setDefense(25.0f);
         this.setDexterity(12.0f);
-        this.setIntelligence(10.0f);
+        this.setIntelligence(5.0f);
 
         this.setLevel(1);
         this.setExpToNextLevel(10.0f);
@@ -81,11 +80,11 @@ public class Warrior extends Player
         // Increase statuses.
         this.setMaxHealth(getMaxHealth() + getMaxHealth() * 0.2F);
         //this.setMaxStamina(getMaxStamina() + 12.0f);
-        this.setMaxMana(getMaxMana() + getMaxMana() * .01F);
-        this.setStrength(getStrength() + getStrength() * 0.13F);
-        this.setDefense(getDefense() + getDefense() * 0.15F);
-        this.setDexterity(getDexterity() + getDexterity() * 0.04F);
-        this.setIntelligence(getIntelligence() + getIntelligence() * 0.03F);
+        this.setMaxMana(getMaxMana() + getMaxMana() * 0.08F);
+        this.setStrength(getStrength() + getStrength() * 0.2F);
+        this.setDefense(getDefense() + getDefense() * 0.2F);
+        this.setDexterity(getDexterity() + getDexterity() * 0.08F);
+        this.setIntelligence(getIntelligence() + getIntelligence() * 0.05F);
 
         // Update the level and experience.
         this.setLevel(getLevel() + 1);

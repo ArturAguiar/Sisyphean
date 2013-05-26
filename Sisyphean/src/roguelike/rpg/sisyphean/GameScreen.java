@@ -452,14 +452,6 @@ public class GameScreen extends ShapeScreen
 
                 });
         }
-        // Pops up a toast with information for testing purposes
-        else
-        {
-            for (String name : gameWorld.getMaze().itemlist)
-            {
-                Toast.makeText(this, name, Toast.LENGTH_LONG).show();
-            }
-        }
     }
 
     /**

@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/black"
+        android:background="@android:color/transparent"
         android:text="Escape"
         android:textColor="@android:color/white"
         android:textSize="25dp" />
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/escape"
         android:layout_alignParentLeft="true"
-        android:background="@android:color/black"
+        android:background="@android:color/transparent"
         android:text="Magic"
         android:textColor="@android:color/white"
         android:textSize="25dp" />
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/magic"
         android:layout_alignParentLeft="true"
-        android:background="@android:color/black"
+        android:background="@android:color/transparent"
         android:text="Attack"
         android:textColor="@android:color/white"
         android:textSize="25dp" />

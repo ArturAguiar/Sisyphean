@@ -1,5 +1,10 @@
 package roguelike.rpg.sisyphean;
 
+import android.util.DisplayMetrics;
+import android.graphics.RectF;
+import sofia.graphics.ImageShape;
+import sofia.graphics.ShapeView;
+import sofia.app.ShapeScreen;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Button;
@@ -18,13 +23,18 @@ import sofia.app.Screen;
  *  @author Tk
  *  @version Nov 16, 2012
  */
-public class ClassChoiceScreen extends Screen
+public class ClassChoiceScreen extends ShapeScreen
 {
+    private ShapeView shapeView;
 
     private EditText playerName;
     private RadioButton wizard, warrior, archer;
     private EditText name;
     private Button submit;
+
+    private ImageShape warriorImage;
+    private ImageShape archerImage;
+    private ImageShape wizardImage;
 
     // ----------------------------------------------------------
     /**
@@ -32,7 +42,12 @@ public class ClassChoiceScreen extends Screen
      */
     public void initialize()
     {
-        // Empty
+        DisplayMetrics metrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        warriorImage = new ImageShape(R.drawable.crusader_single, new RectF(0.0f, 0.0f, 100.0f * metrics.density, 100.0f * metrics.density));
+        archerImage = new ImageShape(R.drawable.archer_single, new RectF(0.0f, 0.0f, 100.0f * metrics.density, 100.0f * metrics.density));
+        wizardImage = new ImageShape(R.drawable.wizard_single, new RectF(0.0f, 0.0f, 100.0f * metrics.density, 100.0f * metrics.density));
     }
 
     // ----------------------------------------------------------
@@ -62,6 +77,37 @@ public class ClassChoiceScreen extends Screen
             presentScreen(GameScreen.class, Character.PlayerType.ARCHER, 1, name);
             finish();
         }
+    }
+
+
+    /**
+     * Listens for the the warrior to be selected.
+     */
+    public void warriorClicked()
+    {
+        shapeView.remove(archerImage);
+        shapeView.remove(wizardImage);
+        shapeView.add(warriorImage);
+    }
+
+    /**
+     * Listens for the the archer to be selected.
+     */
+    public void archerClicked()
+    {
+        shapeView.remove(warriorImage);
+        shapeView.remove(wizardImage);
+        shapeView.add(archerImage);
+    }
+
+    /**
+     * Listens for the the wizard to be selected.
+     */
+    public void wizardClicked()
+    {
+        shapeView.remove(archerImage);
+        shapeView.remove(warriorImage);
+        shapeView.add(wizardImage);
     }
 
 

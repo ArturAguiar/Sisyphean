@@ -5,6 +5,7 @@
 
     <EditText
         android:id="@+id/playerName"
+        android:text="Sisyphus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -54,5 +55,14 @@
             android:layout_below="@+id/classes"
             android:text="Wizard" />
     </RadioGroup>
+
+    <sofia.graphics.ShapeView
+        android:id="@+id/shapeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/classes"
+        android:layout_alignRight="@+id/submit"
+        android:layout_alignTop="@+id/classes"
+        android:layout_toRightOf="@+id/playerName" />
 
 </RelativeLayout>

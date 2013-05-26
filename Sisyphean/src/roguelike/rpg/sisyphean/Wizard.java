@@ -28,15 +28,15 @@ public class Wizard
         this.setType(PlayerType.WIZARD);
 
         this.setMaxHealth(100.0f);
-        this.setMaxMana(100.0f);
+        this.setMaxMana(120.0f);
         //this.setMaxStamina(120.0f);
 
         // I swapped the strength and intelligence skill number.
         // Change them if you need to!
         this.setStrength(10.0f);
-        this.setDefense(15.0f);
-        this.setDexterity(12.0f);
-        this.setIntelligence(30.0f);
+        this.setDefense(20.0f);
+        this.setDexterity(15.0f);
+        this.setIntelligence(27.0f);
 
         this.setLevel(1);
         this.setExpToNextLevel(10.0f);
@@ -70,22 +70,21 @@ public class Wizard
         // Initial Magic.
         getMagics().add(new Magic(
             "Petty Damage",
-            "Deals 20 damage to the enemy unit.",
+            "Deals at least 20 damage to the enemy unit.",
             20.0f, 10.0f, false));
     }
 
     @Override
     public void levelUp()
     {
-        // I changed the stats so that it would make sense for a wizard class.
         // Increase statuses.
-        this.setMaxHealth(getMaxHealth() + getMaxHealth() * 0.13F);
+        this.setMaxHealth(getMaxHealth() + getMaxHealth() * 0.2F);
         //this.setMaxStamina(getMaxStamina() + 12.0f);
-        this.setMaxMana(getMaxMana() + getMaxMana() * .10F);
-        this.setStrength(getStrength() + getStrength() * 0.05F);
-        this.setDefense(getDefense() + getDefense() * 0.10F);
-        this.setDexterity(getDexterity() + getDexterity() * 0.08F);
-        this.setIntelligence(getIntelligence() + getIntelligence() * 0.15F);
+        this.setMaxMana(getMaxMana() + getMaxMana() * 0.25F);
+        this.setStrength(getStrength() + getStrength() * 0.15F);
+        this.setDefense(getDefense() + getDefense() * 0.17F);
+        this.setDexterity(getDexterity() + getDexterity() * 0.12F);
+        this.setIntelligence(getIntelligence() + getIntelligence() * 0.3F);
 
         // Update the level and experience.
         this.setLevel(getLevel() + 1);

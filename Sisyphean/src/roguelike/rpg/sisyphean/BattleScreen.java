@@ -68,6 +68,10 @@ public class BattleScreen extends ShapeScreen
         shapeView.setAutoRepaint(false);
         statsView.setAutoRepaint(false);
 
+        // Adds the battle background image.
+        shapeView.add(new ImageShape(R.drawable.battle_background, new RectF(0.0f, shapeView.getHeight() - shapeView.getWidth() * 0.53f,
+                                                                             shapeView.getWidth(), shapeView.getWidth() * 0.53f)));
+
         shapeView.add(enemy.getBattleSprite().getImageShape());
         this.enemy.getBattleSprite().setPosition(getWidth() / 3.0f - enemy.getBattleSprite().getImageShape().getWidth(),
                                             getHeight() / 2.0f - player.getBattleSprite().getImageShape().getHeight() / 2.0f);

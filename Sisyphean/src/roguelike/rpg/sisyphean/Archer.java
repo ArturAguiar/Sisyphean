@@ -29,16 +29,17 @@ public class Archer
         this.setName(name);
         this.setType(PlayerType.ARCHER);
 
-        this.setMaxHealth(110.0f);
+        this.setMaxHealth(120.0f);
         this.setMaxMana(100.0f);
         //this.setMaxStamina(120.0f);
 
-        // I swapped the strength and intelligence skill number.
-        // Change them if you need to!
         this.setStrength(18.0f);
-        this.setDefense(30.0f);
-        this.setDexterity(22.0f);
-        this.setIntelligence(10.0f);
+        this.setDefense(18.0f);
+        this.setDexterity(30.0f);
+        this.setIntelligence(12.0f);
+
+        this.setLevel(1);
+        this.setExpToNextLevel(10.0f);
 
         this.setLevel(1);
         this.setExpToNextLevel(10.0f);
@@ -87,13 +88,13 @@ public class Archer
    {
     // I changed the stats so that it would make sense for a wizard class.
        // Increase statuses.
-       this.setMaxHealth(getMaxHealth() + getMaxHealth() * 0.15F);
+       this.setMaxHealth(getMaxHealth() + getMaxHealth() * 0.2F);
        //this.setMaxStamina(getMaxStamina() + 12.0f);
-       this.setMaxMana(getMaxMana() + getMaxMana() * .02F);
-       this.setStrength(getStrength() + getStrength() * 0.07F);
-       this.setDefense(getDefense() + getDefense() * 0.11F);
-       this.setDexterity(getDexterity() + getDexterity() * 0.12F);
-       this.setIntelligence(getIntelligence() + getIntelligence() * 0.05F);
+       this.setMaxMana(getMaxMana() + getMaxMana() * 0.1F);
+       this.setStrength(getStrength() + getStrength() * 0.15F);
+       this.setDefense(getDefense() + getDefense() * 0.17F);
+       this.setDexterity(getDexterity() + getDexterity() * 0.3F);
+       this.setIntelligence(getIntelligence() + getIntelligence() * 0.09F);
 
        // Update the level and experience.
        this.setLevel(getLevel() + 1);
